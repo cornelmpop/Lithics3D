@@ -1,0 +1,18 @@
+Lithics3D v0.4.0.9001 (Release date: 2018-09-02)
+==============
+
+First public release! Note that this package incorporates functions written over several years, and as a result there are unfortunate inconsistencies in the naming conventions as well as in the level of testing and documentation. These are issues that I hope will be fixed by the next release.
+
+Major new features:
+
+* Added functions to automatically measure edge angles along a given path. See `edgeAngles`
+* Added functions to generate thickness maps See `mesh_tmap` and `mesh_tmap_plot`
+* Added functions to connect landmarks following shortest paths along ridges and valleys on the mesh surface. This can be used, among other things, to simplify the landmarking process, since fewer landmarks are needed along artifact edges for example. See `sPathConnect`.
+* Added functions to segment an object into multiple isolated components based on a closed path. This is useful, for example, in separating the ventral from the dorsal surface of flakes, or individual flake scars, for further analysis. See `mesh_segment_by_path`
+* Added functions for volume and area calculations. For area I actually recommend using the Rvcg function `vcgArea` - this functionality is included here for historical reasons.
+* Added ability to align objects based on a curve (e.g. landmarks along the ventral surface, or defining the platform). See `mesh_orient_by_contour_pca`.
+* Added a variety of useful geometric functions, which can be used to measure lithic attributes or to build more complex functions to investigate lithic morphology. An example of this is the `proj_pt2p` function, which projects points onto, and computes their distances from, a plane.
+* Added demo 3D scans provided by Pop Geological Consulting Services LTD (PGCS)
+
+
+
