@@ -1,5 +1,5 @@
 #' @title Aligns 3D data by two vectors
-#' @description Orients the input 3D data using two vectors, such that both
+#' @description Rotates the input 3D data using two vectors, such that both
 #' vectors are on planes parallel to the XY plane. The data will be rotated
 #' such that the first vector (l1) will always have identical Y and Z values for
 #' both endpoints, with Y=0, and the second vector (l2) will always have
