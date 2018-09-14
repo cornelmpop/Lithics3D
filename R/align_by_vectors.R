@@ -13,7 +13,7 @@
 #' per row. Normally these would be mesh vertices, obtained with t(mesh$vb)[,1:3]
 #' @param e_coords A Nx3 matrix-like object containing xyz point coordinates,
 #' one per row, for additional coordinates which should be kept separately (e.g.
-#' landmarks).
+#' landmarks, or the input vectors).
 #' @return A list containing rotated input coordinates (coords and e_coords)
 #' @section TODO: Change the code to align direction as well (i.e. positive along x axis
 #' from first pt to second.)
@@ -39,10 +39,10 @@
 #' @export
 align_by_vectors <- function(l1, l2, coords, e_coords){
   npts <- nrow(coords)
-  coords <- rbind(l2, e_coords, coords)
+  coords <- rbind(as.matrix(l2), e_coords, coords)
 
   # Rotation 1: look down on axis 1 with first point of axis 2 at origin
-  l1o <- alignAxis(l1, coords)
+  l1o <- alignAxis(as.matrix(l1), coords)
   # Translate to orig
   l1ot <- t(apply(l1o$coords, 1, function(x) x - c(l1o$coords[1, ])))
 
