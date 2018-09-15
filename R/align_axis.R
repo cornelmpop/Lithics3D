@@ -54,12 +54,12 @@ rotatePt_2D <- function(x, y, angle){
 #' @section TODO: Replace underlying rotation algorithm with something
 #' more sensible.
 alignAxis <- function(l, coords){
-  l = as.matrix(l)
+  l <- as.matrix(l)
   if (dim(l)[1] != 2 || dim(l)[2] != 3){
     stop("Wrong dimensions for input vector")
   }
-  coords = as.matrix(coords)
-  
+  coords <- as.matrix(coords)
+
   # Add vector to data to make sure all transformations are applied to it:
   npts <- nrow(coords)
   coords <- rbind(coords[, 1:3], l)
