@@ -29,7 +29,7 @@ rotatePt_2D <- function(x, y, angle){
 #' @param l A 2X3 matrix object containing xyz point coordiantes defining
 #' the alignment vector, one coordinate per row.
 #' @return A list containing rotated coordinates (coords) and the rotated
-#' input vector (l).
+#' input vector (l). NaNs will be returned if vector endpoints are identical.
 #' @note The output coordinate object will contain 3 columns - any additional
 #' columns present in the input will be discarded
 #' @examples
