@@ -24,9 +24,9 @@ rotatePt_2D <- function(x, y, angle){
 #' first aligns the vector with the xy plane, shifting the coordinates
 #' accordingly, and the second aligns the vector with the x axis.
 #' @author Cornel M. Pop
-#' @param coords A Nx3 matrix-like object containing xyz point coordinates, one
+#' @param coords A Nx3 matrix containing xyz point coordinates, one
 #' per row. If more than 3 columns given, the rest are ignored.
-#' @param l A 2X3 matrix-like object containing xyz point coordiantes defining
+#' @param l A 2X3 matrix object containing xyz point coordiantes defining
 #' the alignment vector, one coordinate per row.
 #' @return A list containing rotated coordinates (coords) and the rotated
 #' input vector (l).
