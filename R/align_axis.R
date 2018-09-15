@@ -24,9 +24,9 @@ rotatePt_2D <- function(x, y, angle){
 #' first aligns the vector with the xy plane, shifting the coordinates
 #' accordingly, and the second aligns the vector with the x axis.
 #' @author Cornel M. Pop
-#' @param coords A Nx3 matrix containing xyz point coordinates, one
+#' @param coords A Nx3 matrix-like object containing xyz point coordinates, one
 #' per row. If more than 3 columns given, the rest are ignored.
-#' @param l A 2X3 matrix object containing xyz point coordiantes defining
+#' @param l A 2X3 matrix-like object containing xyz point coordiantes defining
 #' the alignment vector, one coordinate per row.
 #' @return A list containing rotated coordinates (coords) and the rotated
 #' input vector (l). NaNs will be returned if vector endpoints are identical.
@@ -54,6 +54,12 @@ rotatePt_2D <- function(x, y, angle){
 #' @section TODO: Replace underlying rotation algorithm with something
 #' more sensible.
 alignAxis <- function(l, coords){
+  l = as.matrix(l)
+  if (dim(l)[1] != 2 || dim(l)[2] != 3){
+    stop("Wrong dimensions for input vector")
+  }
+  coords = as.matrix(coords)
+  
   # Add vector to data to make sure all transformations are applied to it:
   npts <- nrow(coords)
   coords <- rbind(coords[, 1:3], l)
