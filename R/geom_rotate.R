@@ -31,7 +31,7 @@
 #' points3d(demoFlake2$lms[c(3,8),], color="red", size=10)
 #' al.res <- rotate_v2v(l1=demoFlake2$lms[c(3, 8), 1:3],
 #'                     l2=data.frame(x=c(0,1), y=c(0,0), z=c(0,0)),
-#'                     t(demoFlake2$mesh$vb))
+#'                     t(demoFlake2$mesh$vb)[, 1:3])
 #' m.rot <- list(vb=t(cbind(al.res$coords, 1)), it=demoFlake2$mesh$it)    
 #' class(m.rot) <- "mesh3d"
 #' shade3d(m.rot, color="blue")
@@ -43,8 +43,8 @@ rotate_v2v <- function(l1, l2, coords){
   coords <- matrix(unlist(coords), nrow = nrow(coords))
 
   # Normalize:
-  l1n <- l1 / dist(l1)[1]
-  l2n <- l2 / dist(l2)[1]
+  l1n <- l1 / stats::dist(l1)[1]
+  l2n <- l2 / stats::dist(l2)[1]
 
   # Transform:
   v1 <- as.numeric(l1n[2, ] - l1n[1, ])
@@ -109,9 +109,9 @@ rotatePt_2D <- function(x, y, angle){
 #' @return A list containing rotated coordinates (coords) and the rotated
 #' input vector (l).
 #' @export
-alignAxis <- function(l1, coords){
+alignAxis <- function(l, coords){
   warning("Obsolete function: please use rotate_v2v with second vector on x axis
           instead")
   l2 <- data.frame(x = c(0, 1), y = c(0, 0), z = c(0, 0))
-  return(rotate_v2v(l1, l2, coords))
+  return(rotate_v2v(l, l2, coords))
 }

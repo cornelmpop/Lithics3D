@@ -16,7 +16,7 @@ per row. Normally these would be mesh vertices, obtained with t(mesh$vb)[,1:3]}
 
 \item{e_coords}{A Nx3 matrix-like object containing xyz point coordinates,
 one per row, for additional coordinates which should be kept separately (e.g.
-landmarks).}
+landmarks, or the input vectors).}
 }
 \value{
 A list containing rotated input coordinates (coords and e_coords)
