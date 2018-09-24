@@ -24,3 +24,4 @@ This function is obsolete. Please use the more general
 \author{
 Cornel M. Pop
 }
+\keyword{internal}
