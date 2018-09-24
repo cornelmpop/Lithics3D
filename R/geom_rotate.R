@@ -108,6 +108,7 @@ rotatePt_2D <- function(x, y, angle){
 #' the alignment vector, one coordinate per row.
 #' @return A list containing rotated coordinates (coords) and the rotated
 #' input vector (l).
+#' @keywords internal
 #' @export
 alignAxis <- function(l, coords){
   warning("Obsolete function: please use rotate_v2v with second vector on x axis
