@@ -38,12 +38,14 @@
 #' computed, given as a radius of sphere extending from each landmark of
 #' interest.
 #' @examples
-#' \dontrun{
+#' data(demoFlake2)
 #' e.curve = sPathConnect(demoFlake2$lms, demoFlake2$mesh, path.choice="ridges")
 #' meshVertices<-data.frame(t(demoFlake2$mesh$vb))
 #' path.res <- pathResample(as.matrix(meshVertices[e.curve,1:3]), 30,
-#'                           method="npts")
+#'                          method="npts")
 #' res = edgeAngles(demoFlake2$mesh, path.res, m.d=3)
+#' \dontrun{
+#' library(rgl)
 #' shade3d(demoFlake2$mesh, color="green", alpha=0.4)
 #' points3d(path.res, color="red", size=4)
 #' for(i in 1:length(res)){
