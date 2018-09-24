@@ -1,3 +1,20 @@
+Lithics3D v0.4.1.9000 (Release date: 2018-09-24)
+
+New features:
+
+* Added function to compute interior angles of polygons (poly_angles)
+* Added function to orient 3D data based on two vectors (orient_by_vectors).
+* Replaced alignAxis with rotate_v2v, a new function that addresses the limitations of the former and provides
+a more generalized, less buggy, and much faster implementation. alignAxis is still available but generates a
+warning indicating that it is obsolete.
+
+Other changes:
+* Re-added vignette
+* Consolidated rotate_v2v, alignAxis, and rotatePt_2D into a single file (geom_rotate)
+* Improved documentation (ongoing)
+* Added unit tests for several functions (ongoing)
+
+
 Lithics3D v0.4.0.9001 (Release date: 2018-09-02)
 ==============
 
