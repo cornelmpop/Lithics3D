@@ -3,9 +3,12 @@
 Lithics3D provides a toolbox for working with 3D scans of archaeological lithics
 within the R environment. The functions included herein are designed to
 work with clean triangular meshes and existing landmarks. For the time being at
-least mesh generation, pre-processing (e.g. cleaning), and landmarking must be
-done with different tools. The provided functions can be divided into two
-categories:
+least, mesh generation, pre-processing (e.g. cleaning), and landmarking must be
+done with different tools (e.g. [Meshlab](http://www.meshlab.net/) and
+[Landmark Editor](http://graphics.idav.ucdavis.edu/research/EvoMorph))
+
+
+The included functions can be divided into two broad categories:
 
 * High-level functions for (semi-)automatic segmentation and analysis of meshes
 *qua* archaeological artifacts (e.g. utilities for automatically
