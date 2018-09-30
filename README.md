@@ -15,12 +15,19 @@ measuring edge angles, mapping artifact thickness, etcetera).
 functions are meant to provide the building blocks required to implement more
 complex functionality.
 
-#### A note on current status
+#### **Warning**: A note on current status
 
-Lithics3D currently incorporates functions written over a period
-of several years, and some of these functions are far more experimental than
-others. For now, please be mindful of the fact that this is very much a work in
-progress, and test your results or contact me for help or clarification.
+This package incorporates functions written over a period of several years. Some
+of these functions are far more experimental than others, and there are many
+naming inconsistencies which are slowly being resolved. You can expect function
+names to change without notice, but all functions added in or since the
+v0.4.0 release will continue working as originally documented until version 1 of
+the package.
+
+Given the experimental nature of some of the functions included in this package
+you are strongly encouraged to double check your results and contact me for help or
+clarification. More generally, be mindful of the fact that this is very much a
+work in progress.
 
 ## Getting started
 
