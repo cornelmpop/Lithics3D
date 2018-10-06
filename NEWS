@@ -1,4 +1,17 @@
+Lithics3D v0.4.2
+==============
+
+New features:
+
+Other changes:
+* Deprecated alignMesh.PCA in favour of the pcAlign function provided by the Morpho package; It offered no additional functionality. Note
+that while both functions will produce identical values for the PCA aligned mesh coordinates, the sign of these values may be different (e.g.
+a biface may point left with meshAlign.PCA, and right with pcAlign).
+* Updated readme with links to external tools and clearer warning regarding current status
+
+
 Lithics3D v0.4.1.9000 (Release date: 2018-09-24)
+==============
 
 New features:
 

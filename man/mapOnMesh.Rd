@@ -26,8 +26,9 @@ surface because this function returns the closest mesh vertex, not the
 closest point on the mesh surface (e.g. shortest distance to a mesh face)
 }
 \examples{
+library(Morpho)
 data(demoFlake1)
-alignedMesh<-alignMesh.PCA(demoFlake1$mesh)
+alignedMesh<-pcAlign(demoFlake1$mesh)
 # Note that the first coordinate is "inside" the object
 coords<-data.frame(x=c(0,10,-3), y=c(0,10,3), z=c(5,10,10))
 targets<-mapOnMesh(coords, alignedMesh)

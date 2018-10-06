@@ -49,8 +49,9 @@ of calls
 }
 
 \examples{
+library(Morpho)
 data(demoFlake1)
-alignedMesh<-alignMesh.PCA(demoFlake1$mesh)
+alignedMesh<-pcAlign(demoFlake1$mesh)
 meshVertices<-data.frame(t(alignedMesh$vb))
 
 # Map some arbitrary coordinates onto the mesh surface

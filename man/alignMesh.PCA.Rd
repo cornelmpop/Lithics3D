@@ -2,8 +2,8 @@
 % Please edit documentation in R/align_pca.R
 \name{alignMesh.PCA}
 \alias{alignMesh.PCA}
-\title{Align a mesh3d object along the axes of its two main principal 
-components.}
+\title{(\strong{Deprecated}) Align a mesh3d object along the axes of its two main
+principal components.}
 \usage{
 alignMesh.PCA(mesh)
 }
@@ -14,11 +14,18 @@ alignMesh.PCA(mesh)
 aligned mesh3d object with vertex coordinates replaced by PCA scores.
 }
 \description{
-Performs a simple alignment of the input triangular mesh along
+(\strong{Deprecated}) Performs a simple alignment of the input triangular mesh along
 its two main principal components. While generally useful for flat, elongated
 flakes and bifaces, this function does not guarantee proper alignment along
 a technologically or typologically relevant axis. Nevertheless, it is useful
 for preliminary mesh operations/analyses.
+}
+\note{
+\itemize{
+   \item This function is deprecated. Use \code{\link[Morpho]{pcAlign}}
+instead (i.e. Morpho::pcAlign(demoFlake1$mesh))
+   \item Normals are not updated by this function. 
+ }
 }
 \examples{
 data(demoFlake1)
