@@ -153,32 +153,35 @@ pc2pt <- function(p.coefs){
 
 #' @title Project coordinates onto a 3D plane
 #' @description Orthogonally projects a set of coordinates onto a 3D plane,
-#' defined by 3 co-planar points, and computes distances to the plane. If only
-#' plane equation coefficients are available, use the pc2pt function to obtain
-#' co-planar points. Note that this function returns signed distances so it is
-#' also useful to identify points below or above the plane.
-#' @note should be useful for thickness maps too, but needs to be rotated
-#' anyway...
-#' @param coords An Nx3 matrix-like object with coordinates defining a line, one
+#' defined by 3 co-planar points, and computes signed distances \emph{to} the plane
+#' (i.e. if a point is above the plane, the sign will be negative). If only
+#' plane equation coefficients are available, use the \link{pc2pt} function to obtain
+#' co-planar points.
+#' @note The \code{\link[Morpho]{points2plane}} function of the Morpho package
+#' provides similar, but not identical, functionality.
+#' @param coords An Nx3 matrix-like object with point coordinates, one
 #' per row.
 #' @param p A 3x3 matrix-like object with coordinates defining a plane, one per
 #' row.
-#' @return An Nx4 matrix-like object containing projected coordinates
+#' @return An Nx4 data.frame object containing projected coordinates
 #' (columns 1-3) and signed distances (column 4) for every input point
-#' (one per row)
+#' (one per row).
 #' @examples
-#' library(rgl)
 #' pts = data.frame(x=c(10, -10), y=c(33, -31) ,z=c(11, -7))
 #' p = data.frame(x=c(1, 3, 4), y=c(0,2,1), z=c(3,4,5))
-#' p.coefs = planeCoefs(p)
-#' points3d(pts, color="red")
-#' planes3d(p.coefs[1], p.coefs[2], p.coefs[3], p.coefs[4])
 #' pts.proj = proj_pt2p(pts, p)
+#' \dontrun{
+#' library(rgl)
+#' points3d(pts, color="red")
+#' p.coefs = planeCoefs(p)
+#' planes3d(p.coefs[1], p.coefs[2], p.coefs[3], p.coefs[4])
 #' points3d(pts.proj[,1:3], color="green", size=5)
+#' }
 #' @export
-#' @section TODO: Write tests and make sure it works as expected. CHANGE NAME
-#' TO proj.pt2p
 proj_pt2p <- function(coords, p){
+  # Cast coords as matrix to avoid issues with e.g. data.table syntax
+  coords <- as.matrix(coords)
+
   p.c <- planeCoefs(p)
 
   # Compute the distance between the points and the plane:
@@ -190,6 +193,10 @@ proj_pt2p <- function(coords, p){
   # Project points along plane normal (coefs 1 to 3) to distances d
   d.norm <- -d %*% p.c[1:3] # Multiply normals by distances
   pts <- coords + d.norm
-  pts <- cbind(pts, -d)
+
+  # Standardize output type and names:
+  pts <- data.frame(cbind(pts, -d))
+  colnames(pts)[4] <- "dist"
+
   return(pts)
 }
