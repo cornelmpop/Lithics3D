@@ -7,7 +7,7 @@ Maintainer: Cornel M. Pop <pop.cornelm@gmail.com>
 URL: https://github.com/cornelmpop/Lithics3D
 BugReports: https://github.com/cornelmpop/Lithics3D/issues
 Description: A collection of functions for working with and analyzing 3D scans of archaeological lithics.
-Depends: R (>= 3.4.3)
+Depends: R (>= 3.4.0)
 Imports: Matrix (>= 1.2.12),
          Morpho (>= 2.5.1),
          geomorph (>= 3.0.5),
@@ -22,7 +22,7 @@ Imports: Matrix (>= 1.2.12),
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
