@@ -4,6 +4,8 @@ Lithics3D v0.4.2
 New features: None
 
 Other changes:
+* Changed the behaviour of sPathQuery - it will now fail if path.choice is not one of the valid options, instead of silently picking "any". This behaviour was properly documented, but made little sense.
+* Added unit test for sPathQuery
 * alignMesh.PCA: Deprecated in favour of the pcAlign function provided by the Morpho package; It offered no additional functionality. Note
 that while both functions will produce identical values for the PCA aligned mesh coordinates, the sign of these values may be different (e.g.
 a biface may point left with meshAlign.PCA, and right with pcAlign).

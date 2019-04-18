@@ -48,8 +48,7 @@ mesh_to_graph <- memoise::memoise(function(mesh) {
 #' @param path.choice path choice specification. Options are: a) "ridges", to
 #' give preference to positive curvature zones (i.e. ridges), b) "valleys", to
 #' give preference to negative curvature zones, or c) "any" for unweighted
-#' path search. Any text other than "ridges" or "valleys" will be
-#' treated as "any"
+#' path search.
 #' @return A numeric, ordered list of all vertex IDs in the path (includes
 #' start and end vertices)
 #' @note 
@@ -109,9 +108,11 @@ sPathQuery <- function(sv_id, ev_id, mesh, path.choice="any"){
   } else if (path.choice == "valleys") {
     s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id), weights = w.n)$vpath[[1]]
-  } else {
+  } else if (path.choice == "any") {
     s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id))$vpath[[1]]
+  } else {
+    stop("Unknown path.choice option. Use 'ridges', 'valleys', or 'any'")
   }
 
   return(as.numeric(g_res$gVertices[s_path]))
@@ -122,7 +123,8 @@ sPathQuery <- function(sv_id, ev_id, mesh, path.choice="any"){
 #' connects them following the shortest path (weighted or unweighted) along
 #' triangle edges (i.e. connected vertices) on a target mesh. The curve
 #' described by the coordinates may be open or closed.
-#' @param coords data.frame-like object of ordered 3D coordinates (one per row)
+#' @param coords data.frame-like object of ordered 3D coordinates (one per row).
+#' Only first three columns will be evaluated
 #' @param mesh a mesh3d object
 #' @param path.choice path choice specification. Options are the same as for
 #' the sPathQuery function.
