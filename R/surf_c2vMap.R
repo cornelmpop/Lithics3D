@@ -5,7 +5,8 @@
 #' @description For a given set of arbitrary coordinates, it returns the closest
 #' mesh vertices. This function is similar to the closemeshKD function provided
 #' by the Morpho package, but it's simpler and runs much faster (ca. 5-10x)
-#' @param coords a data.frame-like object with 3D coordinates (1 per row)
+#' @param coords a data.frame-like object with 3D coordinates (1 per row). Only
+#' the first three columns will be used.
 #' @param mesh a target mesh3d object
 #' @return A data.frame object with target vertices extracted from mesh$vb and
 #' rownames set to the original vertex IDs
