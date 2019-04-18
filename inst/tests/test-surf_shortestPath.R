@@ -30,6 +30,15 @@ test_that("sPathConnect produces correct output", {
   # Check input handling:
   expect_error(Lithics3D::sPathConnect(ds.lms, ds.ply, path.choice = "bad"))
 
+  # Check handling of closed loop - not working as of 0.4.1
+  sp.loop <- Lithics3D::sPathConnect(rbind(ds.lms[2:4, ], ds.lms[2, ])[, 1:3],
+                                     ds.ply, path.choice = "any")
+  expect_equal(sp.loop[1], sp.loop[length(sp.loop)])
+
+  sp.loop2 <- Lithics3D::sPathConnect(ds.lms[2:4, 1:3], ds.ply,
+                                      path.choice = "any", closed = TRUE)
+  expect_identical(sp.loop, sp.loop2)
+
   #shade3d(ds.ply, color="green")
   #points3d(ds.lms, color="red", size=10)
   #points3d(t(ds.ply$vb)[sp.valley2, 1:3], color="yellow", size=10)
