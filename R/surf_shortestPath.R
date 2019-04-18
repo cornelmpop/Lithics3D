@@ -44,7 +44,7 @@ mesh_to_graph <- memoise::memoise(function(mesh) {
 #' in the transposed mesh$vb (i.e. t(mesh$vb))
 #' @param ev_id numeric ID of the "to" vertex, corresponding to the row number in
 #' the transposed mesh$vb
-#' @param mesh a mesh3d object
+#' @param mesh a mesh3d object. Please ensure it is uniformly sampled.
 #' @param path.choice path choice specification. Options are: a) "ridges", to
 #' give preference to positive curvature zones (i.e. ridges), b) "valleys", to
 #' give preference to negative curvature zones, or c) "any" for unweighted
@@ -60,6 +60,12 @@ mesh_to_graph <- memoise::memoise(function(mesh) {
 #' underlying igraph package. As per the igraph documentation, with unweighted
 #' edges, as is the case here, a default unweighted algorithm is chosen even if
 #' another algorithm is explicitly requested.
+#' 3. The performance of this function is highly dependent on the degree to which
+#' the mesh is uniformly sampled. Please consider remeshing before running it.
+#' The following example assumes your mesh is called ply:
+#' 
+#' ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
+#' 
 #' 
 #' TODO: Allow for function to work directly on igraph objects also; it'd improve
 #' performance by 300%, which may be significant to functions that make hundreds
@@ -125,13 +131,19 @@ sPathQuery <- function(sv_id, ev_id, mesh, path.choice="any"){
 #' described by the coordinates may be open or closed.
 #' @param coords data.frame-like object of ordered 3D coordinates (one per row).
 #' Only first three columns will be evaluated
-#' @param mesh a mesh3d object
+#' @param mesh a mesh3d object. Please ensure it is uniformly sampled.
 #' @param path.choice path choice specification. Options are the same as for
 #' the sPathQuery function.
 #' @return A numeric, ordered list of all vertex IDs in the path (includes
 #' start and end vertices)
 #' @note
-#' Internally, this function uses sPathQuerry and mapOnMesh, so
+#' The performance of this function is highly dependent on the degree to which
+#' the mesh is uniformly sampled. Please consider remeshing before running this
+#' function. The following example assumes your mesh is called ply:
+#' 
+#' ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
+#' 
+#' Note also that, internally, this function uses sPathQuerry and mapOnMesh, so
 #' note that the input coordinates are not mapped onto the closest surface
 #' point, but to the nearest mesh vertex. This may lead to small
 #' discrepancies with input landmarks that are already mapped onto the mesh
