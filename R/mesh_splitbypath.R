@@ -44,8 +44,7 @@ mesh_segment_by_path <- function(mesh, lms, path.choice="ridges"){
   for (ms in mesh.segs){
     print(nrow(ms$vb))
     # Map vertex ids of new mesh onto original:
-    orig.vb <- as.integer(rownames(mapOnMesh(data.frame(t(ms$vb)),
-                                            mesh)))
+    orig.vb <- mapOnMesh(data.frame(t(ms$vb)), mesh)$vertex
     # Get faces associated with this segment:
     seg.it <- Morpho::getFaces(mesh, orig.vb)
     if (length(seg.it) > 3){

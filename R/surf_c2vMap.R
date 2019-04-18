@@ -39,5 +39,7 @@ mapOnMesh <- function(coords, mesh){
 
   vertices <- data.frame(t(mesh$vb))
   nearest <- nabor::knn(vertices[, 1:3], cdf, k = 1)$nn.idx[, 1]
-  return(vertices[nearest, ])
+  vertices <- vertices[nearest, ]
+  vertices$vertex <- nearest
+  return(vertices)
 }
