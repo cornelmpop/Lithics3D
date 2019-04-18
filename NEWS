@@ -1,9 +1,11 @@
 Lithics3D v0.4.2
 ==============
 
-New features: None
+New features:
+* sPathQuery now has an option to request closed curves. The documentation has also been improved.
 
 Other changes:
+* mapOnMesh now outputs target vertices as a column (named vertex). Rownames will continue working, but should not be relied on.
 * Changed the behaviour of sPathQuery - it will now fail if path.choice is not one of the valid options, instead of silently picking "any". This behaviour was properly documented, but made little sense.
 * Added unit test for sPathQuery
 * alignMesh.PCA: Deprecated in favour of the pcAlign function provided by the Morpho package; It offered no additional functionality. Note
