@@ -1,7 +1,7 @@
 Package: Lithics3D
 Title: A toolbox for 3D analysis of archaeological lithics
-Version: 0.4.1.9006
-Date: 2018-09-24
+Version: 0.4.2
+Date: 2019-04-20
 Authors@R: person("Cornel", "Pop", email = "pop.cornelm@gmail.com", role = c("aut", "cre"))
 Maintainer: Cornel M. Pop <pop.cornelm@gmail.com>
 URL: https://github.com/cornelmpop/Lithics3D
