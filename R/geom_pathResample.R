@@ -1,4 +1,3 @@
-#' #importFrom geomorph digit.curves
 
 #' @title Resample a curve
 #' @description Resamples a curve, defined by an ordered set of coordinates, by
