@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/147242315.svg)](https://zenodo.org/badge/latestdoi/147242315)
+
 # Lithics3D
 
 Lithics3D provides a toolbox for working with 3D scans of archaeological lithics
