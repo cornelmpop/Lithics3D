@@ -1,11 +1,17 @@
-#' @title Align a mesh3d object along the axes of its two main principal 
-#' components.
-#' @description Performs a simple alignment of the input triangular mesh along
+#' @title (\strong{Deprecated}) Align a mesh3d object along the axes of its two main
+#' principal components.
+#' @description (\strong{Deprecated}) Performs a simple alignment of the input triangular mesh along
 #' its two main principal components. While generally useful for flat, elongated
 #' flakes and bifaces, this function does not guarantee proper alignment along
 #' a technologically or typologically relevant axis. Nevertheless, it is useful
 #' for preliminary mesh operations/analyses.
 #' @author Shannon McPherron, Cornel M. Pop
+#' @note
+#' \itemize{
+#'    \item This function is deprecated. Use \code{\link[Morpho]{pcAlign}}
+#' instead (i.e. Morpho::pcAlign(demoFlake1$mesh))
+#'    \item Normals are not updated by this function. 
+#'  }
 #' @param mesh a mesh3d object to be aligned.
 #' @return aligned mesh3d object with vertex coordinates replaced by PCA scores.
 #' @examples
@@ -18,6 +24,9 @@
 #' }
 #' @export
 alignMesh.PCA <- function(mesh){
+  warning("This function is deprecated and will be removed in version 1 of this
+  package. Use Morpho::pcAlign instead")
+
   vertices <- data.frame(X = mesh$vb[1, ], Y = mesh$vb[2, ],
                          Z = mesh$vb[3, ]) # Fetch points as X,Y,Z dataframe
   pca <- stats::princomp(vertices, scores = TRUE, cor = FALSE)

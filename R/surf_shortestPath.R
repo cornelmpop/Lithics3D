@@ -44,12 +44,11 @@ mesh_to_graph <- memoise::memoise(function(mesh) {
 #' in the transposed mesh$vb (i.e. t(mesh$vb))
 #' @param ev_id numeric ID of the "to" vertex, corresponding to the row number in
 #' the transposed mesh$vb
-#' @param mesh a mesh3d object
+#' @param mesh a mesh3d object. Please ensure it is uniformly sampled.
 #' @param path.choice path choice specification. Options are: a) "ridges", to
 #' give preference to positive curvature zones (i.e. ridges), b) "valleys", to
 #' give preference to negative curvature zones, or c) "any" for unweighted
-#' path search. Any text other than "ridges" or "valleys" will be
-#' treated as "any"
+#' path search.
 #' @return A numeric, ordered list of all vertex IDs in the path (includes
 #' start and end vertices)
 #' @note 
@@ -61,13 +60,20 @@ mesh_to_graph <- memoise::memoise(function(mesh) {
 #' underlying igraph package. As per the igraph documentation, with unweighted
 #' edges, as is the case here, a default unweighted algorithm is chosen even if
 #' another algorithm is explicitly requested.
+#' 3. The performance of this function is highly dependent on the degree to which
+#' the mesh is uniformly sampled. Please consider remeshing before running it.
+#' The following example assumes your mesh is called ply:
+#' 
+#' ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
+#' 
 #' 
 #' TODO: Allow for function to work directly on igraph objects also; it'd improve
 #' performance by 300%, which may be significant to functions that make hundreds
 #' of calls
 #' @examples
+#' library(Morpho)
 #' data(demoFlake1)
-#' alignedMesh<-alignMesh.PCA(demoFlake1$mesh)
+#' alignedMesh<-pcAlign(demoFlake1$mesh)
 #' meshVertices<-data.frame(t(alignedMesh$vb))
 #' 
 #' # Map some arbitrary coordinates onto the mesh surface
@@ -75,7 +81,7 @@ mesh_to_graph <- memoise::memoise(function(mesh) {
 #' targets<-mapOnMesh(coords_df, alignedMesh)
 #' 
 #' # Get the vertex IDs of the mapped coordinates
-#' targetIDs<-as.numeric(rownames(targets))
+#' targetIDs <- targets$vertex
 #' 
 #' # Get vertices that form the path between the first two mapped coordinates
 #' pathVertices<-sPathQuery(targetIDs[1], targetIDs[2], alignedMesh)
@@ -108,9 +114,11 @@ sPathQuery <- function(sv_id, ev_id, mesh, path.choice="any"){
   } else if (path.choice == "valleys") {
     s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id), weights = w.n)$vpath[[1]]
-  } else {
+  } else if (path.choice == "any") {
     s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id))$vpath[[1]]
+  } else {
+    stop("Unknown path.choice option. Use 'ridges', 'valleys', or 'any'")
   }
 
   return(as.numeric(g_res$gVertices[s_path]))
@@ -121,30 +129,49 @@ sPathQuery <- function(sv_id, ev_id, mesh, path.choice="any"){
 #' connects them following the shortest path (weighted or unweighted) along
 #' triangle edges (i.e. connected vertices) on a target mesh. The curve
 #' described by the coordinates may be open or closed.
-#' @param coords data.frame-like object of ordered 3D coordinates (one per row)
-#' @param mesh a mesh3d object
+#' @param coords data.frame-like object of ordered 3D coordinates (one per row).
+#' Only first three columns will be evaluated.
+#' @param mesh a mesh3d object. Please ensure it is uniformly sampled.
 #' @param path.choice path choice specification. Options are the same as for
 #' the sPathQuery function.
+#' @param closed boolean describing whether the path forms a closed loop or is
+#' open. This option is ignored if the starting coordinate is the same as the
+#' end coordinate (i.e. the path is already closed).
 #' @return A numeric, ordered list of all vertex IDs in the path (includes
 #' start and end vertices)
 #' @note
-#' Internally, this function uses sPathQuerry and mapOnMesh, so
+#' The performance of this function is highly dependent on the degree to which
+#' the mesh is uniformly sampled. Please consider remeshing before running this
+#' function. The following example assumes your mesh is called ply:
+#' 
+#' ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
+#' 
+#' Note also that, internally, this function uses sPathQuerry and mapOnMesh, so
 #' note that the input coordinates are not mapped onto the closest surface
 #' point, but to the nearest mesh vertex. This may lead to small
 #' discrepancies with input landmarks that are already mapped onto the mesh
 #' surface. See mapOnMesh documentation for more information.
+#' 
+#' Finally, note that this function can return duplicated vertex ID sequences
+#' (i.e. path tracks back on itself near input coordinates), which may cause
+#' problems with, for example, geomorph::digit.curves
 #' @seealso sPathQuery
 #' @examples
 #' # TODO!
 #' @export
-sPathConnect <- function(coords, mesh, path.choice = "any"){
+sPathConnect <- function(coords, mesh, path.choice = "any", closed = FALSE){
   lms <- mapOnMesh(coords, mesh) # Map input to nearest vertices
-  lms.ids <- as.numeric(rownames(lms))
+  lms.ids <- lms$vertex
+  # We may be handed a closed loop and the closed option set to TRUE, so check:
+  if (closed && !lms.ids[1] == lms.ids[length(lms.ids)]) {
+    lms.ids <- c(lms.ids, lms.ids[1])
+  }
 
   # TODO: Try parApply?
   m.path <- c()
-  for (i in 1:(nrow(lms) - 1)){
-    p <- sPathQuery(lms.ids[i], lms.ids[i + 1], mesh, path.choice = path.choice)
+  for (i in 1:(length(lms.ids) - 1)){
+    p <- sPathQuery(lms.ids[i], lms.ids[i + 1], mesh,
+                    path.choice = path.choice)
     m.path <- c(m.path, p)
   }
   return(m.path)

@@ -213,13 +213,13 @@ included demoFlake2 data.
 
 For thickness maps to be meaningful we must first orient the 3D scan in a
 meaningful way. What "meaningful" is will depend on the application. Here, we
-will orient the artifact using the `alignMesh.PCA` function, although we could
+will orient the artifact using the `Morpho::pcAlign` function, although we could
 just as easily orient it as we did above with `mesh.orient_by_contour_pca`,
-with `alignAxis`, etc. `alignMesh.PCA` provides a good way to automatically
+with `alignAxis`, etc. `Morpho::pcAlign` provides a good way to automatically
 orient flat-ish and somewhat elongated objects such as blades, points, etc.
 
 ```{r}
-mesh.rot = alignMesh.PCA(demoFlake2$mesh)
+mesh.rot = Morpho::pcAlign(demoFlake2$mesh)
 ```
 
 After this step, which requires some thought in real applications, we can

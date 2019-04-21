@@ -1,4 +1,3 @@
-#' @importFrom geomorph digit.curves
 
 #' @title Resample a curve
 #' @description Resamples a curve, defined by an ordered set of coordinates, by
@@ -29,8 +28,8 @@ pathResample <- function(coords, value, method="npts") {
   } else {
     stop("Unknown sampling method requested")
   }
-  c <- geomorph::digit.curves(start = coords[1, ], curve = coords,
-                              nPoints = npts, closed = F)
+  c <- digit.curves.old(start = coords[1, ], curve = coords,
+                        nPoints = npts, closed = F)
 
   return(c)
 }

@@ -16,7 +16,7 @@ test_that("mapOnMesh produces correct output", {
   expect_warning(mapOnMesh(badDF2, demoSurface))
 
   # Check for mesh input handling.
-  expect_error(mapOnMesh(goodDF, list(vb = c("a", "b", "c")))) # Not a mesh!
+  expect_warning(mapOnMesh(goodDF, list(vb = c("a", "b", "c")))) # Not a mesh!
 
   # Check for correct output:
   queryPts <- data.frame(x = c(-1, -1, 17),
@@ -28,4 +28,8 @@ test_that("mapOnMesh produces correct output", {
   expect_that(as.numeric(res[1, 1:2]), equals(c(0, 0)))
   expect_that(as.numeric(res[2, 1:2]), equals(c(0, 5)))
   expect_that(as.numeric(res[3, 1:2]), equals(c(16, 10)))
+
+  # Ensure vertex column is being returned with the same information as
+  # rownames (for compatibility purposes):
+  expect_identical(res$vertex, as.integer(rownames(res)))
 })

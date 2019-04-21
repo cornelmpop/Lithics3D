@@ -13,13 +13,12 @@ in the transposed mesh$vb (i.e. t(mesh$vb))}
 \item{ev_id}{numeric ID of the "to" vertex, corresponding to the row number in
 the transposed mesh$vb}
 
-\item{mesh}{a mesh3d object}
+\item{mesh}{a mesh3d object. Please ensure it is uniformly sampled.}
 
 \item{path.choice}{path choice specification. Options are: a) "ridges", to
 give preference to positive curvature zones (i.e. ridges), b) "valleys", to
 give preference to negative curvature zones, or c) "any" for unweighted
-path search. Any text other than "ridges" or "valleys" will be
-treated as "any"}
+path search.}
 }
 \value{
 A numeric, ordered list of all vertex IDs in the path (includes
@@ -39,6 +38,12 @@ second).
 underlying igraph package. As per the igraph documentation, with unweighted
 edges, as is the case here, a default unweighted algorithm is chosen even if
 another algorithm is explicitly requested.
+3. The performance of this function is highly dependent on the degree to which
+the mesh is uniformly sampled. Please consider remeshing before running it.
+The following example assumes your mesh is called ply:
+
+ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
+
 
 TODO: Allow for function to work directly on igraph objects also; it'd improve
 performance by 300%, which may be significant to functions that make hundreds
@@ -49,8 +54,9 @@ of calls
 }
 
 \examples{
+library(Morpho)
 data(demoFlake1)
-alignedMesh<-alignMesh.PCA(demoFlake1$mesh)
+alignedMesh<-pcAlign(demoFlake1$mesh)
 meshVertices<-data.frame(t(alignedMesh$vb))
 
 # Map some arbitrary coordinates onto the mesh surface
@@ -58,7 +64,7 @@ coords_df<-data.frame(x=c(0,10,-3), y=c(0,10,3), z=c(5,10,10))
 targets<-mapOnMesh(coords_df, alignedMesh)
 
 # Get the vertex IDs of the mapped coordinates
-targetIDs<-as.numeric(rownames(targets))
+targetIDs <- targets$vertex
 
 # Get vertices that form the path between the first two mapped coordinates
 pathVertices<-sPathQuery(targetIDs[1], targetIDs[2], alignedMesh)

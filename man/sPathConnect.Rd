@@ -4,15 +4,20 @@
 \alias{sPathConnect}
 \title{Connect landmarks by the shortest geodesic path}
 \usage{
-sPathConnect(coords, mesh, path.choice = "any")
+sPathConnect(coords, mesh, path.choice = "any", closed = FALSE)
 }
 \arguments{
-\item{coords}{data.frame-like object of ordered 3D coordinates (one per row)}
+\item{coords}{data.frame-like object of ordered 3D coordinates (one per row).
+Only first three columns will be evaluated.}
 
-\item{mesh}{a mesh3d object}
+\item{mesh}{a mesh3d object. Please ensure it is uniformly sampled.}
 
 \item{path.choice}{path choice specification. Options are the same as for
 the sPathQuery function.}
+
+\item{closed}{boolean describing whether the path forms a closed loop or is
+open. This option is ignored if the starting coordinate is the same as the
+end coordinate (i.e. the path is already closed).}
 }
 \value{
 A numeric, ordered list of all vertex IDs in the path (includes
@@ -25,11 +30,21 @@ triangle edges (i.e. connected vertices) on a target mesh. The curve
 described by the coordinates may be open or closed.
 }
 \note{
-Internally, this function uses sPathQuerry and mapOnMesh, so
+The performance of this function is highly dependent on the degree to which
+the mesh is uniformly sampled. Please consider remeshing before running this
+function. The following example assumes your mesh is called ply:
+
+ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
+
+Note also that, internally, this function uses sPathQuerry and mapOnMesh, so
 note that the input coordinates are not mapped onto the closest surface
 point, but to the nearest mesh vertex. This may lead to small
 discrepancies with input landmarks that are already mapped onto the mesh
 surface. See mapOnMesh documentation for more information.
+
+Finally, note that this function can return duplicated vertex ID sequences
+(i.e. path tracks back on itself near input coordinates), which may cause
+problems with, for example, geomorph::digit.curves
 }
 \examples{
 # TODO!

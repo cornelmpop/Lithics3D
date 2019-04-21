@@ -39,7 +39,7 @@
 #' interest.
 #' @examples
 #' data(demoFlake2)
-#' e.curve = sPathConnect(demoFlake2$lms, demoFlake2$mesh, path.choice="ridges")
+#' e.curve = sPathConnect(demoFlake2$lms[1:4, ], demoFlake2$mesh, path.choice="ridges")
 #' meshVertices<-data.frame(t(demoFlake2$mesh$vb))
 #' path.res <- pathResample(as.matrix(meshVertices[e.curve,1:3]), 30,
 #'                          method="npts")

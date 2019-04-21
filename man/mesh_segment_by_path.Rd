@@ -4,14 +4,24 @@
 \alias{mesh_segment_by_path}
 \title{Section mesh using a path}
 \usage{
-mesh_segment_by_path(mesh, lms, path.choice = "ridges")
+mesh_segment_by_path(mesh, lms = NULL, path.choice = "ridges",
+  mesh.path = NULL)
 }
 \arguments{
 \item{mesh}{A (clean) mesh3d object}
 
-\item{lms}{An ordered set of coordinates}
+\item{lms}{(Deprecated) An ordered set of coordinates. Since this parameter
+is being deprecated, please use the output of \link{sPathConnect} to the
+mesh.path argument)}
 
-\item{path.choice}{TODO: Described in sPathConnect.}
+\item{path.choice}{(Deprecated) Described in \link{sPathConnect}.}
+
+\item{mesh.path}{A vector containing a list of connected vertices forming a
+closed path on the surface of the input mesh. This parameter should
+correspond to the output of \link{sPathConnect}}
+}
+\value{
+A list of mesh objects containing a minimum of 3 faces each.
 }
 \description{
 Cuts a mesh along a closed path defined on the basis of an
@@ -21,13 +31,18 @@ multiple components. Note that you must provide a clean mesh, so please use
 }
 \note{
 Minimum output mesh segment size is 3 faces. Anything smaller gets
-discarded silently
+discarded silently.
+
+Note also that the deprecated parameters will stop working in version 1 of
+this package at the latest.
 }
 \examples{
 library(rgl)
-zzz <- mesh_segment_by_path(demoFlake2$mesh, demoFlake2$lms)
-shade3d(zzz[[1]], color="green")
-shade3d(zzz[[2]], color="blue")
+mesh.path <- sPathConnect(demoFlake2$lms, demoFlake2$mesh,
+                          path.choice="ridges", closed=TRUE)
+mesh.segs <- mesh_segment_by_path(demoFlake2$mesh, mesh.path=mesh.path)
+shade3d(mesh.segs[[1]], color="green")
+shade3d(mesh.segs[[2]], color="blue")
 }
 \author{
 Cornel M. Pop

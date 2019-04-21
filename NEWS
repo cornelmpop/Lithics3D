@@ -1,4 +1,25 @@
-Lithics3D v0.4.1.9000 (Release date: 2018-09-24)
+Lithics3D v0.4.2
+==============
+
+New features:
+* sPathQuery now has an option to request closed curves. The documentation has also been improved.
+
+Other changes:
+* mesh_segment_by_path now takes input of sPathConnect as argument (mesh.path) instead of calling that function internally. The former functionality still exists, but is being deprecated and using the old
+lms argument will result in a warning.
+* mapOnMesh now outputs target vertices as a column (named vertex). Rownames will continue working, but should not be relied on.
+* Changed the behaviour of sPathQuery - it will now fail if path.choice is not one of the valid options, instead of silently picking "any". This behaviour was properly documented, but made little sense.
+* Added unit test for sPathQuery
+* alignMesh.PCA: Deprecated in favour of the pcAlign function provided by the Morpho package; It offered no additional functionality. Note
+that while both functions will produce identical values for the PCA aligned mesh coordinates, the sign of these values may be different (e.g.
+a biface may point left with meshAlign.PCA, and right with pcAlign).
+* proj_pt2p: Changed the name of the distance column in output to 'dist' (from -d), explicitly made output a data.frame, updated docs, and added unit tests.
+* Updated readme with links to external tools and clearer warning regarding current status.
+* Changed functions that rely on geomorph::digit.curves to use an old version (2015) of that function, copied into this package and made available internally as digit.curves.old. This change will have to be reverted once the bug in the current version of digit.curves is fixed.
+
+
+Lithics3D v0.4.1 (Release date: 2018-09-24)
+==============
 
 New features:
 
@@ -15,7 +36,7 @@ Other changes:
 * Added unit tests for several functions (ongoing)
 
 
-Lithics3D v0.4.0.9001 (Release date: 2018-09-02)
+Lithics3D v0.4.0 (Release date: 2018-09-02)
 ==============
 
 First public release! Note that this package incorporates functions written over several years, and as a result there are unfortunate inconsistencies in the naming conventions as well as in the level of testing and documentation. These are issues that I hope will be fixed by the next release.

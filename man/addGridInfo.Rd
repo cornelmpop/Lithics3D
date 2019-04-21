@@ -14,7 +14,7 @@ mesh units are mm, then a value of 0.2 would indicate a gid resolution of
 0.2mm).}
 
 \item{axes}{a vector containing 2 indices or names for the input columns to 
-be used (e.g. c("x","y"), or c(1,2)). Longet vectors will be truncated to
+be used (e.g. c("x","y"), or c(1,2)). Longer vectors will be truncated to
 the first two entries (e.g. c("x","y","z") == c("x","y"))}
 }
 \value{
@@ -44,8 +44,9 @@ interval)
 breaks)
 }
 \examples{
+library(Morpho)
 data(demoFlake1)
-alignedMesh<-alignMesh.PCA(demoFlake1$mesh)
+alignedMesh<-pcAlign(demoFlake1$mesh)
 vertexCoords<-data.frame(t(alignedMesh$vb))
 gridded<-Lithics3D:::addGridInfo(vertexCoords, 0.2, axes=c(2,3)) # or c("y","z")
 mfval<-par("mfcol")

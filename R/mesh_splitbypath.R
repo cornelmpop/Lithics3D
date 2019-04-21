@@ -6,24 +6,38 @@
 #' multiple components. Note that you must provide a clean mesh, so please use
 #' \link{vcgClean} on the input.
 #' @author Cornel M. Pop
-#' @note Minimum output mesh segment size is 3 faces. Anything smaller gets
-#' discarded silently
 #' @param mesh A (clean) mesh3d object
-#' @param lms An ordered set of coordinates
-#' @param path.choice TODO: Described in sPathConnect.
+#' @param lms (Deprecated) An ordered set of coordinates. Since this parameter
+#' is being deprecated, please use the output of \link{sPathConnect} to the
+#' mesh.path argument)
+#' @param path.choice (Deprecated) Described in \link{sPathConnect}.
+#' @param mesh.path A vector containing a list of connected vertices forming a
+#' closed path on the surface of the input mesh. This parameter should
+#' correspond to the output of \link{sPathConnect}
+#' @return A list of mesh objects containing a minimum of 3 faces each.
 #' @examples
 #' library(rgl)
-#' zzz <- mesh_segment_by_path(demoFlake2$mesh, demoFlake2$lms)
-#' shade3d(zzz[[1]], color="green")
-#' shade3d(zzz[[2]], color="blue")
+#' mesh.path <- sPathConnect(demoFlake2$lms, demoFlake2$mesh,
+#'                           path.choice="ridges", closed=TRUE)
+#' mesh.segs <- mesh_segment_by_path(demoFlake2$mesh, mesh.path=mesh.path)
+#' shade3d(mesh.segs[[1]], color="green")
+#' shade3d(mesh.segs[[2]], color="blue")
+#' @note Minimum output mesh segment size is 3 faces. Anything smaller gets
+#' discarded silently.
+#' 
+#' Note also that the deprecated parameters will stop working in version 1 of
+#' this package at the latest.
 #' @export
-mesh_segment_by_path <- function(mesh, lms, path.choice="ridges"){
+mesh_segment_by_path <- function(mesh, lms = NULL, path.choice = "ridges",
+                                 mesh.path = NULL){
   mesh.it <- t(mesh$it)
 
-  mesh.path <- sPathConnect(lms, mesh, path.choice)
-  # TODO: Look into this. Not sure why it doesn't work without the following.
-  mesh.path <- c(mesh.path[-length(mesh.path)],
-                 sPathConnect(lms[c(nrow(lms), 1), ], mesh, path.choice))
+  # For compatibility purposes:
+  if (!is.null(nrow(lms))) {
+    mesh.path <- sPathConnect(lms, mesh, path.choice, closed = TRUE)
+    warning("Coordinate input with the lms parameter is deprecated. Please provide a vertex list.",
+            call. = TRUE)
+  }
 
   # Remove triangles along the path - TODO: Clean.
   path.it <- c(which(mesh.it[, 1] %in% mesh.path),
@@ -44,8 +58,7 @@ mesh_segment_by_path <- function(mesh, lms, path.choice="ridges"){
   for (ms in mesh.segs){
     print(nrow(ms$vb))
     # Map vertex ids of new mesh onto original:
-    orig.vb <- as.integer(rownames(mapOnMesh(data.frame(t(ms$vb)),
-                                            mesh)))
+    orig.vb <- mapOnMesh(data.frame(t(ms$vb)), mesh)$vertex
     # Get faces associated with this segment:
     seg.it <- Morpho::getFaces(mesh, orig.vb)
     if (length(seg.it) > 3){

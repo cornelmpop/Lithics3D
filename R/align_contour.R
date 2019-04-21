@@ -27,9 +27,9 @@
 #' @export
 mesh_orient_by_contour_pca <- function(coords.o, mesh, npts=100){
   # Resample contour to the desired npts
-  contour.res <- digit.curves(start = coords.o[1, ],
-                              curve = coords.o[1:nrow(coords.o), ],
-                              nPoints = npts, closed = T)
+  contour.res <- digit.curves.old(start = coords.o[1, ],
+                                  curve = coords.o[1:nrow(coords.o), ],
+                                  nPoints = npts, closed = T)
 
   # Find optimal contour alignment with PCA. The PCA will give a rotation matrix
   # which can then be applied to the entire mesh:

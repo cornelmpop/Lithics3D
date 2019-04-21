@@ -89,7 +89,7 @@ sp3+scale_color_gradientn(colours=rainbow(5)) + xlab("X-axis (mm)") + ylab("Y-ax
 
 
 ## ------------------------------------------------------------------------
-mesh.rot = alignMesh.PCA(demoFlake2$mesh)
+mesh.rot = Morpho::pcAlign(demoFlake2$mesh)
 
 ## ----fig.width=7---------------------------------------------------------
 library(ggplot2)
