@@ -7,7 +7,8 @@
 mapOnMesh(coords, mesh)
 }
 \arguments{
-\item{coords}{a data.frame-like object with 3D coordinates (1 per row)}
+\item{coords}{a data.frame-like object with 3D coordinates (1 per row). Only
+the first three columns will be used.}
 
 \item{mesh}{a target mesh3d object}
 }
