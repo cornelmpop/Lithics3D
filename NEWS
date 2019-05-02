@@ -1,4 +1,18 @@
-Lithics3D v0.4.2
+Lithics3D v0.4.3 (Release date: )
+==============
+
+New features:
+* New function split_pts to split a point cloud by a 3D plane. The function
+encapsulates code from the edgesOnPlane and is similar to Morpho::cutSpace, but
+runs substantially faster.
+
+Other changes:
+* Split edgesOnPlane function, moving code into the new split_pts function.
+* Added unit test for the new split_pts function.
+
+
+
+Lithics3D v0.4.2 (Release date: 2019-04-20)
 ==============
 
 New features:

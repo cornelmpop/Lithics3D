@@ -16,13 +16,10 @@
 #' @export
 #' @section TODO: Write memoised function for mpts and medges
 edgesOnPlane <- function(p, mpts, medges){
-  csep_norm <- planeCoefs(p)[1:3]
-  zeroval <- csep_norm[1] * p[2, 1] + csep_norm[2] * p[2, 2] +
-             csep_norm[3] * p[2, 3]
-
-  ppos <- as.matrix(mpts[, 1:3]) %*% csep_norm
-  ev1_vals <- ppos[medges$vert1] < zeroval
-  ev2_vals <- ppos[medges$vert2] > zeroval
+  ppos = split_pts(mpts, p)
+  
+  ev1_vals <- ppos$lwr[medges$vert1]
+  ev2_vals <- ppos$upr[medges$vert2]
   return(which(ev1_vals == ev2_vals))
 }
 
