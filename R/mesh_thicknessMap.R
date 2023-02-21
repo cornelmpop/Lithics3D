@@ -18,6 +18,15 @@
 #' @section TODO: Document properly what's going on here
 #' @export
 mesh_tmap <- function(mesh.o, base.res, ld.cutoff){
+  
+  # Check input (issue #23 under Lithics3D_project)
+  if (base.res <= 0) {
+    stop("Error: 'base.res' must be greater than zero")
+  }
+  if (ld.cutoff < 0 || ld.cutoff >= 1) {
+    stop("Error: 'ld.cutoff' must be between 0 and 1")
+  }
+  
   m.pts <- data.table(t(mesh.o$vb)[, 1:3])
   names(m.pts) <- c("x", "y", "z")
   
