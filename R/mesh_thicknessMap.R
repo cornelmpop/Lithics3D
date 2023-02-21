@@ -2,9 +2,13 @@
 #' @import ggplot2
 
 #' @title Generate a thickness map of an oriented mesh
-#' @description This generates a thickeness map of an un-split mesh (i.e. we
-#' don't know the surfaces ) by assigning the mesh vertices to a grid of a given
-#' resolution and measuring thickness in each grid cell.
+#' @description This generates a thickness map of an un-split mesh (i.e., we
+#' don't know the surfaces) by assigning the mesh vertices to a grid of a given
+#' resolution and measuring thickness in each grid cell. Currently the thickness
+#' is measured by simply computing the maximum distance between vertices assigned
+#' to a given grid cell, so it is important to make sure the grid cells are of a
+#' reasonable size given the mesh resolution (i.e., not too small). Setting the
+#' ld.cutoff parameter to a small value can help ensure this is the case.
 #' @param mesh.o An oriented mesh3d object
 #' @param base.res Base resolution requested for the thickness map, in mesh
 #' units. This resolution will be used only if the number of cells containing
@@ -15,7 +19,14 @@
 #' percentage of grid cells that may have fewer than 5 mesh vertices assigned to
 #' them. Above this value the resolution of the map will be lowered (i.e. the
 #' resolution value will go up, resulting in larger cells).
-#' @section TODO: Document properly what's going on here
+#' @return A list with the following elements:
+#'   \item{res}{Base resolution requested for the thickness map.}
+#'   \item{tmap}{Thickness map. A data frame with the following columns: GDIM1, GDIM2, thickness, xpos, ypos, xpos.n, ypos.n.}
+#' @note
+#' 1. For an explanation of the GDIM1 and GDIM2 columns in the output thickness map, see the documentation for the \link{addGridInfo} function. 
+#' 2. The xpos and ypos columns give the coordinates of the top right hand corner of the cell where the thickness was measured.
+#' 3. The xpos.n and ypos.n columns contain the coordinates from the xpos and ypos columns centered on (x = 0, y = 0) and normalized to a maximum distance of 1 from the origin (i.e., x = 0, y = 0).
+#' @section TODO: Implement option to measure using ray tracing.
 #' @export
 mesh_tmap <- function(mesh.o, base.res, ld.cutoff){
   
