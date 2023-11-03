@@ -1,8 +1,8 @@
 #' @title Split pointcloud by plane
 #' @description Splits the input coordinates by a 3D plane. This function
-#' produces identical results to \link[Morpho]{cutSpace}}, but should run
+#' produces identical results to \link[Morpho]{cutSpace}, but should run
 #' substantially faster.
-#' @seealso \link[Morpho]{cutSpace}}
+#' @seealso \link[Morpho]{cutSpace}
 #' @author Cornel M. Pop
 #' @param coords A matrix-like object with at least 3 columns representing
 #' N x 3 XYZ coordinates. Additional columns will be ignored.
