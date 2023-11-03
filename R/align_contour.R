@@ -20,12 +20,15 @@
 #'         and the PCA-derived rotation matrix (rot.mx) used for the
 #'         reorientation.
 #' @examples
+#' \dontrun{
 #' library(rgl)
 #' data(demoFlake2)
 #' m.rec <- mesh_recenter(demoFlake2$mesh, demoFlake2$lms)
-#' m.rot = mesh_orient_by_contour_pca(m.rec$coords, m.rec$mesh, npts=100)
+#' m.rot <- mesh_orient_by_contour_pca(m.rec$coords, m.rec$mesh, npts=100)
 #' view3d(theta=0, phi=0)
 #' shade3d(m.rot$mesh, color="green")
+#' points3d(m.rot$contour, color="red", size=5)
+#' }
 #' @note KNOWN ISSUES
 #' 
 #' - The re-sampled contour points in the output are not guaranteed to be on the
