@@ -33,10 +33,31 @@ test_that("mesh_orient_by_contour_pca works as expected", {
   expect_identical(round(as.numeric(result$contour.res[1, ]), 5),
                    round(c(-116.87396, -19.05804, 396.59764), 5))
 
-
   # Docs: Check that the re-sampled contour is what was requested:
   expect_equal(nrow(result$contour.res), npts)
 
   # Check that the rotation matrix is a 3x3 matrix
   expect_equal(dim(result$rot.mx), c(3, 3))
+
+  # Some edge cases:
+  # Empty coordinate object
+  expect_error(mesh_orient_by_contour_pca(data.frame(x=c(), y=c(), z=c()),
+                                          demoFlake2$mesh,
+                                          npts))
+  # Bad input:
+  expect_error(mesh_orient_by_contour_pca(NA,
+                                          demoFlake2$mesh,
+                                          npts))
+  expect_error(mesh_orient_by_contour_pca(demoFlake2$lms,
+                                          demoFlake2$mesh$vb,
+                                          npts))
+  expect_error(mesh_orient_by_contour_pca(demoFlake2$lms,
+                                          demoFlake2$mesh,
+                                          c()))
+  expect_error(mesh_orient_by_contour_pca(demoFlake2$lms,
+                                          demoFlake2$mesh,
+                                          0))
+  expect_error(mesh_orient_by_contour_pca(demoFlake2$lms,
+                                          demoFlake2$mesh,
+                                          -2))
 })
