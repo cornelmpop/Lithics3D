@@ -7,11 +7,11 @@
 #' @author Cornel M. Pop
 #' @param p A 3x3 matrix-like object containing 3D coordinates of points
 #' defining the circumference (one xyz coordinate per row)
-#' @return A dataframe containing the x,y,z coordinates of the circle center.
-#' An error will be returned if the input points are collinear.
+#' @return A data.frame containing the x,y,z coordinates of the circle center.
+#' An error will be returned if the input points are collinear or duplicated.
 #' @examples
-#' p = data.frame(x=c(1,4,5), y=c(0,5,1), z=c(1.4, -4, 4))
-#' res = circleCenter(p)
+#' p <- data.frame(x=c(1, 4, 5), y=c(0, 5, 1), z=c(1.4, -4, 4))
+#' res <- circleCenter(p)
 #' # distance from computer center to input point 1
 #' dist(rbind(res, p[1,]), method="euclidean")
 #' # distance from computer center to input point 2
@@ -19,7 +19,12 @@
 #' # distance from computer center to input point 3
 #' dist(rbind(res, p[3,]), method="euclidean")
 #' @export
-circleCenter <- function(p){
+circleCenter <- function(p) {
+
+  if (!isTRUE(all.equal(dim(p), c(3, 3)))) {
+    stop("Input must be a 3x3 matrix-like object")
+  }
+
   # Solve using perpendicular bisectors (planes instead of lines)
   p <- as.matrix(p)
 
