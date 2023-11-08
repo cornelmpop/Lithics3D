@@ -1,0 +1,175 @@
+#' @import pracma
+#' @import parallel
+#'
+#' @title Compute the intersection points of a ray and a set of triangles
+#' @description Computes the intersection point(s) of a ray and an arbitrarily
+#' large set of triangles using the algorithm of Moller and Trumbore (1997).
+#' @param o A matrix-like (N x 3) object with the coordinate of the ray origin
+#' repeated so that the number of rows (N) matches the number of triangles.
+#' @param d A matrix-like (N x 3) object with the direction of the ray (i.e.
+#' the difference between an arbitrary point along the line and the x, y, and z
+#' coordinate of the ray's origin) repeated so that the number of rows (N)
+#' matches the number of triangles.
+#' @param v0 A matrix-like (N x 3) object with the (x,y,z) coordinates of the
+#' first vertex for each of the N triangles.
+#' @param v1 A matrix-like (N x 3) object with the (x,y,z) coordinates of the
+#' second vertex for each of the N triangles.
+#' @param v2 A matrix-like (N x 3) object with the (x,y,z) coordinates of the
+#' third vertex for each of the N triangles.
+#' @param epsilon The floating point precision used to check whether the angle
+#' formed by the ray and the plane of the triangles is +/- zero (i.e. whether
+#' the ray is parallel).
+#' @return a (N x 3) matrix containing the coordinates of the intersection
+#' points.
+#' @note This function was inspired by the Matlab toolbox developed by Jaroslaw
+#' Tuszynski (2011-2014). In theory this function can be used as-is to test the
+#' intersection of multiple rays/multiple triangles, but in practice doing so
+#' requires much more memory (nr. triangles * nr. rays) and offers very marginal
+#' improvements in execution speed.
+#' @examples
+#' ray <- data.frame(x1=c(1.8), y1=c(4), z1=c(2),
+#'                   x2=c(1.8), y2=c(4), z2=c(4.5))
+#' triangles <- data.frame(x1=c(2,2), y1=c(3,3), z1=c(0,2),
+#'                        x2=c(1,1), y2=c(5,5), z2=c(0,2),
+#'                        x3=c(2,2), y3=c(4,4), z3=c(0,2))
+#' o <- as.numeric(ray[1,1:3])
+#' d <- as.numeric(ray[1,4:6]) - o
+#' # Replicate ray to match the number of triangles:
+#' o <- rbind(o, o)
+#' d <- rbind(d, d)
+#' # Prepare triangle data:
+#' v0 <- as.matrix(triangle[,1:3])
+#' v1 <- as.matrix(triangle[,4:6])
+#' v2 <- as.matrix(triangle[,7:9])
+#' # Set epsilon value:
+#' epsilon <- .Machine$double.eps
+#' sRayTrace(o, d, v0, v1, v2, epsilon)
+sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
+  # Get edges:
+  edge1 <- v1 - v0
+  edge2 <- v2 - v0
+
+  # Find parallel rays/triangles
+  o_to_v0 <- o - v0
+  cp <- cross(d, edge2)
+  det <- edge1[, 1] * cp[, 1] + edge1[, 2] * cp[, 2] + edge1[, 3] * cp[, 3]
+  good <- abs(det) > epsilon # See which rays are parallel, if any
+  det[good == FALSE] <- NA # Change to NA in cases of angles of zero to avoid /0.
+
+  invDet <- 1 / det
+  # First barycentric coordinate:
+  u <- invDet * (o_to_v0[, 1] * cp[, 1] +
+                 o_to_v0[, 2] * cp[, 2] +
+                 o_to_v0[, 3] * cp[, 3])
+
+  # Second barycentric coordinate:
+  r <- cross(o_to_v0, edge1)
+  v <- invDet * (d[, 1] * r[, 1] + d[, 2] * r[, 2] + d[, 3] * r[, 3])
+
+  # Add additional checks to the "good" (i.e. actual intersects) vector:
+  gres <- which(good == T & u >= 0 & v >= 0 & u + v <= 1)
+  # Third coordinate (position on the line):
+  t <- invDet * (edge2[, 1] * r[, 1] + edge2[, 2] * r[, 2] +
+                 edge2[, 3] * r[, 3])
+
+  # Find actual intersection for good rays:
+  targets <- (1 - u - v) * v0 + u * v1 + v * v2
+  return(targets[gres, ])
+}
+
+#' @title Compute the mesh intersection points for a set of rays
+#' @description Computes the intersection points between a mesh and a set of
+#' non-directional rays
+#' @param rays A matix-like object (N x 6, where N is the number of rays)
+#' containing (x,y,z) coordinates for the origin of the rays in the first three
+#' columns and those for a second point along the ray in the last three columns.
+#' @param triangles A matrix-like object (N x 9, where N is the number of
+#' triangles) containing triangle vertex coordinates (vertex 1: columns 1:3,
+#' vertex 2: columns 4:6, vertex 3: columns 7:9).
+#' @param parExec boolean indicating whether parallel processing is to be used.
+#' Set to FALSE by default
+#' @param maxCores maximum number of cores to use if parallel processing is
+#' requested. Requesting more cores than are physically available will simply
+#' result in all cores being used. Set to NULL by default.
+#' @return A list of matrices (N' x 3, where N' is the number of intersections)
+#' containing the coordinates for the intersection points for each ray. Each
+#' list element corresponds to a ray, in input order.
+#' @note Parallel processing only starts making sense with 20 or more rays;
+#' otherwise, it's faster to run with parallel processing disabled.
+#' @examples
+#' data(demoFlake)
+#' alignedMesh <- alignMeshPCA(demoFlake)
+#' triangles <- mesh_translate_it(alignedMesh)
+#' # Construct and cast some useful rays (i.e. what would be used to construct
+#' # thickness maps)
+#' vertexCoords<-data.frame(t(alignedMesh$vb))
+#' gridded<-addGridInfo(vertexCoords, 0.5, axes=c(1,2)) # or c("x","y")
+#' require(data.table)
+#' gdata <- data.table(gridded$coord_df)
+#' setkeyv(gdata, c("GDIM1", "GDIM2"))
+#' raydata<-gdata[,list(mx=mean(xpts)+gridded$gridRes/2,
+#'                      my=mean(ypts)+gridded$gridRes/2), by=list(GDIM1, GDIM2)]
+#' rays <- data.frame(x=raydata$mx, y=raydata$my, z=100,
+#'                    d1=raydata$mx, d2=raydata$my, d3=99)
+#' rayTrace(rays[1:3,], alignedMesh, parExec=F)
+#' @export
+rayTrace <- function(rays, mesh, parExec = F, maxCores = NA){
+  # Prepare a ray list for parLapply
+  raylist <- apply(rays,
+                   MAR=1,
+                   FUN=function(x) list(o=data.frame(t(as.matrix(x[1:3]))),
+                                        d=data.frame(t(as.matrix(x[4:6])) -
+                                                       t(as.matrix(x[1:3])))))
+  # Get mesh triangles:
+  triangles <- mesh_translate_it(mesh)
+  v0 <- as.matrix(triangles[,1:3])
+  v1 <- as.matrix(triangles[,4:6])
+  v2 <- as.matrix(triangles[,7:9])
+  
+  # Get epsilon value:
+  epsilon = .Machine$double.eps
+  
+  # Check if parallel processing was requested:
+  if(parExec == F){
+    inters <- lapply(raylist, function(x) sRayTrace(cbind(rep(as.numeric(x$o[1]), 
+                                                             nrow(v0)),
+                                                         rep(as.numeric(x$o[2]),
+                                                             nrow(v0)),
+                                                         rep(as.numeric(x$o[3]),
+                                                             nrow(v0))), 
+                                                   cbind(rep(as.numeric(x$d[1]), 
+                                                             nrow(v0)),
+                                                         rep(as.numeric(x$d[2]),
+                                                             nrow(v0)),
+                                                         rep(as.numeric(x$d[3]),
+                                                             nrow(v0))),
+                                                   v0, v1, v2, epsilon))
+    return(inters)
+  } else {
+    if (!is.na(maxCores) & maxCores > 0 & maxCores <= detectCores()){
+      cl <- makeCluster(maxCores)
+    } else {
+      cl <- makeCluster(detectCores())
+    }
+    clusterExport(cl = cl, 
+                  varlist = c("v0", "v1", "v2", "epsilon", "sRayTrace",
+                              "cross"),
+                  envir=environment())
+    inters <- parLapply(cl, raylist,
+                        function(x) sRayTrace(cbind(rep(as.numeric(x$o[1]),
+                                                       nrow(v0)),
+                                                   rep(as.numeric(x$o[2]),
+                                                       nrow(v0)),
+                                                   rep(as.numeric(x$o[3]),
+                                                       nrow(v0))), 
+                                             cbind(rep(as.numeric(x$d[1]), 
+                                                       nrow(v0)),
+                                                   rep(as.numeric(x$d[2]),
+                                                       nrow(v0)),
+                                                   rep(as.numeric(x$d[3]),
+                                                       nrow(v0))),
+                                             v0, v1, v2, epsilon))
+    stopCluster(cl)
+    return(inters)
+  }
+}
