@@ -1,9 +1,13 @@
 #' Determine Point of Interest (POI) on a mesh surface using ray tracing
 #'
-#' Projects a ray onto a mesh surface and identifies the closest point of
-#' intersection, which may not necessarily correspond to a vertex.
+#' Determines the location of a POI on the mesh surface based on a ray. This
+#' function is used internally by the \code{\link{mesh_mark_pois}} function,
+#' and may not be very useful in other contexts.
 #'
-#' @inheritParams rayTrace
+#' @param ray A 2x3 matrix-like object containing x, y, and z coordinates
+#' for two points that define the ray.
+#'
+#' @param mesh A triangular mesh object (\code{mesh3d}).
 #'
 #' @return A vector with the x, y, and z coordinates of the POI.
 #'
@@ -11,8 +15,9 @@
 #' mesh surface and finds the closest intersection point. If the ray does not
 #' intersect with the mesh, an empty object is returned.
 #'
-#' @seealso \code{\link{rayTrace}} function for the ray tracing implementation.
-#'
+#' @seealso
+#' \code{\link{rayTrace}} for the ray tracing implementation.
+#' \code{\link{mesh_mark_pois}} for ray determination.
 #' @keywords internal
 #' @export
 proj_poi <- function(ray, mesh) {
@@ -35,14 +40,14 @@ proj_poi <- function(ray, mesh) {
 #' Removes the last POI from the given dataset, updates the current 3D scene
 #' accordingly, and returns the modified dataset.
 #'
-#' @param pois A data frame as output by the \code{\link{mesh_mark_pois}}
+#' @param pois A data frame output by the \code{\link{mesh_mark_pois}}
 #' function
 #'
 #' @return A reduced data frame
 #'
 #' @examples
-#' \dontrun {
-#' #' # Example usage:
+#' \dontrun{
+#' # Example usage:
 #' # Create a dataset with marked POIs
 #' mesh <- mesh_recenter(demoFlake2$mesh)$mesh
 #' pois <- mesh_mark_pois(mesh)
@@ -108,7 +113,7 @@ drop_poi <- function(pois) {
 #' returned data frame.
 #'
 #' @examples
-#' \dontrun {
+#' \dontrun{
 #' # Example usage:
 #' # Create a dataset with marked POIs
 #' mesh <- mesh_recenter(demoFlake2$mesh)$mesh # Ensure the mesh is centered

@@ -80,7 +80,7 @@ sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
 #' @title Compute the mesh intersection points for a set of rays
 #' @description Computes the intersection points between a mesh and a set of
 #' non-directional rays
-#' @param rays A matix-like object (N x 6, where N is the number of rays)
+#' @param rays A matrix-like object (N x 6, where N is the number of rays)
 #' containing (x,y,z) coordinates for the origin of the rays in the first three
 #' columns and those for a second point along the ray in the last three columns.
 #' @param triangles A matrix-like object (N x 9, where N is the number of
