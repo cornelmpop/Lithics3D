@@ -29,7 +29,8 @@ proj_poi <- function(ray, mesh) {
   }
 
   # Find closest mesh intersect to original poi selection:
-  res_d <- as.matrix(dist(rbind(ray[1, ], res[[1]]), method = "euclidean"))
+  res_d <- as.matrix(stats::dist(rbind(ray[1, ], res[[1]]),
+                                 method = "euclidean"))
   res_i <- which.min(res_d[2:nrow(res_d), 1])
 
   return(res[[1]][res_i, ])
@@ -144,7 +145,7 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     stop("Input POIs should be a previous output of this function")
   }
   # Check that the mesh is... a mesh.
-  if (!class(mesh) == "mesh3d") {
+  if (!inherits(mesh, "mesh3d")) {
     stop("Invalid input. 'mesh' must be a mesh3d object.")
   }
 
@@ -154,7 +155,7 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     shade3d(mesh, color = "green")
     if (nrow(pois) > 0) {
       if (is.na(prev_color)) {
-        poi_col <- hcl.colors(nrow(pois), "Blue-Red 2", rev = TRUE)
+        poi_col <- grDevices::hcl.colors(nrow(pois), "Blue-Red 2", rev = TRUE)
       } else {
         poi_col <- rep(prev_color, nrow(pois))
       }

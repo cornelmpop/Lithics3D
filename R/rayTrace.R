@@ -38,12 +38,14 @@
 #' o <- rbind(o, o)
 #' d <- rbind(d, d)
 #' # Prepare triangle data:
-#' v0 <- as.matrix(triangle[,1:3])
-#' v1 <- as.matrix(triangle[,4:6])
-#' v2 <- as.matrix(triangle[,7:9])
+#' v0 <- as.matrix(triangles[,1:3])
+#' v1 <- as.matrix(triangles[,4:6])
+#' v2 <- as.matrix(triangles[,7:9])
 #' # Set epsilon value:
 #' epsilon <- .Machine$double.eps
 #' sRayTrace(o, d, v0, v1, v2, epsilon)
+#' 
+#' @export
 sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
   # Get edges:
   edge1 <- v1 - v0
@@ -83,9 +85,7 @@ sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
 #' @param rays A matrix-like object (N x 6, where N is the number of rays)
 #' containing (x,y,z) coordinates for the origin of the rays in the first three
 #' columns and those for a second point along the ray in the last three columns.
-#' @param triangles A matrix-like object (N x 9, where N is the number of
-#' triangles) containing triangle vertex coordinates (vertex 1: columns 1:3,
-#' vertex 2: columns 4:6, vertex 3: columns 7:9).
+#' @param mesh A triangular mesh object (\code{mesh3d}).
 #' @param parExec boolean indicating whether parallel processing is to be used.
 #' Set to FALSE by default
 #' @param maxCores maximum number of cores to use if parallel processing is
@@ -97,28 +97,25 @@ sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
 #' @note Parallel processing only starts making sense with 20 or more rays;
 #' otherwise, it's faster to run with parallel processing disabled.
 #' @examples
-#' data(demoFlake)
-#' alignedMesh <- alignMeshPCA(demoFlake)
-#' triangles <- mesh_translate_it(alignedMesh)
+#' data(demoFlake1)
+#' alignedMesh <- Morpho::pcAlign(demoFlake1$mesh)
 #' # Construct and cast some useful rays (i.e. what would be used to construct
 #' # thickness maps)
-#' vertexCoords<-data.frame(t(alignedMesh$vb))
-#' gridded<-addGridInfo(vertexCoords, 0.5, axes=c(1,2)) # or c("x","y")
-#' require(data.table)
-#' gdata <- data.table(gridded$coord_df)
-#' setkeyv(gdata, c("GDIM1", "GDIM2"))
-#' raydata<-gdata[,list(mx=mean(xpts)+gridded$gridRes/2,
-#'                      my=mean(ypts)+gridded$gridRes/2), by=list(GDIM1, GDIM2)]
-#' rays <- data.frame(x=raydata$mx, y=raydata$my, z=100,
-#'                    d1=raydata$mx, d2=raydata$my, d3=99)
-#' rayTrace(rays[1:3,], alignedMesh, parExec=F)
+#' rays <- data.frame(x1 = c(-41.65845, -41.82012, -41.87693),
+#'                    y1 = c(-1.22681434, -0.91828322, -0.41378155),
+#'                    z1 = c(100, 100, 100))
+#' rays$x2 <- rays$x1
+#' rays$y2 <- rays$y1
+#' rays$z2 <- rays$z1 - 1
+#'
+#' rayTrace(rays[1:3,], alignedMesh, parExec = FALSE)
 #' @export
-rayTrace <- function(rays, mesh, parExec = F, maxCores = NA){
+rayTrace <- function(rays, mesh, parExec = FALSE, maxCores = NA){
   # Prepare a ray list for parLapply
   raylist <- apply(rays,
-                   MAR=1,
-                   FUN=function(x) list(o=data.frame(t(as.matrix(x[1:3]))),
-                                        d=data.frame(t(as.matrix(x[4:6])) -
+                   MARGIN = 1,
+                   FUN = function(x) list(o=data.frame(t(as.matrix(x[1:3]))),
+                                          d=data.frame(t(as.matrix(x[4:6])) -
                                                        t(as.matrix(x[1:3])))))
   # Get mesh triangles:
   triangles <- mesh_translate_it(mesh)

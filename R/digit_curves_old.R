@@ -18,7 +18,8 @@
 #' @seealso \code{\link{digit.fixed}} \code{\link{digitize2d}}
 #' @keywords internal
 #' @author Emma Sherratt
-#' @note This function was copied from an old version of geomorph (2015). The only modification made here is the name of the function and this note.
+#' @note This function was copied from an old version of geomorph (2015). The only modification made here is the name of the function, this note, and the import below.
+#' @import geomorph
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 

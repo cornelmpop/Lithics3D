@@ -13,6 +13,7 @@
 #' below the plane, or not (lwr). These two vectors are not exact mirrors of
 #' each other since some coordinates may fall on the plane.
 #' @examples
+#' library(rgl)
 #' data(demoFlake2)
 #' mesh.o <- Morpho::pcAlign(demoFlake2$mesh)
 #' mpts <- t(mesh.o$vb)
