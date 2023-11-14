@@ -13,10 +13,10 @@ test_that("getTVol (mesh_volume helper) produces correct output", {
   invalidTriangle2 <- c(-2, 0, 5)
   invalidTriangle3 <- c("123456789")
 
-  # Bad input = NaN
-  expect_true(is.nan(Lithics3D:::getTVol(invalidTriangle1)))
-  expect_true(is.nan(Lithics3D:::getTVol(invalidTriangle2)))
-  expect_true(is.nan(Lithics3D:::getTVol(invalidTriangle3)))
+  # Bad input = NA
+  expect_true(is.na(Lithics3D:::getTVol(invalidTriangle1)))
+  expect_true(is.na(Lithics3D:::getTVol(invalidTriangle2)))
+  expect_true(is.na(Lithics3D:::getTVol(invalidTriangle3)))
 })
 
 test_that("mesh_volume produces correct output", {

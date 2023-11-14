@@ -6,7 +6,7 @@
 #' coordinates of a triangle (i.e. triangle vertices + origin as vertex)
 #' @param coords a vector of concatenated xyz coordinates. Note that only the
 #' first 9 values will be used.
-#' @return numeric value of the computed volume or NaN in case of bad input
+#' @return numeric value of the computed volume or NA in case of bad input
 #' @note this function is currently too slow - 100k calls are processed in ~5.2
 #' seconds. 
 #' @examples
@@ -29,7 +29,7 @@ getTVol <- function(coords){
 #' @param max_cores maximum number of cores to use if parallel processing is
 #' requested. Requesting more cores than are physically available will simply
 #' result in all cores being used.
-#' @return numeric value of the computed volume or NaN in case of bad input
+#' @return numeric value of the computed volume or NA in case of bad input
 #' @note For small meshes it may be faster to use a single thread due to the 
 #' overhead associated with starting the processing cluster.
 #' @examples
