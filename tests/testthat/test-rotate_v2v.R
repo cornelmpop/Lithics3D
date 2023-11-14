@@ -1,3 +1,8 @@
+test_that("rotatePt_2D (rotate_v2v helper) works as expected", {
+  expect_equal(round(rotatePt_2D(1.5, 0, 0.2), 4), c(1.4701, 0.2980))
+  expect_equal(round(rotatePt_2D(1.5, 0, -0.2), 4), c(1.4701, -0.2980))
+})
+
 test_that("rotate_v2v (Rotate vector onto vector) works as expected", {
   # X axis:
   x <- data.frame(x = c(0, 1), y = c(0, 0), z = c(0, 0))
