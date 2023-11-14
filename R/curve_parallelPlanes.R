@@ -52,7 +52,7 @@
 #'
 #' @return a list containing three objects: two lists and one matrix-like. One
 #' list (\code{planes}) contains plane coordinates (a vector of length 4) that
-#' can be passed directly to the \code{\link{rgl::planes3d}} function, in the
+#' can be passed directly to the \code{\link[rgl]{planes3d}} function, in the
 #' same order as the input points; the other list, \code{pts}, contains the
 #' points used to derive the planes (useful for debugging) in 3x3
 #' data.frame-like objects, with the columns representing x, y, and z
