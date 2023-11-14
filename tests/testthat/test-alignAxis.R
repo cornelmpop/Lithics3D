@@ -1,6 +1,6 @@
 test_that("rotate2d output", {
-  expect_that(round(rotatePt_2D(1.5, 0, 0.2), 4), equals(c(1.4701, 0.2980)))
-  expect_that(round(rotatePt_2D(1.5, 0, -0.2), 4), equals(c(1.4701, -0.2980)))
+  expect_equal(round(rotatePt_2D(1.5, 0, 0.2), 4), c(1.4701, 0.2980))
+  expect_equal(round(rotatePt_2D(1.5, 0, -0.2), 4), c(1.4701, -0.2980))
 })
 
 test_that("align_byAxis output", {
@@ -23,12 +23,12 @@ test_that("align_byAxis output", {
   expect_error(alignAxis(as.matrix(t.df[1:2, ]), as.matrix(t.df[, 1:2])))
 
   # Special condition output is as documented:
-  expect_that(unique(unlist(alignAxis(as.matrix(t.df[c(1, 1), ]),
-                                      as.matrix(t.df)))), equals(NaN))
+  expect_equal(unique(unlist(alignAxis(as.matrix(t.df[c(1, 1), ]),
+                                      as.matrix(t.df)))), NaN)
 
   aa <- alignAxis(as.matrix(t.df[c(1, 5), ]), as.matrix(t.df))
-  expect_that(names(aa), equals(c("coords", "l")))
-  expect_that(as.vector(aa$l[1, ]), equals(c(0, 0, 0)))
-  expect_that(round(as.vector(aa$l[2, ]), 5), equals(c(6.63325, 0, 0)))
+  expect_equal(names(aa), c("coords", "l"))
+  expect_equal(as.vector(aa$l[1, ]), c(0, 0, 0))
+  expect_equal(round(as.vector(aa$l[2, ]), 5), c(6.63325, 0, 0))
 
 })

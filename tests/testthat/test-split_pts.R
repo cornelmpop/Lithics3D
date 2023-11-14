@@ -1,5 +1,3 @@
-context("Plane intersections")
-
 test_that("split_pts produces correct output", {
   # Construct a test mesh:
   vb <- data.frame(x = c(0, 1, 2, 2, 3, 3, 3),

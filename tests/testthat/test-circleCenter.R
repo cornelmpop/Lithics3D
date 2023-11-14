@@ -1,15 +1,10 @@
-context("Geometry")
-
-library(testthat)
-
-# Define a test case
 test_that("circleCenter works as expected", {
 
   p <- data.frame(x = c(1, 4, 5), y = c(0, 5, 1), z = c(1.4, -4, 4))
   res <- circleCenter(p)
 
   # Docs: Test that output is a data.frame or error.
-  expect_is(res, "data.frame")
+  expect_s3_class(res, "data.frame")
   expect_identical(names(res), c("x", "y", "z"))
   expect_error(circleCenter(NA))
   expect_error(circleCenter(data.frame(x = c(1, 2), y = c(1, 0), z = c(2, 4))))

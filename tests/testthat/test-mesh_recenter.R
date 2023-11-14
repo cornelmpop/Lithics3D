@@ -1,7 +1,3 @@
-context("Mesh orientation")
-
-library(testthat)
-
 test_that("mesh_orient_by_contour_pca works as expected", {
 
   # Load data
@@ -12,8 +8,12 @@ test_that("mesh_orient_by_contour_pca works as expected", {
   result <- mesh_recenter(demoFlake2$mesh, demoFlake2$lms)
 
   # Docs: Check that the output is a list with the documented names
-  expect_is(result_noc, "list")
-  expect_is(result, "list")
+  expect_type(result_noc, "list")
+  expect_s3_class(result_noc, NA)
+  
+  expect_type(result, "list")
+  expect_s3_class(result, NA)
+  
   expect_identical(names(result_noc), names(result))
   expect_identical(names(result_noc), c("mesh", "coords"))
 

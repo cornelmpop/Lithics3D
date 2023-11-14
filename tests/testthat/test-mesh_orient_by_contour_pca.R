@@ -1,7 +1,3 @@
-context("Mesh orientation")
-
-library(testthat)
-
 # Define a test case
 test_that("mesh_orient_by_contour_pca works as expected", {
 
@@ -14,7 +10,9 @@ test_that("mesh_orient_by_contour_pca works as expected", {
                                        npts)
 
   # Docs: Check that the output is a list with the documented names
-  expect_is(result, "list")
+  expect_type(result, "list")
+  expect_s3_class(result, NA)
+  
   expect_identical(names(result), c("mesh", "contour", "contour.res", "rot.mx"))
 
   # Check that the dimensions have not been altered and/or match expectations

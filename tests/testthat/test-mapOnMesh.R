@@ -1,5 +1,3 @@
-context("Mesh mapping")
-
 test_that("mapOnMesh produces correct output", {
   data(demoSurface)
 
@@ -25,9 +23,9 @@ test_that("mapOnMesh produces correct output", {
   res <- mapOnMesh(queryPts, demoSurface)
 
   # Note: to check how this works, do a plot(t(demoSurface$vb)[,1:2])
-  expect_that(as.numeric(res[1, 1:2]), equals(c(0, 0)))
-  expect_that(as.numeric(res[2, 1:2]), equals(c(0, 5)))
-  expect_that(as.numeric(res[3, 1:2]), equals(c(16, 10)))
+  expect_equal(as.numeric(res[1, 1:2]), c(0, 0))
+  expect_equal(as.numeric(res[2, 1:2]), c(0, 5))
+  expect_equal(as.numeric(res[3, 1:2]), c(16, 10))
 
   # Ensure vertex column is being returned with the same information as
   # rownames (for compatibility purposes):

@@ -1,5 +1,3 @@
-context("Mesh thickness map")
-
 # Test that the function throws an error when base.res <= 0
 test_that("mesh_tmap throws an error when base.res <= 0", {
   mesh <- demoFlake1$mesh

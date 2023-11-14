@@ -1,6 +1,4 @@
-context("Rotate vector onto vector")
-
-test_that("rotate_v2v output", {
+test_that("rotate_v2v (Rotate vector onto vector) works as expected", {
   # X axis:
   x <- data.frame(x = c(0, 1), y = c(0, 0), z = c(0, 0))
 
@@ -21,13 +19,13 @@ test_that("rotate_v2v output", {
 
   for (i in names(test_v)){
     res <- rotate_v2v(test_v[[i]]$v, x, pt1)
-    expect_that(res$coords, equals(matrix(unlist(test_v[[i]]$out),
-                                           nrow = nrow(test_v[[i]]$out))))
+    expect_equal(res$coords, matrix(unlist(test_v[[i]]$out),
+                                           nrow = nrow(test_v[[i]]$out)))
 
-    expect_that(names(res), equals(c("coords", "l")))
-    expect_that(as.vector(res$l[1, ]), equals(c(0, 0, 0)))
-    expect_that(round(as.vector(res$l[2, 2:3]), 10), equals(c(0, 0)))
-    expect_that(dist(res$l)[1], equals(dist(test_v[[i]]$v)[1]))
+    expect_equal(names(res), c("coords", "l"))
+    expect_equal(as.vector(res$l[1, ]), c(0, 0, 0))
+    expect_equal(round(as.vector(res$l[2, 2:3]), 10), c(0, 0))
+    expect_equal(dist(res$l)[1], dist(test_v[[i]]$v)[1])
     }
 
   # Test bad input:
@@ -48,7 +46,7 @@ test_that("rotate_v2v output", {
   expect_error(rotate_v2v(t.df[c(1, 1), ], x, t.df))
 
   aa <- rotate_v2v(t.df[c(1, 5), ], x, t.df)
-  expect_that(names(aa), equals(c("coords", "l")))
-  expect_that(as.vector(aa$l[1, ]), equals(c(0, 0, 0)))
-  expect_that(round(as.vector(aa$l[2, ]), 5), equals(c(6.63325, 0, 0)))
+  expect_equal(names(aa), c("coords", "l"))
+  expect_equal(as.vector(aa$l[1, ]), c(0, 0, 0))
+  expect_equal(round(as.vector(aa$l[2, ]), 5), c(6.63325, 0, 0))
 })

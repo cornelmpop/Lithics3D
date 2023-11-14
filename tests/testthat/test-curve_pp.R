@@ -1,9 +1,3 @@
-context("Geometry")
-
-library(testthat)
-
-
-# Define a test case
 test_that("curve.pp works as expected", {
   
   # Valid inputs:
