@@ -43,7 +43,7 @@ planeCoefs <- function(p){
 #' # Render the intersecting planes
 #' planes3d(c.m[,1], c.m[,2], c.m[,3], c.m[,4], col="green")
 #' }
-#' @section TODO: Check if sign issue is due to c.m[,4] being flipped to the
+#' @section TODO: Check if sign issue is due to `c.m[,4]` being flipped to the
 #' other side of eq.
 p2p.point <- function(c.m){
   # Unique point solution exists. Compute:

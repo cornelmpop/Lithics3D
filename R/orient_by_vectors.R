@@ -13,7 +13,7 @@
 #' @param l1 A 2x3 matrix-like object with coordinates defining a line, one per row.
 #' @param l2 A 2x3 matrix-like object with coordinates defining a line, one per row.
 #' @param coords A Nx3 matrix-like object containing xyz point coordinates, one
-#' per row. Normally these would be mesh vertices, obtained with t(mesh$vb)[, 1:3]
+#' per row. Normally these would be mesh vertices, obtained with `t(mesh$vb)[, 1:3]`
 #' @param e_coords An optional Nx3 matrix-like object containing xyz point coordinates,
 #' one per row, for additional coordinates which should be kept separately (e.g.
 #' landmarks, or the input vectors).
