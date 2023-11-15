@@ -7,7 +7,7 @@
 sPathQuery(sv_id, ev_id, mesh, path.choice = "any")
 }
 \arguments{
-\item{sv_id}{numeric ID of the "from" vertex, corresponding to the row number 
+\item{sv_id}{numeric ID of the "from" vertex, corresponding to the row number
 in the transposed mesh$vb (i.e. t(mesh$vb))}
 
 \item{ev_id}{numeric ID of the "to" vertex, corresponding to the row number in
@@ -30,23 +30,24 @@ triangle edges (i.e. connected vertices) on a target mesh using either
 a weighted or unweighted algorithm.
 }
 \note{
-1. The first query will be quite a bit slower than subsequent queries
+\enumerate{
+\item The first query will be quite a bit slower than subsequent queries
 because the helper mesh_to_graph function is cached. Still, with demoFlake
 the performance of this function is pretty slow at the moment (~5calls per
 second).
-2. The algorithm used for finding the shortest path is chosen by the 
+\item The algorithm used for finding the shortest path is chosen by the
 underlying igraph package. As per the igraph documentation, with unweighted
 edges, as is the case here, a default unweighted algorithm is chosen even if
 another algorithm is explicitly requested.
-3. The performance of this function is highly dependent on the degree to which
+\item The performance of this function is highly dependent on the degree to which
 the mesh is uniformly sampled. Please consider remeshing before running it.
 The following example assumes your mesh is called ply:
+}
 
 ply <- vcgUniformRemesh(ply, voxelSize=median(vcgMeshres(ply)$edgelength))
 
-
 TODO: Allow for function to work directly on igraph objects also; it'd improve
-performance by 300%, which may be significant to functions that make hundreds
+performance by 300\%, which may be significant to functions that make hundreds
 of calls
 }
 \section{TODO}{

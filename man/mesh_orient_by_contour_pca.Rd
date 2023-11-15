@@ -2,7 +2,7 @@
 % Please edit documentation in R/align_contour.R
 \name{mesh_orient_by_contour_pca}
 \alias{mesh_orient_by_contour_pca}
-\title{Orient a mesh using a countour}
+\title{Orient a mesh using a contour}
 \usage{
 mesh_orient_by_contour_pca(coords.o, mesh, npts = 100)
 }
@@ -18,29 +18,42 @@ default is 100.}
 }
 \value{
 A list containing the re-oriented mesh (mesh), the re-oriented input
-        contour (contour), the re-oriented resampled contour (contour.res),
-        and the PCA-derived rotation matrix (rot.mx) used for the
-        reorientation.
+contour (contour), the re-oriented re-sampled contour (contour.res),
+and the PCA-derived rotation matrix (rot.mx) used for the
+reorientation.
 }
 \description{
-Re-orients a mesh and a specified contour running along the mesh
-surface so that the contour is as well aligned to the xy axes as possible.
-This is achieved by first applying a PCA on the input contour and then
-rotating the mesh using the same rotation matrix.
+Re-orients a mesh and a specified contour so that the contour is
+as well aligned to the xy axes as possible. This is achieved by first
+applying a PCA on the input contour and then rotating the mesh using the same
+rotation matrix.
 
-This may be useful if there is a need to orient a flake (or a specific
-surface component, such as the ventral part), using only edge landmarks.
+This may be useful if there is a need to orient a flake, for instance, or a
+specific surface component, such as the ventral part, using only edge
+landmarks.
 }
-\section{TODO}{
- Add tests
+\note{
+KNOWN ISSUES
+\itemize{
+\item The re-sampled contour points in the output are not guaranteed to be on the
+mesh surface. In fact, they most likely won't be; if you want to ensure that
+they are, create a surface path first (see the sPathConnect function), and
+re-sample that.
 }
-
+}
 \examples{
+\dontrun{
 library(rgl)
 data(demoFlake2)
-m.rot = mesh_orient_by_contour_pca(demoFlake2$lms, demoFlake2$mesh, npts=100)
+m.rec <- mesh_recenter(demoFlake2$mesh, demoFlake2$lms)
+m.rot <- mesh_orient_by_contour_pca(m.rec$coords, m.rec$mesh, npts=100)
 view3d(theta=0, phi=0)
 shade3d(m.rot$mesh, color="green")
+points3d(m.rot$contour, color="red", size=5)
+}
+}
+\seealso{
+sPathConnect, orient_by_vectors
 }
 \author{
 Cornel M. Pop

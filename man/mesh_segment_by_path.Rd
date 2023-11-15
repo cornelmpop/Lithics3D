@@ -4,8 +4,12 @@
 \alias{mesh_segment_by_path}
 \title{Section mesh using a path}
 \usage{
-mesh_segment_by_path(mesh, lms = NULL, path.choice = "ridges",
-  mesh.path = NULL)
+mesh_segment_by_path(
+  mesh,
+  lms = NULL,
+  path.choice = "ridges",
+  mesh.path = NULL
+)
 }
 \arguments{
 \item{mesh}{A (clean) mesh3d object}

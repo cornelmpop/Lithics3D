@@ -11,10 +11,10 @@ getTVol(coords)
 first 9 values will be used.}
 }
 \value{
-numeric value of the computed volume or NaN in case of bad input
+numeric value of the computed volume or NA in case of bad input
 }
 \description{
-Computes the signed volume of a tetrahedron defined by the 3D 
+Computes the signed volume of a tetrahedron defined by the 3D
 coordinates of a triangle (i.e. triangle vertices + origin as vertex)
 }
 \note{

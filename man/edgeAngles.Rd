@@ -19,7 +19,7 @@ interest.}
 \description{
 Computes edge angles along a path defined by ordered surface
 coordinates, at a given distance (m.d) perpendicular to the path. This
-function works by first computing planes perpendicular to the edge using the 
+function works by first computing planes perpendicular to the edge using the
 \link{curve.pp} function. Note that said function returns planes at n-2
 locations, since planes cannot be computed for the endpoints. Once these
 planes have been obtained, mesh edges that intersect
@@ -32,20 +32,20 @@ are then computed using simple trigonometry.
 }
 \note{
 \itemize{
-  \item This function may not work correctly if multiple sections of a mesh
+\item This function may not work correctly if multiple sections of a mesh
 are cut by a plane (i.e. if segments from a different edge are included due
 to edge curvature).
-  \item Note that no checks are done to ensure measurements do not extend
+\item Note that no checks are done to ensure measurements do not extend
 beyond central ridges, for example. Such checks would be relatively easy
 to implement (e.g. calculating signed distance of mesh surface pts to the
 line between the LOI and the target point where thickness will be measured)
-  \item Note that there will be some inaccuracies in angle calculations: a)
-  the algorithm for finding local planes, which assumes edge landmarks define
-  a circle, can be problematic at times, b) the sphere/edge intersection
-  points will often not be on the defined plane
-  \item Note that the input points do not have to be equidistant, but
-  unevenly spaced points can cause problems. If using non-equidistant points
-  make sure you understand how the algorithm works.
+\item Note that there will be some inaccuracies in angle calculations: a)
+the algorithm for finding local planes, which assumes edge landmarks define
+a circle, can be problematic at times, b) the sphere/edge intersection
+points will often not be on the defined plane
+\item Note that the input points do not have to be equidistant, but
+unevenly spaced points can cause problems. If using non-equidistant points
+make sure you understand how the algorithm works.
 }
 }
 \section{TODO}{

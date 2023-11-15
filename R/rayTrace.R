@@ -85,7 +85,7 @@ sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
 #' @param rays A matrix-like object (N x 6, where N is the number of rays)
 #' containing (x,y,z) coordinates for the origin of the rays in the first three
 #' columns and those for a second point along the ray in the last three columns.
-#' @param mesh A triangular mesh object (\code{mesh3d}).
+#' @param mesh A triangular mesh object (`mesh3d`).
 #' @param parExec boolean indicating whether parallel processing is to be used.
 #' Set to FALSE by default
 #' @param maxCores maximum number of cores to use if parallel processing is

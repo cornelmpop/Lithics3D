@@ -23,7 +23,7 @@
 #'   \item{res}{Base resolution requested for the thickness map.}
 #'   \item{tmap}{Thickness map. A data frame with the following columns: GDIM1, GDIM2, thickness, xpos, ypos, xpos.n, ypos.n.}
 #' @note
-#' 1. For an explanation of the GDIM1 and GDIM2 columns in the output thickness map, see the documentation for the \link{addGridInfo} function. 
+#' 1. For an explanation of the GDIM1 and GDIM2 columns in the output thickness map, see the documentation for the [addGridInfo] function. 
 #' 2. The xpos and ypos columns give the coordinates of the top right hand corner of the cell where the thickness was measured.
 #' 3. The xpos.n and ypos.n columns contain the coordinates from the xpos and ypos columns centered on (x = 0, y = 0) and normalized to a maximum distance of 1 from the origin (i.e., x = 0, y = 0).
 #' @section TODO: Implement option to measure using ray tracing.
@@ -79,11 +79,11 @@ mesh_tmap <- function(mesh.o, base.res, ld.cutoff){
 
 #' @title Plot thickness map
 #' @description Plots a given thickness map with some sensible defaults using
-#' \link{ggplot}
+#' [ggplot]
 #' @author Cornel M. Pop
-#' @param tmap A thickness map as output by the \link{mesh_tmap} function
+#' @param tmap A thickness map as output by the [mesh_tmap] function
 #' @param font_size A numeric value specifying the font size argument to be
-#' passed on to \link{ggplot}
+#' passed on to [ggplot]
 #' @param x.label A text to be used to label the x axis
 #' @param y.label A text to be used to label the y axis
 #' @param annot An annotation to be added to the resulting graph

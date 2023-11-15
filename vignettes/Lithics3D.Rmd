@@ -186,7 +186,6 @@ Now we orient the isolated surface by performing a PCA on the path, resampling
 it at 100 equidistant points:
 
 ```{r}
-library(geomorph)
 vent.o = mesh_orient_by_contour_pca(t(demoFlake2$mesh$vb)[new.path, 1:3],
                                     npts=100, m.seg[[2]])
 ```

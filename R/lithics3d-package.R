@@ -6,3 +6,8 @@
 #' @title A toolbox for 3D analysis of archaeological lithics
 #' @author Cornel M. Pop
 NULL
+
+## usethis namespace: start
+#' @importFrom lifecycle deprecated
+## usethis namespace: end
+NULL

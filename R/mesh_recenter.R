@@ -5,11 +5,11 @@
 #' coordinates to preserve spatial relationships between the mesh and these
 #' coordinates.
 #'
-#' @param mesh An object of class \code{mesh3d} representing the 3D mesh.
+#' @param mesh An object of class `mesh3d` representing the 3D mesh.
 #' @param coords (Optional) An Nx3 matrix-like object containing xyz
-#' coordinates, one coordinate per row. Default is \code{NA}.
-#' @return A list containing the translated mesh (\code{mesh}) and coordinates
-#' (\code{coords})
+#' coordinates, one coordinate per row. Default is `NA`.
+#' @return A list containing the translated mesh (`mesh`) and coordinates
+#' (`coords`)
 #'
 #' @examples
 #' \dontrun{

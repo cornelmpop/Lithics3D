@@ -22,10 +22,10 @@ for preliminary mesh operations/analyses.
 }
 \note{
 \itemize{
-   \item This function is deprecated. Use \code{\link[Morpho]{pcAlign}}
+\item This function is deprecated. Use \code{\link[Morpho:pcAlign]{Morpho::pcAlign()}}
 instead (i.e. Morpho::pcAlign(demoFlake1$mesh))
-   \item Normals are not updated by this function. 
- }
+\item Normals are not updated by this function.
+}
 }
 \examples{
 data(demoFlake1)

@@ -99,11 +99,12 @@ rotatePt_2D <- function(x, y, angle){
 }
 
 #' @title Align to axis (deprecated)
+#' 
 #' @description
 #' `r lifecycle::badge("deprecated")`
 #' 
 #' This function is obsolete. Please use the more general
-#' \link{rotate_v2v} function instead.
+#' [rotate_v2v()] function instead.
 #' @author Cornel M. Pop
 #' @param coords A Nx3 matrix-like object containing xyz point coordinates, one
 #' per row.

@@ -4,8 +4,13 @@
 \alias{mesh_tmap_plot}
 \title{Plot thickness map}
 \usage{
-mesh_tmap_plot(tmap, font_size, y.label = "PC2 (mm)", x.label = "",
-  annot = "A")
+mesh_tmap_plot(
+  tmap,
+  font_size,
+  y.label = "PC2 (mm)",
+  x.label = "",
+  annot = "A"
+)
 }
 \arguments{
 \item{tmap}{A thickness map as output by the \link{mesh_tmap} function}

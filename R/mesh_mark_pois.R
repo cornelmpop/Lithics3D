@@ -1,13 +1,13 @@
 #' Determine Point of Interest (POI) on a mesh surface using ray tracing
 #'
 #' Determines the location of a POI on the mesh surface based on a ray. This
-#' function is used internally by the \code{\link{mesh_mark_pois}} function,
+#' function is used internally by the [mesh_mark_pois()] function,
 #' and may not be very useful in other contexts.
 #'
 #' @param ray A 2x3 matrix-like object containing x, y, and z coordinates
 #' for two points that define the ray.
 #'
-#' @param mesh A triangular mesh object (\code{mesh3d}).
+#' @param mesh A triangular mesh object (`mesh3d`).
 #'
 #' @return A vector with the x, y, and z coordinates of the POI.
 #'
@@ -16,8 +16,8 @@
 #' intersect with the mesh, an empty object is returned.
 #'
 #' @seealso
-#' \code{\link{rayTrace}} for the ray tracing implementation.
-#' \code{\link{mesh_mark_pois}} for ray determination.
+#' [rayTrace()] for the ray tracing implementation.
+#' [mesh_mark_pois()] for ray determination.
 #' @keywords internal
 #' @export
 proj_poi <- function(ray, mesh) {
@@ -41,7 +41,7 @@ proj_poi <- function(ray, mesh) {
 #' Removes the last POI from the given dataset, updates the current 3D scene
 #' accordingly, and returns the modified dataset.
 #'
-#' @param pois A data frame output by the \code{\link{mesh_mark_pois}}
+#' @param pois A data frame output by the [mesh_mark_pois()]
 #' function
 #'
 #' @return A reduced data frame
@@ -58,7 +58,7 @@ proj_poi <- function(ray, mesh) {
 #' }
 #'
 #' @keywords 3D landmark interactive
-#' @seealso \code{\link{mesh_mark_pois}} for interactive POI selection
+#' @seealso [mesh_mark_pois()] for interactive POI selection
 #' @export
 drop_poi <- function(pois) {
   if (!is.data.frame(pois) || nrow(pois) == 0) {
@@ -86,11 +86,11 @@ drop_poi <- function(pois) {
 #' which the POIs were selected. This is so that the order of the POIs can be
 #' visualized.
 #'
-#' @param mesh A triangular mesh object (\code{mesh3d}) to be marked.
+#' @param mesh A triangular mesh object (`mesh3d`) to be marked.
 #'
 #' @param pois (Optional) A data frame representing previously marked POIs. It
 #' should be the output of a previous run of this or the
-#' \code{\link{drop_poi}} function.
+#' [drop_poi()] function.
 #'
 #' @param button The mouse button used for marking POIs. Defaults to "right".
 #'
@@ -133,7 +133,7 @@ drop_poi <- function(pois) {
 #' @keywords 'digitization' '3D scanning' 'points of interest' 'interactive'
 #' 'rgl' 'mesh marking' 'POI tagging' 'mesh digitization' 'landmark capture'
 #' 'interactive 3D' 'mesh annotation' 'surface digitization'
-#' @seealso \code{\link{drop_poi}} for removing bad POIs
+#' @seealso [drop_poi()] for removing bad POIs
 #' @export
 mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
                            prev_color = NA, color = "red", size = 12) {

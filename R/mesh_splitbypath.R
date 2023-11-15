@@ -4,16 +4,16 @@
 #' @description Cuts a mesh along a closed path defined on the basis of an
 #' ordered set of coordinates (ideally landmarks), and splits the mesh into
 #' multiple components. Note that you must provide a clean mesh, so please use
-#' \link{vcgClean} on the input.
+#' [vcgClean] on the input.
 #' @author Cornel M. Pop
 #' @param mesh A (clean) mesh3d object
 #' @param lms (Deprecated) An ordered set of coordinates. Since this parameter
-#' is being deprecated, please use the output of \link{sPathConnect} to the
+#' is being deprecated, please use the output of [sPathConnect] to the
 #' mesh.path argument)
-#' @param path.choice (Deprecated) Described in \link{sPathConnect}.
+#' @param path.choice (Deprecated) Described in [sPathConnect].
 #' @param mesh.path A vector containing a list of connected vertices forming a
 #' closed path on the surface of the input mesh. This parameter should
-#' correspond to the output of \link{sPathConnect}
+#' correspond to the output of [sPathConnect]
 #' @return A list of mesh objects containing a minimum of 3 faces each.
 #' @examples
 #' library(rgl)

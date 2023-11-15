@@ -19,7 +19,7 @@ Compute the intersection point between three planes
 No checks are performed on input.
 }
 \section{TODO}{
- Check if sign issue is due to c.m[,4] being flipped to the
+ Check if sign issue is due to c.m\link{,4} being flipped to the
 other side of eq.
 }
 

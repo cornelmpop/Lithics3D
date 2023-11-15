@@ -26,7 +26,7 @@ plane equation coefficients are available, use the \link{pc2pt} function to obta
 co-planar points.
 }
 \note{
-The \code{\link[Morpho]{points2plane}} function of the Morpho package
+The \code{\link[Morpho:points2plane]{Morpho::points2plane()}} function of the Morpho package
 provides similar, but not identical, functionality.
 }
 \examples{

@@ -12,7 +12,7 @@ orient_by_vectors(l1, l2, coords, e_coords = NULL)
 \item{l2}{A 2x3 matrix-like object with coordinates defining a line, one per row.}
 
 \item{coords}{A Nx3 matrix-like object containing xyz point coordinates, one
-per row. Normally these would be mesh vertices, obtained with t(mesh$vb)[, 1:3]}
+per row. Normally these would be mesh vertices, obtained with t(mesh$vb)\link{, 1:3}}
 
 \item{e_coords}{An optional Nx3 matrix-like object containing xyz point coordinates,
 one per row, for additional coordinates which should be kept separately (e.g.
@@ -52,7 +52,7 @@ points3d(res$e_coords[c(4,4), ], col="orange", size=10)
 }
 }
 \seealso{
-\code{\link{rotate_v2v}}
+\code{\link[=rotate_v2v]{rotate_v2v()}}
 }
 \author{
 Cornel M. Pop

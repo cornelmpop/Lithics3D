@@ -12,7 +12,7 @@
 #' @section TODO: Tests
 #' @export
 #' @note This is a very simple distance function. The orthogonal projection
-#' of the point onto the line is done by \link{proj_pt2l}
+#' of the point onto the line is done by [proj_pt2l]
 dist_pt2l <- function(coords, l){
   l.p <- proj_pt2l(coords, l)
 
@@ -153,11 +153,11 @@ pc2pt <- function(p.coefs){
 
 #' @title Project coordinates onto a 3D plane
 #' @description Orthogonally projects a set of coordinates onto a 3D plane,
-#' defined by 3 co-planar points, and computes signed distances \emph{to} the plane
+#' defined by 3 co-planar points, and computes signed distances *to* the plane
 #' (i.e. if a point is above the plane, the sign will be negative). If only
-#' plane equation coefficients are available, use the \link{pc2pt} function to obtain
+#' plane equation coefficients are available, use the [pc2pt] function to obtain
 #' co-planar points.
-#' @note The \code{\link[Morpho]{points2plane}} function of the Morpho package
+#' @note The [Morpho::points2plane()] function of the Morpho package
 #' provides similar, but not identical, functionality.
 #' @param coords An Nx3 matrix-like object with point coordinates, one
 #' per row.

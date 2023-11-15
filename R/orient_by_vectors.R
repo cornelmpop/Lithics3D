@@ -1,10 +1,10 @@
 #' @title Orient 3D data by vectors
 #' @description Rotates the input 3D data using two vectors, such that
-#' the first vector is aligned with the X axis (i.e. \emph{y,z}=0 at both endpoints),
+#' the first vector is aligned with the X axis (i.e. *y,z*=0 at both endpoints),
 #' with the starting point at the origin, and the second vector is on a plane
 #' that is parallel to the XY plane, with the starting point having a lower
-#' \emph{y} value than the endpoint.
-#' @seealso \code{\link{rotate_v2v}}
+#' *y* value than the endpoint.
+#' @seealso [rotate_v2v()]
 #' @note This function will orient objects consistently in 3D. In other words,
 #' if landmarks are placed in the same order at homologous points, the oriented object
 #' will be facing the same direction not only on the XY plane, but also along

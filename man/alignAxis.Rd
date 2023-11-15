@@ -2,12 +2,12 @@
 % Please edit documentation in R/geom_rotate.R
 \name{alignAxis}
 \alias{alignAxis}
-\title{Align to axis (obsolete)}
+\title{Align to axis (deprecated)}
 \usage{
 alignAxis(l, coords)
 }
 \arguments{
-\item{l}{A 2X3 matrix-like object containing xyz point coordiantes defining
+\item{l}{A 2X3 matrix-like object containing xyz point coordinates defining
 the alignment vector, one coordinate per row.}
 
 \item{coords}{A Nx3 matrix-like object containing xyz point coordinates, one
@@ -18,8 +18,10 @@ A list containing rotated coordinates (coords) and the rotated
 input vector (l).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 This function is obsolete. Please use the more general
-\link{rotate_v2v} function instead.
+\code{\link[=rotate_v2v]{rotate_v2v()}} function instead.
 }
 \author{
 Cornel M. Pop
