@@ -1,7 +1,7 @@
-Lithics3D v0.5.0 (Release date: )
+Lithics3D v0.5.0 (Release date: TBD)
 ==============
 
-This version includes substantial changes to facilitate future development, including code cleanup (e.g., linted main code, testing framework switched to testthat 3rd edition, new unit tests) and enhanced documentation for many of the included functions. It also includes major new features, as outlined below.
+This version includes substantial changes to facilitate future development, including code cleanup (e.g., linted main code, testing framework switched to testthat 3rd edition, new unit tests) and enhanced documentation for many of the included functions (all function documentation has been modified to some extent due to a switch to markdown support). It also includes major new features, as outlined below.
 
 New features:
 * Interactive 3D landmarking/POI (point of interest) selection: New functions
@@ -14,6 +14,10 @@ encapsulates code from the edgesOnPlane and is similar to Morpho::cutSpace, but
 runs substantially faster.
 
 Other changes:
+* Documentation: Added support for markdown and migrated existing documentation to the new format.
+* Documentation: Added support for lifecycle badges.
+* Tests: Changed testing framework to testthat 3rd edition.
+* Tests: Added new unit tests.
 * Split edgesOnPlane function, moving code into the new split_pts function.
 * Added unit test for the new split_pts function.
 * mesh_volume and getTVol: The return on bad input changed from NaN to NA.
