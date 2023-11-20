@@ -7,19 +7,19 @@ Maintainer: Cornel M. Pop <pop.cornelm@gmail.com>
 URL: https://github.com/cornelmpop/Lithics3D
 BugReports: https://github.com/cornelmpop/Lithics3D/issues
 Description: A collection of functions for working with and analyzing 3D scans of archaeological lithics.
-Depends: R (>= 3.4.0)
+Depends: R (>= 4.2.2)
 Imports: 
-    Matrix (>= 1.2.12),
-    Morpho (>= 2.5.1),
-    geomorph (>= 3.0.5),
-    pracma (>= 2.1.1),
-    memoise (>= 1.1.0),
-    nabor (>= 0.4.7),
-    igraph (>= 1.1.2),
-    Rvcg (>= 0.17),
-    data.table (>= 1.10.4.3),
-    rgl (>= 0.98.22),
-    ggplot2 (>= 2.2.1),
+    Matrix (>= 1.5-1),
+    Morpho (>= 2.10),
+    geomorph (>= 4.0.4),
+    pracma (>= 2.3.8),
+    memoise (>= 2.0.1),
+    nabor (>= 0.5.0),
+    igraph (>= 1.3.4),
+    Rvcg (>= 0.21),
+    data.table (>= 1.14.2),
+    rgl (>= 0.109.6),
+    ggplot2 (>= 3.3.6),
     lifecycle
 License: file LICENSE
 Encoding: UTF-8
