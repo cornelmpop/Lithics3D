@@ -38,12 +38,23 @@ proj_poi <- function(ray, mesh) {
 
 #' Drop the last point of interest (POI).
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' Removes the last POI from the given dataset, updates the current 3D scene
 #' accordingly, and returns the modified dataset.
 #'
-#' @param pois A data frame output by the [mesh_mark_pois()]
-#' function
+#' @note
+#' - The input is not modified in place
+#' - The function does not check whether the scene has been changed
+#' since the [mesh_mark_pois()] function was called to generate the `pois`
+#' object.
 #'
+#' @param pois A data frame output by the [mesh_mark_pois()]
+#' function, containing information about points of interest (POIs).
+#' 
+#' @param tt_override A boolean parameter used for internal testing. It should
+#' never be set to TRUE.
+#' 
 #' @return A reduced data frame
 #'
 #' @examples
@@ -60,15 +71,29 @@ proj_poi <- function(ray, mesh) {
 #' @keywords 3D landmark interactive
 #' @seealso [mesh_mark_pois()] for interactive POI selection
 #' @export
-drop_poi <- function(pois) {
+drop_poi <- function(pois, tt_override = FALSE) {
+
   if (!is.data.frame(pois) || nrow(pois) == 0) {
     stop("Invalid input. 'pois' must be a non-empty data frame.")
   }
 
   poi_tag <- pois[nrow(pois), "Tag"] # Get the tag of the last POI
+  if (is.null(poi_tag)) {
+    stop("Invalid input: Could not find a tag for the last POI.")
+  }
+
+  if (cur3d() == 0 || !(length(tagged3d(tags = poi_tag)) == 1)) {
+    if (tt_override == FALSE) {
+      stop("Error: 3D scene closed, modified, or out of sync with POI list.")
+    }
+  }
+
   pois <- pois[-nrow(pois), ] # Drop last POI.
 
-  pop3d(id = tagged3d(tags = poi_tag)) # Remove POI from current 3D scene
+  # If not in a test environment, and we got this far, drop the tag
+  if(tt_override == FALSE) {
+    pop3d(id = tagged3d(tags = poi_tag)) # Remove POI from current 3D scene
+  }
 
   return(pois) # Return modified input
 }

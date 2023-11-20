@@ -4,18 +4,32 @@
 \alias{drop_poi}
 \title{Drop the last point of interest (POI).}
 \usage{
-drop_poi(pois)
+drop_poi(pois, tt_override = FALSE)
 }
 \arguments{
 \item{pois}{A data frame output by the \code{\link[=mesh_mark_pois]{mesh_mark_pois()}}
-function}
+function, containing information about points of interest (POIs).}
+
+\item{tt_override}{A boolean parameter used for internal testing. It should
+never be set to TRUE.}
 }
 \value{
 A reduced data frame
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Removes the last POI from the given dataset, updates the current 3D scene
 accordingly, and returns the modified dataset.
+}
+\note{
+\itemize{
+\item The input is not modified in place
+\item The function does not check whether the scene has been changed
+since the mesh_mark_pois function was called to generate the input \code{pois}
+object.
+}
 }
 \examples{
 \dontrun{
