@@ -6,7 +6,8 @@ This version includes substantial changes to facilitate future development, incl
 New features:
 * Interactive 3D landmarking/POI (point of interest) selection: New functions
 mesh_mark_pois and drop_poi enable the interactive selection of points of
-interest on a mesh surface.
+interest on a mesh surface. These functions are listed as experimental for now,
+but they are expected to work as advertised.
 * Ray tracing: New function mesh_trace_ray for determining exact intersection
 points between rays and a mesh surface.
 * New function split_pts to split a point cloud by a 3D plane. The function
@@ -17,7 +18,7 @@ Other changes:
 * Documentation: Added support for markdown and migrated existing documentation to the new format.
 * Documentation: Added support for lifecycle badges.
 * Tests: Changed testing framework to testthat 3rd edition.
-* Tests: Added new unit tests.
+* Tests: Added new unit tests, improving coverage from 29.73% in version 0.4.2 to 50+%.
 * Split edgesOnPlane function, moving code into the new split_pts function.
 * Added unit test for the new split_pts function.
 * mesh_volume and getTVol: The return on bad input changed from NaN to NA.

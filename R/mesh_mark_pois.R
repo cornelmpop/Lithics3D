@@ -51,10 +51,10 @@ proj_poi <- function(ray, mesh) {
 #'
 #' @param pois A data frame output by the [mesh_mark_pois()]
 #' function, containing information about points of interest (POIs).
-#' 
+#'
 #' @param tt_override A boolean parameter used for internal testing. It should
 #' never be set to TRUE.
-#' 
+#'
 #' @return A reduced data frame
 #'
 #' @examples
@@ -91,7 +91,7 @@ drop_poi <- function(pois, tt_override = FALSE) {
   pois <- pois[-nrow(pois), ] # Drop last POI.
 
   # If not in a test environment, and we got this far, drop the tag
-  if(tt_override == FALSE) {
+  if (tt_override == FALSE) {
     pop3d(id = tagged3d(tags = poi_tag)) # Remove POI from current 3D scene
   }
 
@@ -101,30 +101,30 @@ drop_poi <- function(pois, tt_override = FALSE) {
 
 #' Interactively record points of interest (POIs) on the surface of a 3D mesh.
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' This function enables interactive recording of POIs on a 3D mesh. It displays
 #' the mesh along with any previously marked POIs and allows users to select
 #' new POIs using a mouse-driven interface. POIs are marked by clicking on the
 #' mesh surface. The function returns a data frame containing the marked POIs.
 #'
-#' Note that, unless the prev_color argument is set, the colors of previously
-#' marked POIs will be assigned along a red-to-blue palette, in the order in
-#' which the POIs were selected. This is so that the order of the POIs can be
-#' visualized.
-#'
 #' @param mesh A triangular mesh object (`mesh3d`) to be marked.
 #'
 #' @param pois (Optional) A data frame representing previously marked POIs. It
-#' should be the output of a previous run of this or the
-#' [drop_poi()] function.
+#' should be the output of a previous run of this or the [drop_poi()] function.
 #'
 #' @param button The mouse button used for marking POIs. Defaults to "right".
+#' See [rgl.select()] for details.
 #'
 #' @param prev_color The color used to display previously marked POIs.
-#' Defaults to NA, which results in automatically generated colors.
+#' Defaults to NA, which results in automatically generated colors along a
+#' reversed "Blue-Red 2" palette (see [grDevices::hcl.colors()] for details), so
+#' that the order in which the POIs were marked can be visualized.
 #'
 #' @param color The color for newly marked POIs. Defaults to "red".
 #'
-#' @param size The size of the POI markers. Defaults to 12.
+#' @param size The size of the POI markers. Defaults to 12. Adjust as needed
+#' for visibility.
 #'
 #' @return A data frame containing the marked POIs with columns "x", "y", "z",
 #' and "Tag".
@@ -158,7 +158,8 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' @keywords 'digitization' '3D scanning' 'points of interest' 'interactive'
 #' 'rgl' 'mesh marking' 'POI tagging' 'mesh digitization' 'landmark capture'
 #' 'interactive 3D' 'mesh annotation' 'surface digitization'
-#' @seealso [drop_poi()] for removing bad POIs
+#' @seealso [drop_poi()] for removing bad POIs; [material3d()] for details
+#' on the prev_color, color, and size parameters.
 #' @export
 mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
                            prev_color = NA, color = "red", size = 12) {
@@ -166,7 +167,7 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
   poi_vnames <- c("x", "y", "z", "Tag")
 
   # Check input pois:
-  if (nrow(pois) > 0 && !all.equal(names(pois), poi_vnames)) {
+  if (nrow(pois) > 0 && !identical(names(pois), poi_vnames)) {
     stop("Input POIs should be a previous output of this function")
   }
   # Check that the mesh is... a mesh.
@@ -174,8 +175,14 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     stop("Invalid input. 'mesh' must be a mesh3d object.")
   }
 
-  # Check that we have an open RGL window and, if not, plot the mesh and
-  # previous POIs:
+  # Set display size for previous POIs at 80% of POIs to be marked.
+  ppoi_size <- round(size * 0.8)
+  # Ensure the resulting size is reasonable or default to what user requested:
+  if (ppoi_size < 2) {
+    ppoi_size <- size
+  }
+
+  # If there is no open RGL window, plot the mesh and previous POIs:
   if (cur3d() == 0) {
     shade3d(mesh, color = "green")
     if (nrow(pois) > 0) {
@@ -187,13 +194,19 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
 
       for (i in seq_len(nrow(pois))) {
         points3d(pois[i, 1:3], tag = pois[i, "Tag"],
-                 color = poi_col[i], size = 10)
+                 color = poi_col[i], size = ppoi_size)
       }
     }
   }
 
   message("Ready to mark POIs. Press ESC when done...")
   while (TRUE) {
+
+    # Exit the loop if running in a testing environment:
+    if (identical(Sys.getenv("TESTTHAT"), "true")) {
+      break
+    }
+
     # Grab mouse location in user coordinates.
     poi_coord <- rgl.select(button = button)
     if (!exists("poi_coord") || is.null(poi_coord)) {
