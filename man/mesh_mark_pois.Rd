@@ -17,33 +17,33 @@ mesh_mark_pois(
 \item{mesh}{A triangular mesh object (\code{mesh3d}) to be marked.}
 
 \item{pois}{(Optional) A data frame representing previously marked POIs. It
-should be the output of a previous run of this or the
-\code{\link[=drop_poi]{drop_poi()}} function.}
+should be the output of a previous run of this or the \code{\link[=drop_poi]{drop_poi()}} function.}
 
-\item{button}{The mouse button used for marking POIs. Defaults to "right".}
+\item{button}{The mouse button used for marking POIs. Defaults to "right".
+See \code{\link[=rgl.select]{rgl.select()}} for details.}
 
 \item{prev_color}{The color used to display previously marked POIs.
-Defaults to NA, which results in automatically generated colors.}
+Defaults to NA, which results in automatically generated colors along a
+reversed "Blue-Red 2" palette (see \code{\link[grDevices:palettes]{grDevices::hcl.colors()}} for details), so
+that the order in which the POIs were marked can be visualized.}
 
 \item{color}{The color for newly marked POIs. Defaults to "red".}
 
-\item{size}{The size of the POI markers. Defaults to 12.}
+\item{size}{The size of the POI markers. Defaults to 12. Adjust as needed
+for visibility.}
 }
 \value{
 A data frame containing the marked POIs with columns "x", "y", "z",
 and "Tag".
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 This function enables interactive recording of POIs on a 3D mesh. It displays
 the mesh along with any previously marked POIs and allows users to select
 new POIs using a mouse-driven interface. POIs are marked by clicking on the
 mesh surface. The function returns a data frame containing the marked POIs.
-}
-\details{
-Note that, unless the prev_color argument is set, the colors of previously
-marked POIs will be assigned along a red-to-blue palette, in the order in
-which the POIs were selected. This is so that the order of the POIs can be
-visualized.
 
 This function uses the 'rgl' package to provide an interactive 3D environment
 for marking POIs. It requires an open RGL window to function properly. If no
@@ -72,7 +72,8 @@ pois <- mesh_mark_pois(mesh, pois)
 
 }
 \seealso{
-\code{\link[=drop_poi]{drop_poi()}} for removing bad POIs
+\code{\link[=drop_poi]{drop_poi()}} for removing bad POIs; \code{\link[=material3d]{material3d()}} for details
+on the prev_color, color, and size parameters.
 }
 \keyword{'3D}
 \keyword{'POI}
