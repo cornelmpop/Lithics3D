@@ -5,8 +5,8 @@ test_that("getTVol (mesh_volume helper) produces correct output", {
   # tetrahedron can't be formed (shared coord)
   validTriangle2 <- c(-2, 0, 5, -10, -2, -1, 0, 0, 0)
 
-  expect_equal(round(Lithics3D:::getTVol(validTriangle1), 4), 1.6667)
-  expect_equal(Lithics3D:::getTVol(validTriangle2), 0)
+  expect_equal(round(getTVol(validTriangle1), 4), 1.6667)
+  expect_equal(getTVol(validTriangle2), 0)
 
   ## Invalid input:
   invalidTriangle1 <- c(-2, 0, 5, -10, -2, -1, 1, 0, NA)
@@ -14,9 +14,9 @@ test_that("getTVol (mesh_volume helper) produces correct output", {
   invalidTriangle3 <- c("123456789")
 
   # Bad input = NA
-  expect_true(is.na(Lithics3D:::getTVol(invalidTriangle1)))
-  expect_true(is.na(Lithics3D:::getTVol(invalidTriangle2)))
-  expect_true(is.na(Lithics3D:::getTVol(invalidTriangle3)))
+  expect_true(is.na(getTVol(invalidTriangle1)))
+  expect_true(is.na(getTVol(invalidTriangle2)))
+  expect_true(is.na(getTVol(invalidTriangle3)))
 })
 
 test_that("mesh_volume produces correct output", {
