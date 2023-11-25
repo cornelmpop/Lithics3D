@@ -8,8 +8,9 @@ New features:
 mesh_mark_pois and drop_poi enable the interactive selection of points of
 interest on a mesh surface. These functions are listed as experimental for now,
 but they are expected to work as advertised.
-* Ray tracing: New function mesh_trace_ray for determining exact intersection
-points between rays and a mesh surface.
+* Ray tracing: New function mesh_intersect_rays (and a helper function
+trace_ray) for determining exact intersection points between rays and a mesh
+surface.
 * New function split_pts to split a point cloud by a 3D plane. The function
 encapsulates code from the edgesOnPlane and is similar to Morpho::cutSpace, but
 runs substantially faster.

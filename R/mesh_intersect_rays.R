@@ -43,10 +43,10 @@
 #' v2 <- as.matrix(triangles[,7:9])
 #' # Set epsilon value:
 #' epsilon <- .Machine$double.eps
-#' sRayTrace(o, d, v0, v1, v2, epsilon)
+#' trace_ray(o, d, v0, v1, v2, epsilon)
 #' 
 #' @export
-sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
+trace_ray <- function(o, d, v0, v1, v2, epsilon) {
   # Get edges:
   edge1 <- v1 - v0
   edge2 <- v2 - v0
@@ -108,9 +108,9 @@ sRayTrace <- function(o, d, v0, v1, v2, epsilon) {
 #' rays$y2 <- rays$y1
 #' rays$z2 <- rays$z1 - 1
 #'
-#' rayTrace(rays[1:3,], alignedMesh, parExec = FALSE)
+#' mesh_intersect_rays(rays[1:3,], alignedMesh, parExec = FALSE)
 #' @export
-rayTrace <- function(rays, mesh, parExec = FALSE, maxCores = NA){
+mesh_intersect_rays <- function(rays, mesh, parExec = FALSE, maxCores = NA){
   # Prepare a ray list for parLapply
   raylist <- apply(rays,
                    MARGIN = 1,
@@ -128,7 +128,7 @@ rayTrace <- function(rays, mesh, parExec = FALSE, maxCores = NA){
   
   # Check if parallel processing was requested:
   if(parExec == F){
-    inters <- lapply(raylist, function(x) sRayTrace(cbind(rep(as.numeric(x$o[1]), 
+    inters <- lapply(raylist, function(x) trace_ray(cbind(rep(as.numeric(x$o[1]), 
                                                              nrow(v0)),
                                                          rep(as.numeric(x$o[2]),
                                                              nrow(v0)),
@@ -149,11 +149,11 @@ rayTrace <- function(rays, mesh, parExec = FALSE, maxCores = NA){
       cl <- makeCluster(detectCores())
     }
     clusterExport(cl = cl, 
-                  varlist = c("v0", "v1", "v2", "epsilon", "sRayTrace",
+                  varlist = c("v0", "v1", "v2", "epsilon", "trace_ray",
                               "cross"),
                   envir=environment())
     inters <- parLapply(cl, raylist,
-                        function(x) sRayTrace(cbind(rep(as.numeric(x$o[1]),
+                        function(x) trace_ray(cbind(rep(as.numeric(x$o[1]),
                                                        nrow(v0)),
                                                    rep(as.numeric(x$o[2]),
                                                        nrow(v0)),

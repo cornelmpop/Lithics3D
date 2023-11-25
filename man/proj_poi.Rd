@@ -26,7 +26,7 @@ mesh surface and finds the closest intersection point. If the ray does not
 intersect with the mesh, an empty object is returned.
 }
 \seealso{
-\code{\link[=rayTrace]{rayTrace()}} for the ray tracing implementation.
+\code{\link[=mesh_intersect_rays]{mesh_intersect_rays()}} for the ray tracing implementation.
 \code{\link[=mesh_mark_pois]{mesh_mark_pois()}} for ray determination.
 }
 \keyword{internal}

@@ -16,13 +16,13 @@
 #' intersect with the mesh, an empty object is returned.
 #'
 #' @seealso
-#' [rayTrace()] for the ray tracing implementation.
+#' [mesh_intersect_rays()] for the ray tracing implementation.
 #' [mesh_mark_pois()] for ray determination.
 #' @keywords internal
 #' @export
 proj_poi <- function(ray, mesh) {
 
-  res <- rayTrace(matrix(c(ray[1, ], ray[2, ]), nrow = 1), mesh)
+  res <- mesh_intersect_rays(matrix(c(ray[1, ], ray[2, ]), nrow = 1), mesh)
 
   if (nrow(res[[1]]) < 1) {
     return(res[[1]]) # Return empty object
