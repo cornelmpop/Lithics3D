@@ -4,23 +4,23 @@
 #' @title Compute the intersection points of a ray and a set of triangles
 #' @description Computes the intersection point(s) of a ray and an arbitrarily
 #' large set of triangles using the algorithm of Moller and Trumbore (1997).
-#' @param o A matrix-like (N x 3) object with the coordinate of the ray origin
+#' @param o A non-empty matrix (N x 3) with the coordinate of the ray origin
 #' repeated so that the number of rows (N) matches the number of triangles.
-#' @param d A matrix-like (N x 3) object with the direction of the ray (i.e.
+#' @param d A non-empty matrix (N x 3) object with the direction of the ray (i.e.
 #' the difference between an arbitrary point along the line and the x, y, and z
 #' coordinate of the ray's origin) repeated so that the number of rows (N)
 #' matches the number of triangles.
-#' @param v0 A matrix-like (N x 3) object with the (x,y,z) coordinates of the
-#' first vertex for each of the N triangles.
-#' @param v1 A matrix-like (N x 3) object with the (x,y,z) coordinates of the
-#' second vertex for each of the N triangles.
-#' @param v2 A matrix-like (N x 3) object with the (x,y,z) coordinates of the
-#' third vertex for each of the N triangles.
+#' @param v0 A non-empty matrix (N x 3) object with the (x,y,z) coordinates of
+#' the first vertex for each of the N triangles.
+#' @param v1 A non-empty matrix (N x 3) object with the (x,y,z) coordinates of
+#' the second vertex for each of the N triangles.
+#' @param v2 A non-empty matrix (N x 3) object with the (x,y,z) coordinates of
+#' the third vertex for each of the N triangles.
 #' @param epsilon The floating point precision used to check whether the angle
 #' formed by the ray and the plane of the triangles is +/- zero (i.e. whether
 #' the ray is parallel).
 #' @return a (N x 3) matrix containing the coordinates of the intersection
-#' points.
+#' points. If no intersections are found the output matrix will have zero rows.
 #' @note This function was inspired by the Matlab toolbox developed by Jaroslaw
 #' Tuszynski (2011-2014). In theory this function can be used as-is to test the
 #' intersection of multiple rays/multiple triangles, but in practice doing so
@@ -47,6 +47,15 @@
 #' 
 #' @export
 trace_ray <- function(o, d, v0, v1, v2, epsilon) {
+
+  # Quit if no rays or triangles or if there is a mismatch in N:
+  if (is.null(nrow(o)) || nrow(o) == 0 || !identical(rep(nrow(o), 5),
+                 c(nrow(o), nrow(d), nrow(v0), nrow(v1), nrow(v2)))) {
+    stop("Bad input: rays or triangles empty or of mismatched size")
+  }
+  # Stop if bad epsilon value given
+  stopifnot(is.numeric(epsilon), length(epsilon) == 1)
+
   # Get edges:
   edge1 <- v1 - v0
   edge2 <- v2 - v0
@@ -56,7 +65,8 @@ trace_ray <- function(o, d, v0, v1, v2, epsilon) {
   cp <- cross(d, edge2)
   det <- edge1[, 1] * cp[, 1] + edge1[, 2] * cp[, 2] + edge1[, 3] * cp[, 3]
   good <- abs(det) > epsilon # See which rays are parallel, if any
-  det[good == FALSE] <- NA # Change to NA in cases of angles of zero to avoid /0.
+  # Change to NA in cases of angles of zero to avoid division by zero.
+  det[good == FALSE] <- NA
 
   invDet <- 1 / det
   # First barycentric coordinate:

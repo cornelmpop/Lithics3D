@@ -7,22 +7,22 @@
 trace_ray(o, d, v0, v1, v2, epsilon)
 }
 \arguments{
-\item{o}{A matrix-like (N x 3) object with the coordinate of the ray origin
+\item{o}{A non-empty matrix (N x 3) with the coordinate of the ray origin
 repeated so that the number of rows (N) matches the number of triangles.}
 
-\item{d}{A matrix-like (N x 3) object with the direction of the ray (i.e.
+\item{d}{A non-empty matrix (N x 3) object with the direction of the ray (i.e.
 the difference between an arbitrary point along the line and the x, y, and z
 coordinate of the ray's origin) repeated so that the number of rows (N)
 matches the number of triangles.}
 
-\item{v0}{A matrix-like (N x 3) object with the (x,y,z) coordinates of the
-first vertex for each of the N triangles.}
+\item{v0}{A non-empty matrix (N x 3) object with the (x,y,z) coordinates of
+the first vertex for each of the N triangles.}
 
-\item{v1}{A matrix-like (N x 3) object with the (x,y,z) coordinates of the
-second vertex for each of the N triangles.}
+\item{v1}{A non-empty matrix (N x 3) object with the (x,y,z) coordinates of
+the second vertex for each of the N triangles.}
 
-\item{v2}{A matrix-like (N x 3) object with the (x,y,z) coordinates of the
-third vertex for each of the N triangles.}
+\item{v2}{A non-empty matrix (N x 3) object with the (x,y,z) coordinates of
+the third vertex for each of the N triangles.}
 
 \item{epsilon}{The floating point precision used to check whether the angle
 formed by the ray and the plane of the triangles is +/- zero (i.e. whether
@@ -30,7 +30,7 @@ the ray is parallel).}
 }
 \value{
 a (N x 3) matrix containing the coordinates of the intersection
-points.
+points. If no intersections are found the output matrix will have zero rows.
 }
 \description{
 Computes the intersection point(s) of a ray and an arbitrarily
