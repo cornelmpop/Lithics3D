@@ -163,6 +163,53 @@ test_that("trace_ray works as expected", {
 
 test_that("mesh_intersect_rays works as expected", {
   
+  # Valid input:
+  # Empty rays should produce empty output:
+  expect_equal(length(mesh_intersect_rays(data.frame(),
+                                          demoFlake1$mesh, parExec = FALSE)), 0)
   
+  rays <- data.frame(x1 = c(-41.65845, -41.82012, -41.87693, 0),
+                     y1 = c(-1.22681434, -0.91828322, -0.41378155, 0),
+                     z1 = c(100, 100, 100, 100),
+                     x2 = c(-41.65845, -41.82012, -41.87693, 0),
+                     y2 = c(-1.22681434, -0.91828322, -0.41378155, 1),
+                     z2 = c(99, 99, 99, 100))
+  
+  res <- mesh_intersect_rays(rays, Morpho::pcAlign(demoFlake1$mesh),
+                             parExec = FALSE, maxCores = 0)
+  # Check output type:
+  expect_type(res, "list")
+  expect_equal(length(res), nrow(rays))
+  expect_true(all(sapply(res, is.matrix)))
+
+  # Check values:
+  expect_equal(nrow(res[[1]]), 2)
+  expect_identical(as.numeric(round(res[[1]][1, ], 7)),
+                   c(-41.65845, -1.2268143, 10.5377184))
+  expect_identical(as.numeric(round(res[[1]][2, ], 7)),
+                   c(-41.65845, -1.2268143, 8.3450981))
+  expect_equal(nrow(res[[4]]), 0) # This is a non-intersecting ray
+  
+  # Invalid inputs:
+  # Bad rays:
+  expect_error(mesh_intersect_rays(c(1, 2, 3),
+                                   demoFlake1$mesh, parExec = FALSE))
+  # Bad mesh:
+  expect_error(mesh_intersect_rays(data.frame(),
+                                   demoFlake1, parExec = FALSE))
+  # Bad parExec:
+  expect_error(mesh_intersect_rays(data.frame(),
+                                   demoFlake1$mesh, parExec = "AA"),
+               "Bad input: 'parExec' must be set to TRUE or FALSE.")
+  # Bad maxCores:
+  expect_error(mesh_intersect_rays(data.frame(), demoFlake1$mesh,
+                                   parExec = TRUE, maxCores = "AA"), fixed = T,
+               "is.numeric(maxCores) is not TRUE")
+
+  # Check also when using parallelization:
+  skip_on_cran()
+  res2 <- mesh_intersect_rays(rays, Morpho::pcAlign(demoFlake1$mesh),
+                              parExec = TRUE, maxCores = 2)
+  expect_identical(res, res2)
 })
 

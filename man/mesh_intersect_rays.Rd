@@ -14,11 +14,12 @@ columns and those for a second point along the ray in the last three columns.}
 \item{mesh}{A triangular mesh object (\code{mesh3d}).}
 
 \item{parExec}{boolean indicating whether parallel processing is to be used.
-Set to FALSE by default}
+Set to FALSE by default.}
 
-\item{maxCores}{maximum number of cores to use if parallel processing is
-requested. Requesting more cores than are physically available will simply
-result in all cores being used. Set to NULL by default.}
+\item{maxCores}{integer specifying the maximum number of cores to use if
+parExec is set to TRUE. Requesting more cores than are physically available
+will simply result in all cores being used. The parameter is set to NA by
+default; if parExec is set to FALSE, this parameter will be ignored.}
 }
 \value{
 A list of matrices (N' x 3, where N' is the number of intersections)
@@ -36,8 +37,7 @@ otherwise, it's faster to run with parallel processing disabled.
 \examples{
 data(demoFlake1)
 alignedMesh <- Morpho::pcAlign(demoFlake1$mesh)
-# Construct and cast some useful rays (i.e. what would be used to construct
-# thickness maps)
+# Construct and cast some rays:
 rays <- data.frame(x1 = c(-41.65845, -41.82012, -41.87693),
                    y1 = c(-1.22681434, -0.91828322, -0.41378155),
                    z1 = c(100, 100, 100))

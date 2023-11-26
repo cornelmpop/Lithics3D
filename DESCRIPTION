@@ -20,6 +20,7 @@ Imports:
     data.table (>= 1.14.2),
     rgl (>= 1.2.1),
     ggplot2 (>= 3.3.6),
+    parallel,
     lifecycle
 License: file LICENSE
 Encoding: UTF-8
