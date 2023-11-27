@@ -61,3 +61,32 @@ test_that("mesh_mark_pois works as expected", {
   expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE)
   expect_identical(res, pois_valid)
 })
+
+test_that("proj_poi works as expected", {
+  
+  # Check for conformity with documentation:
+  # Bad ray input (should be 2x3)
+  expect_error(proj_poi(data.frame(), demoSphere))
+  expect_error(proj_poi(data.frame(x = c(1), y = c(1), z = c(1)),
+                        demoSphere))
+  expect_error(proj_poi(data.frame(x = c(1), y = c(1), z = c(1), z1 = c(1)),
+                        demoSphere))
+  
+  # Valid ray:
+  ray <- data.frame(x = c(0, 0), y = c(0, 0), z = c(100, 99))
+  
+  # Multiple intersections:
+  res <- proj_poi(as.matrix(ray), demoSphere)
+  expect_true(is.numeric(res))
+  expect_identical(round(as.numeric(res), 10), round(c(0, 0, 0.9690877984), 10))
+  
+  # Single intersection:
+  res <- proj_poi(as.matrix(ray), demoSurface)
+  expect_identical(round(as.numeric(res), 10), round(c(0, 0, 1.64354), 10))
+  
+  # No intersection:
+  ray <- data.frame(x = c(0, 1), y = c(0, 0), z = c(100, 100))
+  expect_equal(nrow(proj_poi(as.matrix(ray), demoSurface)), 0)
+
+})
+  

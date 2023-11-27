@@ -7,8 +7,8 @@
 proj_poi(ray, mesh)
 }
 \arguments{
-\item{ray}{A 2x3 matrix-like object containing x, y, and z coordinates
-for two points that define the ray.}
+\item{ray}{A 2x3 matrix containing x, y, and z coordinates for two points
+that define the ray.}
 
 \item{mesh}{A triangular mesh object (\code{mesh3d}).}
 }

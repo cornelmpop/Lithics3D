@@ -7,9 +7,10 @@
 mesh_intersect_rays(rays, mesh, parExec = FALSE, maxCores = NA)
 }
 \arguments{
-\item{rays}{A matrix-like object (N x 6, where N is the number of rays)
-containing (x,y,z) coordinates for the origin of the rays in the first three
-columns and those for a second point along the ray in the last three columns.}
+\item{rays}{A non-empty matrix-like object (N x 6, where N is the number of
+rays) containing (x,y,z) coordinates for the origin of the rays in the first
+three columns and those for a second point along the ray in the last three
+columns.}
 
 \item{mesh}{A triangular mesh object (\code{mesh3d}).}
 

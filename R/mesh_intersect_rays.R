@@ -87,15 +87,25 @@ trace_ray <- function(o, d, v0, v1, v2, epsilon) {
 
   # Find actual intersection for good rays:
   targets <- (1 - u - v) * v0 + u * v1 + v * v2
-  return(targets[gres, ])
+  
+  # Otherwise the output will not be a matrix (see b034_p in test file):
+  if (length(gres) == 1) {
+    out <- matrix(targets[gres, ], nrow = 1)
+    colnames(out) <- colnames(targets)
+    return(out)
+  } else {
+    return(targets[gres, ])
+  }
+
 }
 
 #' @title Compute the mesh intersection points for a set of rays
 #' @description Computes the intersection points between a mesh and a set of
 #' non-directional rays
-#' @param rays A matrix-like object (N x 6, where N is the number of rays)
-#' containing (x,y,z) coordinates for the origin of the rays in the first three
-#' columns and those for a second point along the ray in the last three columns.
+#' @param rays A non-empty matrix-like object (N x 6, where N is the number of
+#' rays) containing (x,y,z) coordinates for the origin of the rays in the first
+#' three columns and those for a second point along the ray in the last three
+#' columns.
 #' @param mesh A triangular mesh object (`mesh3d`).
 #' @param parExec boolean indicating whether parallel processing is to be used.
 #' Set to FALSE by default.
@@ -123,7 +133,10 @@ trace_ray <- function(o, d, v0, v1, v2, epsilon) {
 #' @export
 mesh_intersect_rays <- function(rays, mesh, parExec = FALSE, maxCores = NA) {
 
-  # Input checking - to produce nicer errors:
+  # Input checking:
+  # Avoid weirdness (see b034_p in test-mesh_intersect_rays.R):
+  stopifnot(dim(rays)[2] == 6)
+  # Produce nicer errors:
   if (!is.logical(parExec)) {
     stop("Bad input: 'parExec' must be set to TRUE or FALSE.")
   }

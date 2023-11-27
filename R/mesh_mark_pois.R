@@ -4,8 +4,8 @@
 #' function is used internally by the [mesh_mark_pois()] function,
 #' and may not be very useful in other contexts.
 #'
-#' @param ray A 2x3 matrix-like object containing x, y, and z coordinates
-#' for two points that define the ray.
+#' @param ray A 2x3 matrix containing x, y, and z coordinates for two points
+#' that define the ray.
 #'
 #' @param mesh A triangular mesh object (`mesh3d`).
 #'
@@ -22,9 +22,12 @@
 #' @export
 proj_poi <- function(ray, mesh) {
 
+  # Basic input checking to make sure we don't do something silly
+  stopifnot(identical(dim(ray), as.integer(c(2, 3))))
+
   res <- mesh_intersect_rays(matrix(c(ray[1, ], ray[2, ]), nrow = 1), mesh)
 
-  if (nrow(res[[1]]) < 1) {
+  if (nrow(res[[1]]) == 0) {
     return(res[[1]]) # Return empty object
   }
 

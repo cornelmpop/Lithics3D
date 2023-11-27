@@ -10,9 +10,9 @@ trace_ray(o, d, v0, v1, v2, epsilon)
 \item{o}{A non-empty matrix (N x 3) with the coordinate of the ray origin
 repeated so that the number of rows (N) matches the number of triangles.}
 
-\item{d}{A non-empty matrix (N x 3) object with the direction of the ray (i.e.
-the difference between an arbitrary point along the line and the x, y, and z
-coordinate of the ray's origin) repeated so that the number of rows (N)
+\item{d}{A non-empty matrix (N x 3) object with the direction of the ray
+(i.e. the difference between an arbitrary point along the line and the x, y,
+and z coordinate of the ray's origin) repeated so that the number of rows (N)
 matches the number of triangles.}
 
 \item{v0}{A non-empty matrix (N x 3) object with the (x,y,z) coordinates of

@@ -164,9 +164,9 @@ test_that("trace_ray works as expected", {
 test_that("mesh_intersect_rays works as expected", {
   
   # Valid input:
-  # Empty rays should produce empty output:
-  expect_equal(length(mesh_intersect_rays(data.frame(),
-                                          demoFlake1$mesh, parExec = FALSE)), 0)
+  # Empty rays should trigger error:
+  expect_error(mesh_intersect_rays(data.frame(),
+                                   demoFlake1$mesh, parExec = FALSE))
   
   rays <- data.frame(x1 = c(-41.65845, -41.82012, -41.87693, 0),
                      y1 = c(-1.22681434, -0.91828322, -0.41378155, 0),
@@ -195,16 +195,29 @@ test_that("mesh_intersect_rays works as expected", {
   expect_error(mesh_intersect_rays(c(1, 2, 3),
                                    demoFlake1$mesh, parExec = FALSE))
   # Bad mesh:
-  expect_error(mesh_intersect_rays(data.frame(),
+  expect_error(mesh_intersect_rays(rays,
                                    demoFlake1, parExec = FALSE))
   # Bad parExec:
-  expect_error(mesh_intersect_rays(data.frame(),
+  expect_error(mesh_intersect_rays(rays,
                                    demoFlake1$mesh, parExec = "AA"),
                "Bad input: 'parExec' must be set to TRUE or FALSE.")
   # Bad maxCores:
-  expect_error(mesh_intersect_rays(data.frame(), demoFlake1$mesh,
+  expect_error(mesh_intersect_rays(rays, demoFlake1$mesh,
                                    parExec = TRUE, maxCores = "AA"), fixed = T,
                "is.numeric(maxCores) is not TRUE")
+
+  # Bugs:
+  
+  # b034_p (Lithics3D_Project) - output in case of a single intersection was not
+  # a matrix + other bug discovered while fixing (bad input spec - nr cols):
+  ray <- data.frame(x = c(0, 0), y = c(0, 0), z = c(100, 99))
+  # This returned an empty list, whereas it should have returned an error
+  # because the input did not conform to documentation (Nx6 columns).
+  expect_error(mesh_intersect_rays(ray, demoSurface))
+  
+  res_b <- mesh_intersect_rays(cbind(ray[1, ], ray[2, ]), demoSurface)
+  expect_equal(nrow(res_b[[1]]), 1)
+  expect_true(is.matrix(res_b[[1]]))
 
   # Check also when using parallelization:
   skip_on_cran()
