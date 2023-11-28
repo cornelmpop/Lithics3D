@@ -3,17 +3,17 @@
 # Lithics3D
 
 Lithics3D provides a toolbox for working with 3D scans of archaeological lithics
-within the R environment. The functions included herein are designed to
-work with clean triangular meshes. For the time being at
-least, mesh generation and pre-processing (e.g. cleaning), and landmarking must
+(and other objects) within the R environment. The functions included herein
+are designed to work with clean triangular meshes. For the time being at
+least, mesh generation and pre-processing (e.g. cleaning) must
 be done with different tools (e.g. [Meshlab](http://www.meshlab.net/)).
 
 
 The included functions can be divided into three broad categories:
 
 * High-level functions for (semi-)automatic segmentation and analysis of meshes
-*qua* archaeological artifacts (e.g. utilities for automatically
-measuring edge angles, mapping artifact thickness, etcetera).
+*qua* archaeological artifacts (e.g. utilities for automatically measuring edge
+angles, mapping artifact thickness).
 
 * Low-level functions for working with meshes as geometric objects. These
 functions are meant to provide the building blocks required to implement more
@@ -33,8 +33,9 @@ the package.
 
 Given the experimental nature of some of the functions included in this package
 you are strongly encouraged to double check your results and contact me for help
-or clarification. More generally, be mindful of the fact that this is very much
-a work in progress.
+or clarification, or better yet, open an issue (see
+[Lithics3D Issues](https://github.com/cornelmpop/Lithics3D/issues))! More
+generally, be mindful of the fact that this is very much a work in progress.
 
 ## Getting started
 
@@ -65,8 +66,9 @@ library(Lithics3D)
 ?Lithics3D
 ```
 
-Please also check the wiki at: https://github.com/cornelmpop/Lithics3D/wiki, and
-feel free to explore the available vignettes (a work in progress!). For example:
+You should also explore the available vignette (a work in progress!) or
+contribute your own (contributions are very welcome!). To view the
+Lithics3D vignette:
 
 ``` r
 vignette("Lithics3D")

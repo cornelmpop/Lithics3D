@@ -1,12 +1,16 @@
 Package: Lithics3D
 Title: A toolbox for 3D analysis of archaeological lithics
 Version: 0.5.0
-Date: 2023-11-10
-Authors@R: person("Cornel", "Pop", email = "pop.cornelm@gmail.com", role = c("aut", "cre"))
-Maintainer: Cornel M. Pop <pop.cornelm@gmail.com>
+Date: 2023-11-29
+Authors@R: person(given = "Cornel",
+                  family = "Pop",
+                  email = "cornel.pop@gmail.com",
+                  role = c("aut", "cre"),
+                  comment = c(ORCID = "0000-0002-1462-3677"))
+Maintainer: Cornel M. Pop <cornel.pop@gmail.com>
 URL: https://github.com/cornelmpop/Lithics3D
 BugReports: https://github.com/cornelmpop/Lithics3D/issues
-Description: A collection of functions for working with and analyzing 3D scans of archaeological lithics.
+Description: A collection of functions for working with and analyzing 3D scans.
 Depends: R (>= 4.2.0)
 Imports: 
     Matrix (>= 1.5-1),
