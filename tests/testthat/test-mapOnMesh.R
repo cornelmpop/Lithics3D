@@ -10,8 +10,10 @@ test_that("mapOnMesh produces correct output", {
   expect_error(mapOnMesh(c(1, 2, 3), demoSurface))
   # Proper handling of bad coord input.
   expect_warning(mapOnMesh(badDF, demoSurface))
-  # Proper handling of bad coord input.
-  expect_warning(mapOnMesh(badDF2, demoSurface))
+  # Proper handling of bad coord input. See comments in function.
+  expect_warning(expect_warning(mapOnMesh(badDF2, demoSurface)),
+             "Some input coordinates invalid. Output truncated to valid cases.")
+
 
   # Check for mesh input handling.
   expect_warning(mapOnMesh(goodDF, list(vb = c("a", "b", "c")))) # Not a mesh!
