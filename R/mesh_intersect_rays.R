@@ -2,7 +2,11 @@
 #' @import parallel
 #'
 #' @title Compute the intersection points of a ray and a set of triangles
-#' @description Computes the intersection point(s) of a ray and an arbitrarily
+#' @description
+#' 
+#' `r lifecycle::badge("stable")`
+#' 
+#' Computes the intersection point(s) of a ray and an arbitrarily
 #' large set of triangles using the algorithm of Moller and Trumbore (1997).
 #' @param o A non-empty matrix (N x 3) with the coordinate of the ray origin
 #' repeated so that the number of rows (N) matches the number of triangles.
@@ -100,7 +104,11 @@ trace_ray <- function(o, d, v0, v1, v2, epsilon) {
 }
 
 #' @title Compute the mesh intersection points for a set of rays
-#' @description Computes the intersection points between a mesh and a set of
+#' @description
+#' 
+#' `r lifecycle::badge("stable")`
+#' 
+#' Computes the intersection points between a mesh and a set of
 #' non-directional rays
 #' @param rays A non-empty matrix-like object (N x 6, where N is the number of
 #' rays) containing (x,y,z) coordinates for the origin of the rays in the first

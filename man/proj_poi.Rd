@@ -16,11 +16,13 @@ that define the ray.}
 A vector with the x, y, and z coordinates of the POI.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Determines the location of a POI on the mesh surface based on a ray. This
 function is used internally by the \code{\link[=mesh_mark_pois]{mesh_mark_pois()}} function,
 and may not be very useful in other contexts.
-}
-\details{
+
 The function uses ray tracing to project the given ray onto the
 mesh surface and finds the closest intersection point. If the ray does not
 intersect with the mesh, an empty object is returned.

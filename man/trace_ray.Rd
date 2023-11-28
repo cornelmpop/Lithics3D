@@ -33,6 +33,8 @@ a (N x 3) matrix containing the coordinates of the intersection
 points. If no intersections are found the output matrix will have zero rows.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Computes the intersection point(s) of a ray and an arbitrarily
 large set of triangles using the algorithm of Moller and Trumbore (1997).
 }

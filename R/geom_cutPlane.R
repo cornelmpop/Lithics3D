@@ -1,5 +1,9 @@
 #' @title Split pointcloud by plane
-#' @description Splits the input coordinates by a 3D plane. This function
+#' @description
+#' 
+#' `r lifecycle::badge("experimental")`
+#' 
+#' Splits the input coordinates by a 3D plane. This function
 #' produces identical results to [cutSpace][Morpho::cutSpace], but should run
 #' substantially faster.
 #' @seealso [cutSpace][Morpho::cutSpace]

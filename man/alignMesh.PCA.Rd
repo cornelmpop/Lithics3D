@@ -2,8 +2,8 @@
 % Please edit documentation in R/align_pca.R
 \name{alignMesh.PCA}
 \alias{alignMesh.PCA}
-\title{(\strong{Deprecated}) Align a mesh3d object along the axes of its two main
-principal components.}
+\title{Align a mesh3d object along the axes of its two main
+principal components (Deprecated)}
 \usage{
 alignMesh.PCA(mesh)
 }
@@ -14,7 +14,9 @@ alignMesh.PCA(mesh)
 aligned mesh3d object with vertex coordinates replaced by PCA scores.
 }
 \description{
-(\strong{Deprecated}) Performs a simple alignment of the input triangular mesh along
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+Performs a simple alignment of the input triangular mesh along
 its two main principal components. While generally useful for flat, elongated
 flakes and bifaces, this function does not guarantee proper alignment along
 a technologically or typologically relevant axis. Nevertheless, it is useful

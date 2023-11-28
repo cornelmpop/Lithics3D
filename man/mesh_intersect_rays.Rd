@@ -28,6 +28,8 @@ containing the coordinates for the intersection points for each ray. Each
 list element corresponds to a ray, in input order.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Computes the intersection points between a mesh and a set of
 non-directional rays
 }

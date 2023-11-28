@@ -1,5 +1,7 @@
 #' Determine Point of Interest (POI) on a mesh surface using ray tracing
 #'
+#' `r lifecycle::badge("experimental")`
+#' 
 #' Determines the location of a POI on the mesh surface based on a ray. This
 #' function is used internally by the [mesh_mark_pois()] function,
 #' and may not be very useful in other contexts.

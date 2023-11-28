@@ -20,6 +20,8 @@ below the plane, or not (lwr). These two vectors are not exact mirrors of
 each other since some coordinates may fall on the plane.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Splits the input coordinates by a 3D plane. This function
 produces identical results to \link[Morpho:cutSpace]{cutSpace}, but should run
 substantially faster.

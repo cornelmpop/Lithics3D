@@ -1,6 +1,11 @@
-#' @title (**Deprecated**) Align a mesh3d object along the axes of its two main
-#' principal components.
-#' @description (**Deprecated**) Performs a simple alignment of the input triangular mesh along
+#' @title Align a mesh3d object along the axes of its two main
+#' principal components (Deprecated)
+#' 
+#' @description
+#' 
+#' `r lifecycle::badge("deprecated")`
+#' 
+#' Performs a simple alignment of the input triangular mesh along
 #' its two main principal components. While generally useful for flat, elongated
 #' flakes and bifaces, this function does not guarantee proper alignment along
 #' a technologically or typologically relevant axis. Nevertheless, it is useful
