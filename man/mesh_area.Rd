@@ -20,12 +20,12 @@ result in all cores being used.}
 Numeric value of the computed area or NA in case of bad input.
 }
 \description{
-Calculates the surface area of an arbitrary triangular 
-mesh by adding up the areas of individual constituent triangles. Please 
+Calculates the surface area of an arbitrary triangular
+mesh by adding up the areas of individual constituent triangles. Please
 ensure that the mesh is clean (e.g. no non-manifold vertices, etc)
 }
 \note{
-For small meshes it may be faster to use a single thread due to the 
+For small meshes it may be faster to use a single thread due to the
 overhead associated with starting the processing cluster.
 }
 \examples{

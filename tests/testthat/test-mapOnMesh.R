@@ -1,5 +1,3 @@
-context("Mesh mapping")
-
 test_that("mapOnMesh produces correct output", {
   data(demoSurface)
 
@@ -12,8 +10,10 @@ test_that("mapOnMesh produces correct output", {
   expect_error(mapOnMesh(c(1, 2, 3), demoSurface))
   # Proper handling of bad coord input.
   expect_warning(mapOnMesh(badDF, demoSurface))
-  # Proper handling of bad coord input.
-  expect_warning(mapOnMesh(badDF2, demoSurface))
+  # Proper handling of bad coord input. See comments in function.
+  expect_warning(expect_warning(mapOnMesh(badDF2, demoSurface)),
+             "Some input coordinates invalid. Output truncated to valid cases.")
+
 
   # Check for mesh input handling.
   expect_warning(mapOnMesh(goodDF, list(vb = c("a", "b", "c")))) # Not a mesh!
@@ -25,9 +25,9 @@ test_that("mapOnMesh produces correct output", {
   res <- mapOnMesh(queryPts, demoSurface)
 
   # Note: to check how this works, do a plot(t(demoSurface$vb)[,1:2])
-  expect_that(as.numeric(res[1, 1:2]), equals(c(0, 0)))
-  expect_that(as.numeric(res[2, 1:2]), equals(c(0, 5)))
-  expect_that(as.numeric(res[3, 1:2]), equals(c(16, 10)))
+  expect_equal(as.numeric(res[1, 1:2]), c(0, 0))
+  expect_equal(as.numeric(res[2, 1:2]), c(0, 5))
+  expect_equal(as.numeric(res[3, 1:2]), c(16, 10))
 
   # Ensure vertex column is being returned with the same information as
   # rownames (for compatibility purposes):

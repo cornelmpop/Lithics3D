@@ -1,4 +1,35 @@
-Lithics3D v0.4.2
+Lithics3D v0.5.0 (Release date: 2023-12-01)
+==============
+
+This version includes substantial changes to facilitate future development, including code cleanup (e.g., linted main code, testing framework switched to testthat 3rd edition, new unit tests were added) and enhanced documentation for many of the included functions (all function documentation has been modified to some extent due to a switch to markdown support). It also includes major new features, as outlined below.
+
+New features:
+* Interactive 3D landmarking/POI (point of interest) selection: New functions
+mesh_mark_pois and drop_poi enable the interactive selection of points of
+interest on a mesh surface. These functions are listed as experimental for now,
+but they are expected to work as advertised.
+* Ray tracing: New function mesh_intersect_rays (and a helper function
+trace_ray) for determining exact intersection points between rays and a mesh
+surface.
+* New function split_pts to split a point cloud by a 3D plane. The function
+encapsulates code from the edgesOnPlane and is similar to Morpho::cutSpace, but
+runs substantially faster.
+
+Other changes:
+* Documentation: Added support for markdown and migrated existing documentation to the new format.
+* Documentation: Added support for lifecycle badges.
+* Documentation: Updated descriptions for several functions.
+* Documentation: Added additional information on package author and updated README (minor changes only).
+* Tests: Changed testing framework to testthat 3rd edition.
+* Tests: Added new unit tests and fixed some of the old ones, improving coverage from 29.73% in version 0.4.2 to ca. 55%.
+* Split edgesOnPlane function, moving code into the new split_pts function.
+* Added unit test for the new split_pts function.
+* mesh_volume and getTVol: The return on bad input changed from NaN to NA.
+* Compressed the demo data to reduce the size of the package.
+* Updated package requirements.
+
+
+Lithics3D v0.4.2 (Release date: 2019-04-20)
 ==============
 
 New features:

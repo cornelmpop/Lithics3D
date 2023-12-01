@@ -4,8 +4,10 @@
 \name{demoFlake2}
 \alias{demoFlake2}
 \title{Flake 2}
-\format{A list containing a mesh3d object (mesh) and a set of basic landmarks
-(lms) defining the ventral surface of the flake}
+\format{
+A list containing a mesh3d object (mesh) and a set of basic landmarks
+(lms) defining the ventral surface of the flake
+}
 \source{
 3D scan courtesy of Pop Geological Consulting Services
 LTD \url{http://www.popgeology.com}

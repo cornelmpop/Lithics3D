@@ -13,7 +13,7 @@ addGridInfo(coords, c.res, axes = c(1, 2))
 mesh units are mm, then a value of 0.2 would indicate a gid resolution of
 0.2mm).}
 
-\item{axes}{a vector containing 2 indices or names for the input columns to 
+\item{axes}{a vector containing 2 indices or names for the input columns to
 be used (e.g. c("x","y"), or c(1,2)). Longer vectors will be truncated to
 the first two entries (e.g. c("x","y","z") == c("x","y"))}
 }
@@ -30,18 +30,17 @@ grid interval along the two requested axes (e.g. x and y) - in essence, to a
 grid cell.
 }
 \note{
-1. The grid origin is set to 0,0 along the requested axes. Note that the
+\enumerate{
+\item The grid origin is set to 0,0 along the requested axes. Note that the
 GDIM1 and GDIM2 columns refer to x,y locations on a 2d map of the
 coordinates, projected according to the specified columns.
-
-2. You should ensure the requested grid resolution makes sense given the 
+\item You should ensure the requested grid resolution makes sense given the
 resolution of the mesh (i.e. how many vertices are expected per given
 interval)
-
-3. This function is generic - it will work on any data.frame.
-
-4. NA values will result with some bad input (e.g. number of requested
+\item This function is generic - it will work on any data.frame.
+\item NA values will result with some bad input (e.g. number of requested
 breaks)
+}
 }
 \examples{
 library(Morpho)

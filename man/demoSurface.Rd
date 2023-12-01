@@ -4,7 +4,9 @@
 \name{demoSurface}
 \alias{demoSurface}
 \title{Demo surface}
-\format{A mesh3d object}
+\format{
+A mesh3d object
+}
 \usage{
 data(demoSurface)
 }

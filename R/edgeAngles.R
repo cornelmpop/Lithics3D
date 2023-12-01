@@ -4,13 +4,13 @@
 #' @description Computes edge angles along a path defined by ordered surface
 #' coordinates, at a given distance (m.d) perpendicular to the path. This
 #' function works by first computing planes perpendicular to the edge using the 
-#' \link{curve.pp} function. Note that said function returns planes at n-2
+#' [curve.pp] function. Note that said function returns planes at n-2
 #' locations, since planes cannot be computed for the endpoints. Once these
 #' planes have been obtained, mesh edges that intersect
-#' the planes are identified with the \link{edgesOnPlane} function. To identify
+#' the planes are identified with the [edgesOnPlane] function. To identify
 #' the location where the mesh thickness should be measured, the intersection
 #' points of these mesh edges with a sphere of radius m.d is computed using the
-#' \link{e2sIntersect} function. The intersections with the greatest distances
+#' [e2sIntersect] function. The intersections with the greatest distances
 #' between them (see note) are then used to measure mesh thickness, and angles
 #' are then computed using simple trigonometry.
 #' @author Cornel M. Pop

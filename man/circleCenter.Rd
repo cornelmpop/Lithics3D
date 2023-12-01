@@ -11,16 +11,16 @@ circleCenter(p)
 defining the circumference (one xyz coordinate per row)}
 }
 \value{
-A dataframe containing the x,y,z coordinates of the circle center.
-An error will be returned if the input points are collinear.
+A data.frame containing the x,y,z coordinates of the circle center.
+An error will be returned if the input points are collinear or duplicated.
 }
 \description{
 Computes the coordinates of the center point of a circle
 defined, in 3D space, by 3 points on the circumference.
 }
 \examples{
-p = data.frame(x=c(1,4,5), y=c(0,5,1), z=c(1.4, -4, 4))
-res = circleCenter(p)
+p <- data.frame(x=c(1, 4, 5), y=c(0, 5, 1), z=c(1.4, -4, 4))
+res <- circleCenter(p)
 # distance from computer center to input point 1
 dist(rbind(res, p[1,]), method="euclidean")
 # distance from computer center to input point 2

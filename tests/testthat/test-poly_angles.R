@@ -1,6 +1,4 @@
-context("Geometry")
-
-test_that("poly_angles produces correct output", {
+test_that("poly_angles (interior polygon angles) produces correct output", {
 
   # Test with invalid input:
   invalidInput <- list(listIn = list(x = c(1, 2, 3), y = c(1, 2, 3)),
@@ -21,7 +19,7 @@ test_that("poly_angles produces correct output", {
                                             y = c(1, 1, 3, 3, 3, 1)))
 
   for (i in seq(1, length(invalidInput), 1)){
-    suppressWarnings(expect_error(poly_angles(invalidInput[[i]])))
+    expect_error(poly_angles(invalidInput[[i]]))
   }
 
   # Test with valid input:
@@ -42,15 +40,13 @@ test_that("poly_angles produces correct output", {
     # Interior polygon angles will always = 180*(n-2), where n is the number
     # of sides. We use n-3 here because the first polygon vertex is duplicated
     # in the input (i.e. first == last vertex)
-    expect_that(sum(res), equals(180 * (nrow(validInput[[i]]) - 3)))
+    expect_equal(sum(res), 180 * (nrow(validInput[[i]]) - 3))
   }
 
   #Output: List of interior angles, in input order:
-  expect_that(poly_angles(validInput$squareIn), equals(c(-90, -90, -90, -90)))
-  expect_that(round(poly_angles(validInput$triangleIn)),
-              equals(c(-60, -60, -60)))
-  expect_that(poly_angles(validInput$polyIn),
-              equals(c(-90, -45, -270, -45, -90)))
+  expect_equal(poly_angles(validInput$squareIn), c(-90, -90, -90, -90))
+  expect_equal(round(poly_angles(validInput$triangleIn)), c(-60, -60, -60))
+  expect_equal(poly_angles(validInput$polyIn), c(-90, -45, -270, -45, -90))
 
   ## Tests from bugs found during actual use:
   ## Found on Feb 11, 2015
@@ -58,6 +54,6 @@ test_that("poly_angles produces correct output", {
                             -8.343165, 15.788147, 26.732483),
                       y = c(-0.04388643, -1.41876521, -1.69369650, -0.35573553,
                           3.92314472, 2.60169763, -0.04388643))
-  expect_that(sum(poly_angles(b001_df)), equals(720))
+  expect_equal(sum(poly_angles(b001_df)), 720)
 
 })

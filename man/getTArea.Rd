@@ -11,7 +11,7 @@ getTArea(coords)
 first 9 values will be used.}
 }
 \value{
-numeric value of the computed area (0 for degenerate triangles) or 
+numeric value of the computed area (0 for degenerate triangles) or
 NA in case of bad input
 }
 \description{

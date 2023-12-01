@@ -8,7 +8,7 @@
 #' @format A list containing a mesh3d object (mesh) and a set of basic landmarks
 #' (lms) defining the ventral surface of the flake
 #' @source 3D scan courtesy of Pop Geological Consulting Services
-#' LTD \url{http://www.popgeology.com}
+#' LTD <http://www.popgeology.com>
 "demoFlake1"
 
 #' @title Flake 2
@@ -21,7 +21,7 @@
 #' @format A list containing a mesh3d object (mesh) and a set of basic landmarks
 #' (lms) defining the ventral surface of the flake
 #' @source 3D scan courtesy of Pop Geological Consulting Services
-#' LTD \url{http://www.popgeology.com}
+#' LTD <http://www.popgeology.com>
 "demoFlake2"
 
 #' @title Flake 3
@@ -34,7 +34,7 @@
 #' @format A list containing a mesh3d object (mesh) and a set of basic landmarks
 #' (lms) defining the ventral surface of the flake
 #' @source 3D scan courtesy of Pop Geological Consulting Services
-#' LTD \url{http://www.popgeology.com}
+#' LTD <http://www.popgeology.com>
 "demoFlake3"
 
 #' @title Demo sphere

@@ -17,15 +17,15 @@ requested. Requesting more cores than are physically available will simply
 result in all cores being used.}
 }
 \value{
-numeric value of the computed volume or NaN in case of bad input
+numeric value of the computed volume or NA in case of bad input
 }
 \description{
 Calculate volume of an arbitrary closed mesh by adding up
-signed tetrahedron volumes for each constituent triangle. Please 
+signed tetrahedron volumes for each constituent triangle. Please
 ensure that the mesh is clean (e.g. no non-manifold vertices, etc)
 }
 \note{
-For small meshes it may be faster to use a single thread due to the 
+For small meshes it may be faster to use a single thread due to the
 overhead associated with starting the processing cluster.
 }
 \examples{

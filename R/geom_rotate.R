@@ -98,13 +98,17 @@ rotatePt_2D <- function(x, y, angle){
   return(t_xy)
 }
 
-#' @title Align to axis (obsolete)
-#' @description This function is obsolete. Please use the more general
-#' \link{rotate_v2v} function instead.
+#' @title Align to axis (deprecated)
+#' 
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#' 
+#' This function is obsolete. Please use the more general
+#' [rotate_v2v()] function instead.
 #' @author Cornel M. Pop
 #' @param coords A Nx3 matrix-like object containing xyz point coordinates, one
 #' per row.
-#' @param l A 2X3 matrix-like object containing xyz point coordiantes defining
+#' @param l A 2X3 matrix-like object containing xyz point coordinates defining
 #' the alignment vector, one coordinate per row.
 #' @return A list containing rotated coordinates (coords) and the rotated
 #' input vector (l).

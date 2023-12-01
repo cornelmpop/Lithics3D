@@ -13,16 +13,16 @@ mesh_translate_it(mesh)
 data.frame object
 }
 \description{
-Translates triangle definitions (mesh3d$it) to a dataframe 
+Translates triangle definitions (mesh3d$it) to a dataframe
 containing vertex coordinates instead of vertex IDs.
 }
 \note{
 Only the first three rows of the mesh3d$it and mesh3d$vb matrices are
-used at the moment. For each row in the mesh3d$it matrix, which contains a 
-list of column IDs from the mesh3d$vb matrix, three columns are created, in 
+used at the moment. For each row in the mesh3d$it matrix, which contains a
+list of column IDs from the mesh3d$vb matrix, three columns are created, in
 input order, for a total of 9 columns. These columns contain the row data
 from the mesh3d$vb matrix for the specified columns.
-Note that value types are not modified (e.g. double in the input == double 
+Note that value types are not modified (e.g. double in the input == double
 in the output)
 }
 \examples{
