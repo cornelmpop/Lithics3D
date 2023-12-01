@@ -1,4 +1,4 @@
-Lithics3D v0.5.0 (Release date: 2023-11-29)
+Lithics3D v0.5.0 (Release date: 2023-12-01)
 ==============
 
 This version includes substantial changes to facilitate future development, including code cleanup (e.g., linted main code, testing framework switched to testthat 3rd edition, new unit tests were added) and enhanced documentation for many of the included functions (all function documentation has been modified to some extent due to a switch to markdown support). It also includes major new features, as outlined below.
