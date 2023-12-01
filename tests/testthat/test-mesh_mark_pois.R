@@ -60,6 +60,14 @@ test_that("mesh_mark_pois works as expected", {
   res <- mesh_mark_pois(mesh = demoSphere, pois = pois_valid)
   expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE)
   expect_identical(res, pois_valid)
+  
+  # b0035_p Ensure we can run with 1 POI without generating error:
+  res <- mesh_mark_pois(mesh = demoSphere, pois = pois_valid[1, ])
+  # Note: to save scene:
+  # saveRDS(scene3d(),
+  #         file = "tests/testthat/testdata/mesh_mark_pois_demosphere_vp1.rds")
+  expect_known_scene("mesh_mark_pois_demosphere_vp1", close = TRUE)
+  expect_identical(res, pois_valid[1, ])
 })
 
 test_that("proj_poi works as expected", {

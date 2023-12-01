@@ -1,7 +1,7 @@
 #' Determine Point of Interest (POI) on a mesh surface using ray tracing
 #'
 #' `r lifecycle::badge("experimental")`
-#' 
+#'
 #' Determines the location of a POI on the mesh surface based on a ray. This
 #' function is used internally by the [mesh_mark_pois()] function,
 #' and may not be very useful in other contexts.
@@ -139,9 +139,10 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' for marking POIs. It requires an open RGL window to function properly. If no
 #' window is open, it plots the mesh and previously marked POIs, if any.
 #'
-#' Users can mark new POIs by clicking on the mesh surface. The marked POIs are
-#' displayed as colored markers, and their coordinates are stored in the
-#' returned data frame.
+#' Users can mark new POIs by clicking on the mesh surface and hitting the ESC
+#' button on the keyboard when done (note: the RGL window should not be closed
+#' while the function is running). The marked POIs are displayed as colored
+#' markers, and their coordinates are stored in the returned data frame.
 #'
 #' @examples
 #' \dontrun{
@@ -153,12 +154,16 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' # Drop the last POI and update the 3D scene
 #' pois <- drop_poi(pois)
 #'
-#' # Close the 3D
-#' close3d()
+#' # Close the 3D scene
+#' rgl::close3d()
 #'
 #' # Plot the mesh again, showing previously marked POIs
 #' pois <- mesh_mark_pois(mesh, pois)
+#'
+#' # Close the 3D scene
+#' rgl::close3d()
 #' }
+#'
 #'
 #' @keywords 'digitization' '3D scanning' 'points of interest' 'interactive'
 #' 'rgl' 'mesh marking' 'POI tagging' 'mesh digitization' 'landmark capture'
@@ -192,7 +197,15 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     shade3d(mesh, color = "green")
     if (nrow(pois) > 0) {
       if (is.na(prev_color)) {
-        poi_col <- grDevices::hcl.colors(nrow(pois), "Blue-Red 2", rev = TRUE)
+        if (nrow(pois) == 1) {
+          # If only one input, show the last color that would normally be
+          # displayed with more POIs. NOTE: As of R 4.2.3, there is a bug in
+          # the hcl.colors function - can't run the following with an n of 1,
+          # contrary to what their docs say.
+          poi_col <- grDevices::hcl.colors(2, "Blue-Red 2", rev = TRUE)[2]
+        } else {
+          poi_col <- grDevices::hcl.colors(nrow(pois), "Blue-Red 2", rev = TRUE)
+        }
       } else {
         poi_col <- rep(prev_color, nrow(pois))
       }

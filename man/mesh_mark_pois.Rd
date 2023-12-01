@@ -49,9 +49,10 @@ This function uses the 'rgl' package to provide an interactive 3D environment
 for marking POIs. It requires an open RGL window to function properly. If no
 window is open, it plots the mesh and previously marked POIs, if any.
 
-Users can mark new POIs by clicking on the mesh surface. The marked POIs are
-displayed as colored markers, and their coordinates are stored in the
-returned data frame.
+Users can mark new POIs by clicking on the mesh surface and hitting the ESC
+button on the keyboard when done (note: the RGL window should not be closed
+while the function is running). The marked POIs are displayed as colored
+markers, and their coordinates are stored in the returned data frame.
 }
 \examples{
 \dontrun{
@@ -63,12 +64,16 @@ pois <- mesh_mark_pois(mesh)
 # Drop the last POI and update the 3D scene
 pois <- drop_poi(pois)
 
-# Close the 3D
-close3d()
+# Close the 3D scene
+rgl::close3d()
 
 # Plot the mesh again, showing previously marked POIs
 pois <- mesh_mark_pois(mesh, pois)
+
+# Close the 3D scene
+rgl::close3d()
 }
+
 
 }
 \seealso{
