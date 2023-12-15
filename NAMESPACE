@@ -3,6 +3,7 @@
 export(alignAxis)
 export(alignMesh.PCA)
 export(circleCenter)
+export(coords_onseg)
 export(curve.pp)
 export(dist_pt2l)
 export(drop_poi)

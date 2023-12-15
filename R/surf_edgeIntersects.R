@@ -71,7 +71,7 @@ e2sIntersect <- function(e.ids, s, mpts, medges){
   for (i in 1:length(eoi)){
     l.s <- rbind(vb1[eoi[i], ], vb2[eoi[i], ])
     l.res <- l2sIntersect(l.s, s)
-    p.d <- ptOnSeg(l.res, l.s, d.t = 0.001)
+    p.d <- coords_onseg(l.res, l.s)
     # Check if we need to flip the result (i.e. the second intersection lies
     # on the segment - see output description in the docs)
     if (p.d[1] == F){

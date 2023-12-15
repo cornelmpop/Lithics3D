@@ -2,43 +2,40 @@
 % Please edit documentation in R/geom_dist.R
 \name{ptOnSeg}
 \alias{ptOnSeg}
-\title{Determine if points are on a line segment}
+\title{Determine if coordinates are on a line segment (Deprecated)}
 \usage{
 ptOnSeg(coords, l, d.t = 0)
 }
 \arguments{
-\item{coords}{A Nx3 matrix-like object with point coordinates, one
-per row.}
+\item{coords}{A Nx3 matrix-like object with point coordinates, one per row.}
 
-\item{l}{A 2x3 matrix-like object with coordinates defining a line, one
-coordinate per row.}
+\item{l}{A 2x3 matrix-like object with coordinates defining a line segment,
+one coordinate per row.}
 
-\item{d.t}{Distance threshold value. Default = 0, but unless the position
-of the point is known with perfect precision, it is useful to specify a
-threshold value to deal with floating point precision errors.}
+\item{d.t}{(optional) Tolerance value for distance from the line segment;
+useful to deal with floating point precision errors. Default is 0.}
 }
 \value{
-A boolean vector indicating, for each input point, whether they
+A boolean vector indicating, for each input coordinate, whether they
 lie on the given line segment
 }
 \description{
-Determines if the given input points lie on a line segment or
-not.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
-\section{TODO}{
- Test if this actually works as expected. Untested!
+\details{
+This function has been renamed to \link{coords_onseg}.
 }
-
 \examples{
 library(rgl)
-tt.1 = data.frame(x=c(14.830469, 12.812613), y=c(-84.840050, -79.966871),
-                  z=c(2.938235, 2.302472))
-tl.1 = data.frame(x=c(12.84073, 12.49499), y=c(-80.03477, -79.19981),
-                  z=c(2.311330, 2.202399))
-points3d(tt.1, color="red")
-lines3d(tl.1, color="blue")
-ptOnSeg(tt.1, tl.1) # False, False
-ptOnSeg(tt.1, tl.1, d.t=0.001) # False, True
+coords = data.frame(x = c(14.830469, 12.812613),
+                    y = c(-84.840050, -79.966871),
+                    z = c(2.938235, 2.302472))
+seg = data.frame(x = c(12.84073, 12.49499), y = c(-80.03477, -79.19981),
+                 z = c(2.311330, 2.202399))
+points3d(coords, color = "red")
+lines3d(seg, color = "blue")
+ptOnSeg(coords, seg) # False, False
+ptOnSeg(coords, seg, d.t = 0.001) # False, True
 }
 \author{
 Cornel M. Pop

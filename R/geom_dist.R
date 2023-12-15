@@ -22,45 +22,115 @@ dist_pt2l <- function(coords, l){
   return(d)
 }
 
-#' @title Determine if points are on a line segment
-#' @description Determines if the given input points lie on a line segment or
-#' not.
-#' @author Cornel M. Pop
-#' @param coords A Nx3 matrix-like object with point coordinates, one
-#' per row.
-#' @param l A 2x3 matrix-like object with coordinates defining a line, one
-#' coordinate per row.
-#' @param d.t Distance threshold value. Default = 0, but unless the position
-#' of the point is known with perfect precision, it is useful to specify a
-#' threshold value to deal with floating point precision errors.
-#' @section TODO: Test if this actually works as expected. Untested!
-#' @examples
-#' library(rgl)
-#' tt.1 = data.frame(x=c(14.830469, 12.812613), y=c(-84.840050, -79.966871),
-#'                   z=c(2.938235, 2.302472))
-#' tl.1 = data.frame(x=c(12.84073, 12.49499), y=c(-80.03477, -79.19981),
-#'                   z=c(2.311330, 2.202399))
-#' points3d(tt.1, color="red")
-#' lines3d(tl.1, color="blue")
-#' ptOnSeg(tt.1, tl.1) # False, False
-#' ptOnSeg(tt.1, tl.1, d.t=0.001) # False, True
-#' @return A boolean vector indicating, for each input point, whether they
+#' Determine if coordinates are on a line segment
+#' 
+#' `r lifecycle::badge("stable")`
+#' 
+#' Determines if the given input coordinates lie on a line segment
+#' or not.
+#' 
+#' @param coords A Nx3 matrix-like object with x, y, and z point coordinates,
+#' one per row.
+#' 
+#' @param seg A 2x3 matrix-like object containing x, y, and z coordinates for
+#' two points that define the line segment.
+#' 
+#' @param tol (optional) Tolerance value for distance from the line segment;
+#' useful to deal with floating point precision errors. Default is 0.
+#' 
+#' @return A boolean vector indicating, for each input coordinate, whether they
 #' lie on the given line segment
+#' 
+#' @examples
+#' coords = data.frame(x = c(14.830469, 12.812613),
+#'                     y = c(-84.840050, -79.966871),
+#'                     z = c(2.938235, 2.302472))
+#' seg = data.frame(x = c(12.84073, 12.49499), y = c(-80.03477, -79.19981),
+#'                  z = c(2.311330, 2.202399))
+#' coords_onseg(coords, seg) # False, False
+#' coords_onseg(coords, seg, tol = 0.001) # False, True
+#' 
+#' \dontrun{
+#' library(rgl)
+#' points3d(coords, color = "red")
+#' lines3d(seg), color = "blue")
+#' }
+#' 
+#' @author Cornel M. Pop
+#' 
+#' @seealso [proj_pt2l()] for projecting coordinates orthogonally onto a line.
 #' @export
-ptOnSeg <- function(coords, l, d.t = 0){
+coords_onseg <- function(coords, seg, tol = 0) {
+
+  # Ensure the input is properly formatted
+  stopifnot(identical(dim(seg), as.integer(c(2, 3))))
+  stopifnot(ncol(coords) == 3) # To produce clearer errors
+  stopifnot(is.numeric(tol) && length(tol) == 1)
+  
+  # Project points onto the line to determine which could be on segment:
+  on_line <- proj_pt2l(coords, seg)
+
   res <- list()
-  for (i in 1:nrow(coords)){
-    x <- coords[i, 1] <= max(l[, 1]) & coords[i, 1] >= min(l[, 1])
-    y <- coords[i, 2] <= max(l[, 2]) & coords[i, 2] >= min(l[, 2])
-    z <- coords[i, 3] <= max(l[, 3]) & coords[i, 3] >= min(l[, 3])
-    if (all(x, y, z)){
-      res[[i]] <- T
-    } else {
-      res[[i]] <- F
+  for (i in seq_len(nrow(coords))){
+
+    # Default to FALSE
+    res[[i]] <- FALSE
+
+    # If on line, proceed with check and change result to TRUE if needed:
+    if (max(on_line[i, ] - coords[i, ]) <= tol) {
+      
+      x <- coords[i, 1] >= (min(seg[, 1]) - tol) &
+           coords[i, 1] <= (max(seg[, 1]) + tol)
+      y <- coords[i, 2] >= (min(seg[, 2]) - tol) &
+           coords[i, 2] <= (max(seg[, 2]) + tol)
+      z <- coords[i, 3] >= (min(seg[, 3]) - tol) &
+           coords[i, 3] <= (max(seg[, 3]) + tol)
+
+      if (all(x, y, z)){
+        res[[i]] <- TRUE
+      }
     }
+
   }
+  
   return(unlist(res))
 }
+
+#' Determine if coordinates are on a line segment (Deprecated)
+#' 
+#' `r lifecycle::badge("deprecated")`
+#' 
+#' @Description
+#' 
+#' This function has been renamed to [coords_onseg].
+#' 
+#' 
+#' @author Cornel M. Pop
+#' @param coords A Nx3 matrix-like object with point coordinates, one per row.
+#' @param l A 2x3 matrix-like object with coordinates defining a line segment,
+#' one coordinate per row.
+#' @param d.t (optional) Tolerance value for distance from the line segment;
+#' useful to deal with floating point precision errors. Default is 0.
+#' @return A boolean vector indicating, for each input coordinate, whether they
+#' lie on the given line segment
+#' @examples
+#' library(rgl)
+#' coords = data.frame(x = c(14.830469, 12.812613),
+#'                     y = c(-84.840050, -79.966871),
+#'                     z = c(2.938235, 2.302472))
+#' seg = data.frame(x = c(12.84073, 12.49499), y = c(-80.03477, -79.19981),
+#'                  z = c(2.311330, 2.202399))
+#' points3d(coords, color = "red")
+#' lines3d(seg, color = "blue")
+#' ptOnSeg(coords, seg) # False, False
+#' ptOnSeg(coords, seg, d.t = 0.001) # False, True
+#' @export
+ptOnSeg <- function(coords, l, d.t = 0) {
+  .Deprecated("coords_onseg")
+  
+  coords_onseg(coords, l, d.t)
+}
+
 
 #' @title Orthogonally project points onto a line
 #' @description Projects given coordinates onto a line.
