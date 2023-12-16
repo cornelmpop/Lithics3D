@@ -20,22 +20,10 @@ A boolean vector indicating, for each input coordinate, whether they
 lie on the given line segment
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
-}
-\details{
 This function has been renamed to \link{coords_onseg}.
 }
-\examples{
-library(rgl)
-coords = data.frame(x = c(14.830469, 12.812613),
-                    y = c(-84.840050, -79.966871),
-                    z = c(2.938235, 2.302472))
-seg = data.frame(x = c(12.84073, 12.49499), y = c(-80.03477, -79.19981),
-                 z = c(2.311330, 2.202399))
-points3d(coords, color = "red")
-lines3d(seg, color = "blue")
-ptOnSeg(coords, seg) # False, False
-ptOnSeg(coords, seg, d.t = 0.001) # False, True
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \author{
 Cornel M. Pop

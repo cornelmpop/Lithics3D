@@ -17,7 +17,7 @@ two points that define the line segment.}
 useful to deal with floating point precision errors. Default is 0.}
 }
 \value{
-A boolean vector indicating, for each input coordinate, whether they
+A Boolean vector indicating, for each input coordinate, whether they
 lie on the given line segment
 }
 \description{

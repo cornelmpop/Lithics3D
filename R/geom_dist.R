@@ -38,7 +38,7 @@ dist_pt2l <- function(coords, l){
 #' @param tol (optional) Tolerance value for distance from the line segment;
 #' useful to deal with floating point precision errors. Default is 0.
 #' 
-#' @return A boolean vector indicating, for each input coordinate, whether they
+#' @return A Boolean vector indicating, for each input coordinate, whether they
 #' lie on the given line segment
 #' 
 #' @examples
@@ -64,46 +64,50 @@ coords_onseg <- function(coords, seg, tol = 0) {
 
   # Ensure the input is properly formatted
   stopifnot(identical(dim(seg), as.integer(c(2, 3))))
-  stopifnot(ncol(coords) == 3) # To produce clearer errors
+  stopifnot(ncol(coords) == 3) # Important given how columns are ref. below
   stopifnot(is.numeric(tol) && length(tol) == 1)
   
-  # Project points onto the line to determine which could be on segment:
-  on_line <- proj_pt2l(coords, seg)
-
-  res <- list()
-  for (i in seq_len(nrow(coords))){
-
-    # Default to FALSE
-    res[[i]] <- FALSE
-
-    # If on line, proceed with check and change result to TRUE if needed:
-    if (max(on_line[i, ] - coords[i, ]) <= tol) {
-      
-      x <- coords[i, 1] >= (min(seg[, 1]) - tol) &
-           coords[i, 1] <= (max(seg[, 1]) + tol)
-      y <- coords[i, 2] >= (min(seg[, 2]) - tol) &
-           coords[i, 2] <= (max(seg[, 2]) + tol)
-      z <- coords[i, 3] >= (min(seg[, 3]) - tol) &
-           coords[i, 3] <= (max(seg[, 3]) + tol)
-
-      if (all(x, y, z)){
-        res[[i]] <- TRUE
-      }
-    }
-
-  }
+  # Calculate line direction:
+  # Note: seg[2, ] - seg[1, ] is much, much slower.
+  seg_d <- c(seg[2, 1] - seg[1, 1],
+             seg[2, 2] - seg[1, 2],
+             seg[2, 3] - seg[1, 3])
   
-  return(unlist(res))
+  # Distance from segment origin:
+  d1 <- coords[, 1] - seg[1, 1]
+  d2 <- coords[, 2] - seg[1, 2]
+  d3 <- coords[, 3] - seg[1, 3]
+  
+  # If collinear, ratios of distances should be the same
+  # (see e.g., https://mathworld.wolfram.com/Collinear.html)
+  # x_2-x_1:y_2-y_1:z_2-z_1=x_3-x_1:y_3-y_1:z_3-z_1. 
+  r1 <- d1 / d2 == seg_d[1] / seg_d[2]
+  r2 <- d1 / d3 == seg_d[1] / seg_d[3]
+  
+  # The following is just to make the code more readable
+  xmax <- max(seg[, 1]) + tol
+  xmin <- min(seg[, 1]) - tol
+  ymax <- max(seg[, 2]) + tol
+  ymin <- min(seg[, 2]) - tol
+  zmax <- max(seg[, 3]) + tol
+  zmin <- min(seg[, 3]) - tol
+  
+  osx <- d1 >= xmin & d1 <= xmax
+  osy <- d2 >= ymin & d2 <= ymax
+  osz <- d3 >= zmin & d3 <= zmax
+  
+  res <- r1 & r2 & osx & osy & osz
+  
+  return(res)
 }
 
 #' Determine if coordinates are on a line segment (Deprecated)
 #' 
 #' `r lifecycle::badge("deprecated")`
 #' 
-#' @Description
+#' @description
 #' 
 #' This function has been renamed to [coords_onseg].
-#' 
 #' 
 #' @author Cornel M. Pop
 #' @param coords A Nx3 matrix-like object with point coordinates, one per row.
@@ -113,18 +117,6 @@ coords_onseg <- function(coords, seg, tol = 0) {
 #' useful to deal with floating point precision errors. Default is 0.
 #' @return A boolean vector indicating, for each input coordinate, whether they
 #' lie on the given line segment
-#' @examples
-#' library(rgl)
-#' coords = data.frame(x = c(14.830469, 12.812613),
-#'                     y = c(-84.840050, -79.966871),
-#'                     z = c(2.938235, 2.302472))
-#' seg = data.frame(x = c(12.84073, 12.49499), y = c(-80.03477, -79.19981),
-#'                  z = c(2.311330, 2.202399))
-#' points3d(coords, color = "red")
-#' lines3d(seg, color = "blue")
-#' ptOnSeg(coords, seg) # False, False
-#' ptOnSeg(coords, seg, d.t = 0.001) # False, True
-#' @export
 ptOnSeg <- function(coords, l, d.t = 0) {
   .Deprecated("coords_onseg")
   

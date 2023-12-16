@@ -44,4 +44,9 @@ test_that("coords_onseg works as expected", {
   expect_type(coords_onseg(coords, seg), "logical")
   expect_length(coords_onseg(coords, seg), 4)
   expect_length(coords_onseg(coord_1, seg), 1)
+  
+  # Other:
+  seg <- data.frame(x = c(1, 7), y = c(2, 20), z = c(3, -3))
+  coord_x <- data.frame(x = c(3), y = c(8), z = c(1))
+  expect_true(coords_onseg(coord_x, seg))
 })
