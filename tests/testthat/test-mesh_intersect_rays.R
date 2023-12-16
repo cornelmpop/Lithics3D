@@ -1,7 +1,7 @@
 test_that("trace_ray works as expected", {
-  
+
   # Compliance with documentation:
-  
+
   # Valid input in incorrect format (all except the last triangle should
   # be intercepted by the ray:
   triang_v0 <- data.frame(x = c(-1, 1, 2, 3, 4, 1),
@@ -13,11 +13,11 @@ test_that("trace_ray works as expected", {
   triang_v2 <- data.frame(x = c(-1, 1, 2, 3, 4, 3),
                           y = c(-0.5, -1, 0, -1, -2, 0),
                           z = c(1, 1, 0, 1, -1, 1e-10))
-  
+
   orig_ray <- data.frame(x = c(0), y = c(0), z = c(0))
   dir_ray <- data.frame(x = c(1), y = c(0), z = c(0))
   epsilon <- .Machine$double.eps
-  
+
   # replicate to match number of triangles:
   orig_ray_ok <- rbind(orig_ray, orig_ray, orig_ray,
                        orig_ray, orig_ray, orig_ray)
@@ -30,47 +30,47 @@ test_that("trace_ray works as expected", {
                          v0 = triang_v0, v1 = triang_v1, v2 = triang_v2,
                          epsilon = epsilon),
                "Arguments 'x' and 'y' must be numeric vectors or matrices.")
-  
+
   # Check that this only works on equally sized input parameters:
   expect_error(trace_ray(o = as.matrix(orig_ray_ok)[1, ],
                          d = as.matrix(orig_ray_ok),
-                         v0 = as.matrix(triang_v0), 
+                         v0 = as.matrix(triang_v0),
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2), epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
   expect_error(trace_ray(o = as.matrix(orig_ray_ok)[-1, ],
                          d = as.matrix(orig_ray_ok),
-                         v0 = as.matrix(triang_v0), 
+                         v0 = as.matrix(triang_v0),
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2), epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
   expect_error(trace_ray(o = as.matrix(orig_ray_ok),
                          d = as.matrix(orig_ray_ok)[1, ],
-                         v0 = as.matrix(triang_v0), 
+                         v0 = as.matrix(triang_v0),
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2), epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
   expect_error(trace_ray(o = as.matrix(orig_ray_ok),
                          d = as.matrix(orig_ray_ok)[-1, ],
-                         v0 = as.matrix(triang_v0), 
+                         v0 = as.matrix(triang_v0),
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2), epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
   expect_error(trace_ray(o = as.matrix(orig_ray_ok),
                          d = as.matrix(orig_ray_ok),
-                         v0 = as.matrix(triang_v0)[-1, ], 
+                         v0 = as.matrix(triang_v0)[-1, ],
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2), epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
   expect_error(trace_ray(o = as.matrix(orig_ray_ok),
                          d = as.matrix(orig_ray_ok),
-                         v0 = as.matrix(triang_v0), 
+                         v0 = as.matrix(triang_v0),
                          v1 = as.matrix(triang_v1)[-1, ],
                          v2 = as.matrix(triang_v2), epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
   expect_error(trace_ray(o = as.matrix(orig_ray_ok),
                          d = as.matrix(orig_ray_ok),
-                         v0 = as.matrix(triang_v0), 
+                         v0 = as.matrix(triang_v0),
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2)[-1, ], epsilon = epsilon),
                "Bad input: rays or triangles empty or of mismatched size")
@@ -87,13 +87,13 @@ test_that("trace_ray works as expected", {
                          v1 = as.matrix(triang_v1),
                          v2 = as.matrix(triang_v2)),
                "argument \"epsilon\" is missing, with no default")
-  
+
   # Bad epsilon value:
   expect_error(trace_ray(o = as.matrix(orig_ray_ok), d = as.matrix(dir_ray_ok),
-                        v0 = as.matrix(triang_v0),
-                        v1 = as.matrix(triang_v1),
-                        v2 = as.matrix(triang_v2),
-                        epsilon = c(1, 2)))
+                         v0 = as.matrix(triang_v0),
+                         v1 = as.matrix(triang_v1),
+                         v2 = as.matrix(triang_v2),
+                         epsilon = c(1, 2)))
 
   # Valid input:
   res <- trace_ray(o = as.matrix(orig_ray_ok), d = as.matrix(dir_ray_ok),
@@ -101,7 +101,7 @@ test_that("trace_ray works as expected", {
                    v1 = as.matrix(triang_v1),
                    v2 = as.matrix(triang_v2),
                    epsilon = epsilon)
-  
+
   expect_true(inherits(res, "matrix"))
   expect_true(identical(dim(res), as.integer(c(5, 3))))
   # Check where the intersections are expected to be (the vector being subst.)
@@ -110,13 +110,13 @@ test_that("trace_ray works as expected", {
   expect_true(max(abs(res[3, ] - c(2, 0, 0))) < epsilon)
   expect_true(max(abs(res[4, ] - c(3, 0, 0))) < epsilon)
   expect_true(max(abs(res[5, ] - c(1, 0, 0))) < epsilon)
-  
+
   # Epsilon checks:
   res <- trace_ray(o = as.matrix(orig_ray_ok), d = as.matrix(dir_ray_ok),
-                         v0 = as.matrix(triang_v0),
-                         v1 = as.matrix(triang_v1),
-                         v2 = as.matrix(triang_v2),
-                         epsilon = 1e-9) # Fail the 5th triangle
+                   v0 = as.matrix(triang_v0),
+                   v1 = as.matrix(triang_v1),
+                   v2 = as.matrix(triang_v2),
+                   epsilon = 1e-9) # Fail the 5th triangle
   expect_true(identical(dim(res), as.integer(c(4, 3))))
 
   # Non-intersecting ray should return an empty matrix:
@@ -162,19 +162,24 @@ test_that("trace_ray works as expected", {
 })
 
 test_that("mesh_intersect_rays works as expected", {
-  
+
   # Valid input:
   # Empty rays should trigger error:
   expect_error(mesh_intersect_rays(data.frame(),
                                    demoFlake1$mesh, parExec = FALSE))
-  
-  rays <- data.frame(x1 = c(-41.65845, -41.82012, -41.87693, 0),
+
+  # Changed in ver 0.5.1 - the values were really extreme, as the ray landed
+  # on the very edge of the mesh, and there the reduction of the mesh done
+  # for 0.5.1 made a big difference.
+  #rays <- data.frame(x1 = c(-41.65845, -41.82012, -41.87693, 0), # ver 0.5.0
+  rays <- data.frame(x1 = c(-11.65845, -11.82012, -11.87693, 0),
                      y1 = c(-1.22681434, -0.91828322, -0.41378155, 0),
                      z1 = c(100, 100, 100, 100),
-                     x2 = c(-41.65845, -41.82012, -41.87693, 0),
+                     x2 = c(-11.65845, -11.82012, -11.87693, 0),
+                     #x2 = c(-41.65845, -41.82012, -41.87693, 0), # ver 0.5.0
                      y2 = c(-1.22681434, -0.91828322, -0.41378155, 1),
                      z2 = c(99, 99, 99, 100))
-  
+
   res <- mesh_intersect_rays(rays, Morpho::pcAlign(demoFlake1$mesh),
                              parExec = FALSE, maxCores = 0)
   # Check output type:
@@ -185,11 +190,13 @@ test_that("mesh_intersect_rays works as expected", {
   # Check values:
   expect_equal(nrow(res[[1]]), 2)
   expect_identical(as.numeric(round(res[[1]][1, ], 7)),
-                   c(-41.65845, -1.2268143, 10.5377184))
+                   #c(-41.65845, -1.2268143, 10.5377184)) # ver 0.5.0
+                   c(-11.65845, -1.2268143, 1.1717456))
   expect_identical(as.numeric(round(res[[1]][2, ], 7)),
-                   c(-41.65845, -1.2268143, 8.3450981))
+                   #c(-41.65845, -1.2268143, 8.3450981)) # ver 0.5.0
+                   c(-11.65845, -1.2268143, -7.8886665))
   expect_equal(nrow(res[[4]]), 0) # This is a non-intersecting ray
-  
+
   # Invalid inputs:
   # Bad rays:
   expect_error(mesh_intersect_rays(c(1, 2, 3),
@@ -203,18 +210,19 @@ test_that("mesh_intersect_rays works as expected", {
                "Bad input: 'parExec' must be set to TRUE or FALSE.")
   # Bad maxCores:
   expect_error(mesh_intersect_rays(rays, demoFlake1$mesh,
-                                   parExec = TRUE, maxCores = "AA"), fixed = T,
+                                   parExec = TRUE, maxCores = "AA"),
+               fixed = TRUE,
                "is.numeric(maxCores) is not TRUE")
 
   # Bugs:
-  
+
   # b034_p (Lithics3D_Project) - output in case of a single intersection was not
   # a matrix + other bug discovered while fixing (bad input spec - nr cols):
   ray <- data.frame(x = c(0, 0), y = c(0, 0), z = c(100, 99))
   # This returned an empty list, whereas it should have returned an error
   # because the input did not conform to documentation (Nx6 columns).
   expect_error(mesh_intersect_rays(ray, demoSurface))
-  
+
   res_b <- mesh_intersect_rays(cbind(ray[1, ], ray[2, ]), demoSurface)
   expect_equal(nrow(res_b[[1]]), 1)
   expect_true(is.matrix(res_b[[1]]))
@@ -225,4 +233,3 @@ test_that("mesh_intersect_rays works as expected", {
                               parExec = TRUE, maxCores = 2)
   expect_identical(res, res2)
 })
-
