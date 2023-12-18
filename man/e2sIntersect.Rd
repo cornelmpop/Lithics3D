@@ -4,36 +4,55 @@
 \alias{e2sIntersect}
 \title{Mesh edge / sphere intersection}
 \usage{
-e2sIntersect(e.ids, s, mpts, medges)
+e2sIntersect(e_ids, s, mpts, medges)
 }
 \arguments{
-\item{e.ids}{A vector containing edge IDs as output by Rvcg
-vcgGetEdge function with "unique" set to TRUE.}
+\item{e_ids}{A vector containing mesh edge IDs, corresponding to the row
+names of the \link[Rvcg:vcgGetEdge]{Rvcg::vcgGetEdge} output when run with "unique" set to TRUE).}
 
 \item{s}{A vector of length 4 (center.x, center.y, center.z, radius) defining
 a sphere}
 
-\item{mpts}{Nx4 matrix-like object corresponding to the transposed mesh$vb}
+\item{mpts}{Nx4 matrix-like object corresponding to the transposed mesh
+coordinates (\code{t(mesh$vb)}, where \code{mesh} is a \code{mesh3d} object)}
 
-\item{medges}{An Nx4 dataframe corresponding to the output of
-Rvcg::vcgGetEdge(mesh, unique=T).}
+\item{medges}{An Nx4 data.frame corresponding to the output of
+\code{Rvcg::vcgGetEdge(mesh, unique=T)}, where \code{mesh} is a \code{mesh3d} object.
+May be identical to the e_ids parameter, or the latter may be subset.}
 }
 \value{
-A data.frame with intersection coordinates (x,y,z,x1,y1,z1), one per
-row, for all input edges, where the row names correspond to input edge ids.
-NA will be returned in cases where there are no intersections. The first
-coordinate (x,y,z) will always be located ON the segment and farthest
-from the center of the sphere (i.e. if the segment crosses the entire sphere).
+A data.frame with intersection coordinates (x,y,z), one per
+row, for all input edges; the row names correspond to input edge ids.
 }
 \description{
-Computes the intersection coordinates of the input mesh edges
-and a sphere.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Computes the intersection coordinates of mesh edges (i.e., the sides of the
+triangles that form the triangular mesh) and a sphere for cases where edge
+ends are on opposite sides of the sphere's surface (i.e., one end is within
+the sphere, the other end is outside of it). In this implementation no
+intersections are returned for edges that cut across the sphere.
 }
-\section{TODO}{
- Test this function with 3 different scenarios: no inters,
-inters, and both inters on segment.
+\examples{
+data(demoSphere) # Use the included demoSphere object for this example
+t_edges <- Rvcg::vcgGetEdge(demoSphere, unique = TRUE)
+t_sphere <- c(0.5, 0.5, 0.5, 1) # Offset by 0.5 from demoSphere's center
+
+# Compute intersections (if any) with all edges of the demoSphere:
+res <- e2sIntersect(rownames(t_edges),
+                    t_sphere,
+                    t(demoSphere$vb), # transpose vertex coordinates
+                    t_edges)
+\dontrun{
+wire3d(demoSphere, col = "black")
+spheres3d(t_sphere[1:3], col = "green", alpha = 0.5)
+points3d(res, col = "red")
+
+# Close the 3D window:
+close3d()
 }
 
-\examples{
-print("TODO")
+}
+\author{
+Cornel M. Pop
 }
