@@ -80,10 +80,18 @@ coords_onseg <- function(coords, seg, tol = 0) {
   
   # If collinear, ratios of distances should be the same
   # (see e.g., https://mathworld.wolfram.com/Collinear.html)
-  # x_2-x_1:y_2-y_1:z_2-z_1=x_3-x_1:y_3-y_1:z_3-z_1. 
-  r1 <- d1 / d2 == seg_d[1] / seg_d[2]
-  r2 <- d1 / d3 == seg_d[1] / seg_d[3]
-  
+  # x_2-x_1:y_2-y_1:z_2-z_1=x_3-x_1:y_3-y_1:z_3-z_1.
+  #r1 <- d1 / d2 == seg_d[1] / seg_d[2]
+  #r2 <- d1 / d3 == seg_d[1] / seg_d[3]
+  # Added tolerance checks, since we need to allow for precision errors (see
+  # issue #14). This approach to setting tolerances is an approximation, but
+  # the results of adding/subtracting tolerances and then dividing will be
+  # within an order of magnitude from the specified tolerance value.
+  r1 <- (d1 / d2) - (tol * 10) <= seg_d[1] / seg_d[2] &
+        (d1 / d2) + (tol * 10) >= seg_d[1] / seg_d[2]
+  r2 <- (d1 / d3) - (tol * 10) <= seg_d[1] / seg_d[3] &
+        (d1 / d3) + (tol * 10) >= seg_d[1] / seg_d[3]
+
   # The following is just to make the code more readable
   xmax <- max(seg[, 1]) + tol
   xmin <- min(seg[, 1]) - tol
@@ -92,9 +100,9 @@ coords_onseg <- function(coords, seg, tol = 0) {
   zmax <- max(seg[, 3]) + tol
   zmin <- min(seg[, 3]) - tol
   
-  osx <- d1 >= xmin & d1 <= xmax
-  osy <- d2 >= ymin & d2 <= ymax
-  osz <- d3 >= zmin & d3 <= zmax
+  osx <- coords[, 1] >= xmin & coords[, 1] <= xmax
+  osy <- coords[, 2] >= ymin & coords[, 2] <= ymax
+  osz <- coords[, 3] >= zmin & coords[, 3] <= zmax
   
   res <- r1 & r2 & osx & osy & osz
   

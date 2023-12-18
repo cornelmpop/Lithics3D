@@ -49,4 +49,21 @@ test_that("coords_onseg works as expected", {
   seg <- data.frame(x = c(1, 7), y = c(2, 20), z = c(3, -3))
   coord_x <- data.frame(x = c(3), y = c(8), z = c(1))
   expect_true(coords_onseg(coord_x, seg))
+  
+  # b0014 - incorrect output with real data:
+  seg <- data.frame(x = c(-7.249440, -7.282816),
+                    y = c(0.5743027, 0.9284002),
+                    z = c(502.5920, 502.8661))
+  coords <- data.frame(x = c(-7.259582, -7.455739),
+                       y = c(0.6819025, 2.7629832),
+                       z = c(502.6753, 504.2863))
+  expect_equal(coords_onseg(coords, seg, tol = 0.0001), c(TRUE, FALSE))
+  
+  seg <- data.frame(x = c(-6.483490, -6.553685),
+                    y = c(-2.802518, -2.270306),
+                    z = c(504.1136, 504.0930))
+  coords <- data.frame(x = c(-7.200186, -6.534887),
+                       y = c(2.631422, -2.412832),
+                       z = c(503.9027, 504.0985))
+  expect_equal(coords_onseg(coords, seg, tol = 0.0001), c(FALSE, TRUE))
 })
