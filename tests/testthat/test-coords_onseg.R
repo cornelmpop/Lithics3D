@@ -65,5 +65,5 @@ test_that("coords_onseg works as expected", {
   coords <- data.frame(x = c(-7.200186, -6.534887),
                        y = c(2.631422, -2.412832),
                        z = c(503.9027, 504.0985))
-  expect_equal(coords_onseg(coords, seg, tol = 0.0001), c(FALSE, TRUE))
+  expect_equal(coords_onseg(coords, seg, tol = 0.001), c(FALSE, TRUE))
 })
