@@ -33,11 +33,12 @@ edgesOnPlane <- function(p, mpts, medges){
 #' @param mpts Nx4 matrix-like object corresponding to the transposed mesh$vb
 #' @param medges An Nx4 dataframe corresponding to the output of
 #' Rvcg::vcgGetEdge(mesh, unique=T).
-#' @return A data.frame with intersection coordinates (x,y,z,x1,y1,z1), one per
+#' @return A data.frame with intersection coordinates (x,y,z), one per
 #' row, for all input edges, where the row names correspond to input edge ids.
 #' NA will be returned in cases where there are no intersections. The first
 #' coordinate (x,y,z) will always be located ON the segment and farthest
-#' from the center of the sphere (i.e. if the segment crosses the entire sphere).
+#' from the center of the sphere (i.e. if the segment crosses the entire
+#' sphere).
 #' @examples
 #' print("TODO")
 #' @section TODO: Test this function with 3 different scenarios: no inters,
@@ -68,29 +69,20 @@ e2sIntersect <- function(e.ids, s, mpts, medges){
 
   # Get intersection points:
   l.i <- list()
-  for (i in 1:length(eoi)){
+  for (i in seq_along(eoi)){
     l.s <- rbind(vb1[eoi[i], ], vb2[eoi[i], ])
     l.res <- l2sIntersect(l.s, s)
-    p.d <- coords_onseg(l.res, l.s)
-    # Check if we need to flip the result (i.e. the second intersection lies
-    # on the segment - see output description in the docs)
-    if (p.d[1] == F){
-      l.i[[i]] <- c(l.res[2, ], l.res[1, ])
-    } else if (all(p.d) & stats::dist(rbind(l.res[1, ], s[1:3]),
-                          method = "euclidean") <  stats::dist(rbind(l.res[2, ],
-                                                                 s[1:3]),
-                                                        method = "euclidean")) {
-      # If both intersections are on the segment (i.e. tiny sphere), the first
-      # intersection point should be the one that is the farthest (see output
-      # description).
-      l.i[[i]] <- c(l.res[2, ], l.res[1, ])
-    } else {
-      l.i[[i]] <- c(l.res[1, ], l.res[2, ])
+    p.d <- coords_onseg(l.res, l.s, tol = 0.001)
+    
+    if (sum(p.d) == 0){
+     stop("No intersections found. This should never happen here.") 
     }
+
+    l.i[[i]] <- l.res[p.d, ]
   }
 
   res <- data.frame(do.call("rbind", l.i))
-  colnames(res) <- c("x", "y", "z", "x1", "y1", "z1")
+  colnames(res) <- c("x", "y", "z")
   rownames(res) <- eoi
   return(res)
 }
