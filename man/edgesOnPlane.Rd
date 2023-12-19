@@ -2,36 +2,70 @@
 % Please edit documentation in R/surf_edgeIntersects.R
 \name{edgesOnPlane}
 \alias{edgesOnPlane}
-\title{Mesh edge / plane intersection}
+\title{Identify plane-intersecting mesh edges}
 \usage{
 edgesOnPlane(p, mpts, medges)
 }
 \arguments{
-\item{p}{A 3x3 matrix-like object with coordinates defining a plane, one per
-row.}
+\item{p}{A 3x3 matrix-like object with x, y, and z coordinates (one per row)
+defining a plane.}
 
-\item{mpts}{An Nx4 matrix-like object corresponding to the transposed mesh$vb}
+\item{mpts}{An Nx4 matrix-like object corresponding to the transposed
+mesh vertex coordinates (\code{t(mesh$vb)}, where \code{mesh} is a \code{mesh3d} object).}
 
-\item{medges}{An Nx4 dataframe corresponding to the output of
-Rvcg::vcgGetEdge(mesh, unique=T).}
+\item{medges}{An Nx4 data.frame corresponding to the output of
+\link[Rvcg:vcgGetEdge]{Rvcg::vcgGetEdge}\verb{(mesh, unique=T)}, where \code{mesh} is a \code{mesh3d} object.}
 }
 \value{
-A vector containing row IDs in medges identifying edges intersecting
-the given plane.
+A vector of row IDs for edges (from \code{medges}) that intersect the
+input plane.
 }
 \description{
-Identifies the mesh edges that are intersected by the given
-plane. Note that no intersection points are computed by this function. For
-that functionality use the Morpho::meshPlaneIntersect function.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Identifies mesh edges that intersect a given plane. Note that no
+intersection points are computed by this function - use
+\code{\link[Morpho:meshPlaneIntersect]{Morpho::meshPlaneIntersect()}} for that purpose.
 }
-\note{
-The input of this function may be changed to simply be a mesh object,
-once I write a new function to cache the calls (expected to be repeated).
+\examples{
+# Use the included demoSphere for this example:
+data(demoSphere)
+mesh <- demoSphere
+
+# Prepare data required by the function:
+p <- data.frame(x = c(0, 1, 1), y = c(0, 1, 0), z = c(0, 0.5, 0.5))
+mvb <- t(mesh$vb)
+medges <- Rvcg::vcgGetEdge(mesh)
+
+# Identify edges intersected by the plane (i.e., edges of interest, or eoi):
+eoi <- edgesOnPlane(p, mvb, medges)
+
+# Get coordinates for both edge ends:
+vb1 <- mvb[medges[eoi, 1], 1:3] # edge end 1
+vb2 <- mvb[medges[eoi, 2], 1:3] # edge end 2
+
+# Visualize:
+\dontrun{
+# Show the wireframe of demoSphere and the three coordinates defining the
+# plane
+library(rgl)
+wire3d(demoSphere, col = "green", alpha = 0.5)
+points3d(p, col = "red")
+
+# Compute plane coefficients from the three coordinate and plot the plane
+res <- planeCoefs(p)
+planes3d(res[1], res[2], res[3], res[4], col="yellow")
+
+# Show the edges that cross the plane:
+for (i in seq_along(eoi)) {
+lines3d(rbind(vb1[i, ], vb2[i, ]), lwd = 2, col = "blue")
 }
-\section{TODO}{
- Write memoised function for mpts and medges
 }
 
-\examples{
-print("TODO")
+}
+\seealso{
+\link[Morpho:meshPlaneIntersect]{Morpho::meshPlaneIntersect}
+}
+\author{
+Cornel M. Pop
 }
