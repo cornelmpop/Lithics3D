@@ -14,10 +14,10 @@ names of the \link[Rvcg:vcgGetEdge]{Rvcg::vcgGetEdge} output when run with "uniq
 a sphere}
 
 \item{mpts}{Nx4 matrix-like object corresponding to the transposed mesh
-coordinates (\code{t(mesh$vb)}, where \code{mesh} is a \code{mesh3d} object)}
+vertex coordinates (\code{t(mesh$vb)}, where \code{mesh} is a \code{mesh3d} object).}
 
 \item{medges}{An Nx4 data.frame corresponding to the output of
-\code{Rvcg::vcgGetEdge(mesh, unique=T)}, where \code{mesh} is a \code{mesh3d} object.
+\link[Rvcg:vcgGetEdge]{Rvcg::vcgGetEdge}\verb{(mesh, unique=T)}, where \code{mesh} is a \code{mesh3d} object.
 May be identical to the e_ids parameter, or the latter may be subset.}
 }
 \value{
@@ -44,6 +44,7 @@ res <- e2sIntersect(rownames(t_edges),
                     t(demoSphere$vb), # transpose vertex coordinates
                     t_edges)
 \dontrun{
+library(rgl)
 wire3d(demoSphere, col = "black")
 spheres3d(t_sphere[1:3], col = "green", alpha = 0.5)
 points3d(res, col = "red")

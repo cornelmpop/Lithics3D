@@ -60,6 +60,9 @@ planes3d(res[1], res[2], res[3], res[4], col="yellow")
 for (i in seq_along(eoi)) {
 lines3d(rbind(vb1[i, ], vb2[i, ]), lwd = 2, col = "blue")
 }
+
+# Close the 3D window:
+close3d()
 }
 
 }

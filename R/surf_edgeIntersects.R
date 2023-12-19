@@ -52,6 +52,9 @@
 #' for (i in seq_along(eoi)) {
 #' lines3d(rbind(vb1[i, ], vb2[i, ]), lwd = 2, col = "blue")
 #' }
+#' 
+#' # Close the 3D window:
+#' close3d()
 #'}
 #'
 #' @author Cornel M. Pop
@@ -83,10 +86,10 @@ edgesOnPlane <- function(p, mpts, medges){
 #' a sphere
 #'
 #' @param mpts Nx4 matrix-like object corresponding to the transposed mesh
-#' coordinates (`t(mesh$vb)`, where `mesh` is a `mesh3d` object)
+#' vertex coordinates (`t(mesh$vb)`, where `mesh` is a `mesh3d` object).
 #'
 #' @param medges An Nx4 data.frame corresponding to the output of
-#' `Rvcg::vcgGetEdge(mesh, unique=T)`, where `mesh` is a `mesh3d` object.
+#' [Rvcg::vcgGetEdge]`(mesh, unique=T)`, where `mesh` is a `mesh3d` object.
 #' May be identical to the e_ids parameter, or the latter may be subset.
 #'
 #' @return A data.frame with intersection coordinates (x,y,z), one per
@@ -103,6 +106,7 @@ edgesOnPlane <- function(p, mpts, medges){
 #'                     t(demoSphere$vb), # transpose vertex coordinates
 #'                     t_edges)
 #' \dontrun{
+#' library(rgl)
 #' wire3d(demoSphere, col = "black")
 #' spheres3d(t_sphere[1:3], col = "green", alpha = 0.5)
 #' points3d(res, col = "red")
