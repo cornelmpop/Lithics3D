@@ -49,4 +49,13 @@ test_that("split_pts produces correct output", {
                    v3 = unlist(p4[3, ]))
 
   expect_equal(res$upr, as.vector(res2))
+  
+  # Other:
+  
+  # Bug: With malformed input (one vertex) the output is nonsense:
+  p <- data.frame(x = c(0, 1, 1), y = c(0, 1, 0), z = c(0, 0.5, 0.5))
+  mvb <- t(demoSphere$vb)
+  res <- split_pts(mvb[1, , drop = FALSE], p)
+  expect_true(res$upr)
+  expect_false(res$lwr)
 })
