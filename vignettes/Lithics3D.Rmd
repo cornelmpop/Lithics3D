@@ -103,23 +103,18 @@ and all that's left to do is to actually measure them using the high-level
 `edgeAngles` function, at a distance of 3mm:
 
 ```{r}
+close3d()
 res = edgeAngles(demoFlake1$mesh, edge.curve, 3)
 
 ```
 
-Done! But how? Let's see by plotting:
+Done! But how? Let's see using the edge_angles_vis3d function:
 
 ```{r}
-rgl.close()
-points3d(edge.curve, color="purple", size=10)
-for(i in 1:length(res)){
-  lines3d(res[[i]]$inters.pts, lwd=3)
-   ang.l = rbind(res[[i]]$inters.pts[1,],
-               edge.curve[i+1,],
-               res[[i]]$inters.pts[2,])
-  lines3d(ang.l, color="blue", lwd=1)
-}
+window_id <- edge_angles_vis3d(res, demoFlake1$mesh, edge.curve)
 
+# Close the 3D window once done visualizing:
+close3d(window_id)
 ```
 
 As you notice, angles were not measured at the first and last point along the
