@@ -180,6 +180,11 @@ edge_angles_vis3d <- function(ea_output, show_mesh = NULL, show_pois = NULL) {
 #' @export
 edge_angles_vis2d <- function(ea_output, mesh, ncol = 2, nrow = 2) {
 
+  # Check input:
+  if (length(ea_output) == 0) {
+    stop("Empty ea_output parameter.")
+  }
+
   # Prep mesh data:
   mvb <- t(mesh$vb)
   medges <- Rvcg::vcgGetEdge(mesh, unique = TRUE)
@@ -203,6 +208,11 @@ edge_angles_vis2d <- function(ea_output, mesh, ncol = 2, nrow = 2) {
                               ea_output[[i]]$inters.pts[1:2, ]),
                         mvb, medges)
 
+    # The following should never happen, unless we got the wrong input mesh.
+    if (length(eoi) < 2) {
+      stop("Fewer than 2 intersecting mesh edges detected. Wrong mesh?")
+    }
+
     # Extract coords to plot:
     # Coords of first edge end
     vb1 <- res_o$coords[medges[eoi, 1], 1:3, drop = FALSE]
@@ -221,10 +231,14 @@ edge_angles_vis2d <- function(ea_output, mesh, ncol = 2, nrow = 2) {
   }
 
   # Group plots according to the requested ncol/nrow:
-  plot_group_f <- cut(seq_along(ea_output),
-                      ceiling(length(ea_output) / (ncol * nrow)),
-                      labels = FALSE)
-  plot_groups <- split(out_res, plot_group_f)
+  if (ncol * nrow <= length(ea_output)) {
+    plot_group_f <- cut(seq_along(ea_output),
+                        ceiling(length(ea_output) / (ncol * nrow)),
+                        labels = FALSE)
+    plot_groups <- split(out_res, plot_group_f)
+  } else {
+    plot_groups <- list(out_res)
+  }
 
   out_plots <- list()
   for (i in seq_along(plot_groups)) {
