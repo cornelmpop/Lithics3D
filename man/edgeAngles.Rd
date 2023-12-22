@@ -63,7 +63,8 @@ res = edgeAngles(demoFlake2$mesh, path.res, m.d=3)
 
 }
 \seealso{
-\code{\link[=edge_angles_vis3d]{edge_angles_vis3d()}} to visualize the measurement process
+\link{edge_angles_vis3d} and \link{edge_angles_vis2d} to visualize the measurement
+process in 3D and 2D respectively.
 }
 \author{
 Cornel M. Pop

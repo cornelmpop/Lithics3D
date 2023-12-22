@@ -108,10 +108,22 @@ res = edgeAngles(demoFlake1$mesh, edge.curve, 3)
 
 ```
 
-Done! But how? Let's see using the edge_angles_vis3d function:
+Done! But how? Let's see using the edge_angles_vis3d and edge_angles_vis2d
+functions. The first of these functions shows where the measurements were taken
+in 3D, while the second produces 2D plots of the mesh slices (technically, the
+endpoints of the mesh triangle edges intersected by the plane on which a
+given angle was measured) and the angle measuring points.
 
 ```{r}
+# Visualize the measurements in 3D:
 window_id <- edge_angles_vis3d(res, demoFlake1$mesh, edge.curve)
+
+# Generate figures with 2D plots of the angle measurements, with 6 plots per
+# figure, arranged in 2 columns and 3 rows:
+angle_plots <- edge_angles_vis2d(res, demoFlake1$mesh, ncol = 2, nrow = 3)
+
+# Show the first figure:
+angle_plots[[1]]
 
 # Close the 3D window once done visualizing:
 close3d(window_id)

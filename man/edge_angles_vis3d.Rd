@@ -66,6 +66,10 @@ window_id <- edge_angles_vis3d(res,
 close3d(window_id)
 }
 }
+\seealso{
+\link{edge_angles_vis2d} - generate figures with 2D plots of the edge angle
+measurements.
+}
 \author{
 Cornel M. Pop
 }

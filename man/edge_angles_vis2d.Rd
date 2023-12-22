@@ -20,23 +20,38 @@ in each output figure.}
 in each output figure.}
 }
 \value{
-A list of figures containing subplots for each angle measurement;
-each is labelled according to the index of the measurement along the edge.
+A list of figures containing sub-plots for each angle measurement
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Shows how edge angles were measured in a previous run of the \code{\link[=edgeAngles]{edgeAngles()}}
-function.
+Generates figures from the output of the \code{\link[=edgeAngles]{edgeAngles()}} function.
 }
 \details{
-Loops through the output of \code{\link[=edgeAngles]{edgeAngles()}} and plots key parameters for each
-angle measurement. The number of sub-plots per figure will be computed based
-on the \code{ncol} and \code{nrow} parameters. If you would like individual figures
-for each sub-plot, simply set both \code{ncol} and \code{nrow} to 1.
-
-Note that all sub-plots from given output figure will be drawn to the same
-scale, but different figures will have different scales.
+The output figures include one or more sub-plots, each of which shows a
+slice of the mesh and the lines (with endpoints) used to measure the edge
+angles on that slice. Note that:
+\itemize{
+\item The mesh slices are perpendicular to the object edge, and on the
+plane (\verb{P)} on which the angles were measured (see \code{\link[=edgeAngles]{edgeAngles()}} for more
+details).
+\item The black dots that define the mesh slice outlines
+represent the endpoints of the triangle sides (i.e., mesh edges)
+intersected by the measurement plane (\code{P}); in other words, they do not
+indicate exact intersection points between the triangle sides and the
+measurement plane - they are an approximation.
+\item Data in each sub-plot has been rotated so that they align with the
+x and y axes, with the origin (i.e., x = 0, y = 0) set to the object's edge
+sampling point.
+\item Axis values are given in mesh units.
+\item Each sub-plot is labelled with the index of the respective angle
+measurement in the \code{ea_output} list.
+\item With each output figure all sub-plots are drawn to the same scale and with
+a 1:1 ratio, but the scale may vary across figures.
+\item The number of sub-plots per figure is determined from the \code{ncol} and \code{nrow}
+parameters. If individual figures for each sub-plot are needed, simply set
+both \code{ncol} and \code{nrow} to 1.
+}
 }
 \examples{
 \dontrun{
@@ -55,6 +70,9 @@ angle_plots <- edge_angles_vis2d(res,
 # See the first figure:
 angle_plots[[1]]
 }
+}
+\seealso{
+\link{edge_angles_vis3d} - visualize the edge angle measurements in 3D.
 }
 \author{
 Cornel M. Pop

@@ -48,7 +48,8 @@
 #' @section TODO: CONSIDER projecting along the normal of the midpoint to a
 #' distance of actually xx mesh units?
 #' @seealso
-#' [edge_angles_vis3d()] to visualize the measurement process
+#' [edge_angles_vis3d] and [edge_angles_vis2d] to visualize the measurement
+#' process in 3D and 2D respectively.
 #' @export
 edgeAngles <- function(mesh, c.lms, m.d){
   mvb <- t(mesh$vb)

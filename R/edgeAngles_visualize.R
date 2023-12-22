@@ -57,6 +57,9 @@
 #' # Close the window:
 #' close3d(window_id)
 #'}
+#' @seealso
+#' [edge_angles_vis2d] - generate figures with 2D plots of the edge angle
+#' measurements.
 #' @export
 edge_angles_vis3d <- function(ea_output, show_mesh = NULL, show_pois = NULL) {
 
@@ -111,17 +114,33 @@ edge_angles_vis3d <- function(ea_output, show_mesh = NULL, show_pois = NULL) {
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Shows how edge angles were measured in a previous run of the [edgeAngles()]
-#' function.
-#'
+#' Generates figures from the output of the [edgeAngles()] function.
+#' 
 #' @details
-#' Loops through the output of [edgeAngles()] and plots key parameters for each
-#' angle measurement. The number of sub-plots per figure will be computed based
-#' on the `ncol` and `nrow` parameters. If you would like individual figures
-#' for each sub-plot, simply set both `ncol` and `nrow` to 1.
-#'
-#' Note that all sub-plots from given output figure will be drawn to the same
-#' scale, but different figures will have different scales.
+#' 
+#' The output figures include one or more sub-plots, each of which shows a
+#' slice of the mesh and the lines (with endpoints) used to measure the edge
+#' angles on that slice. Note that:
+#' 
+#' * The mesh slices are perpendicular to the object edge, and on the
+#' plane (`P)` on which the angles were measured (see [edgeAngles()] for more
+#' details).
+#' * The black dots that define the mesh slice outlines
+#' represent the endpoints of the triangle sides (i.e., mesh edges)
+#' intersected by the measurement plane (`P`); in other words, they do not
+#' indicate exact intersection points between the triangle sides and the
+#' measurement plane - they are an approximation.
+#' * Data in each sub-plot has been rotated so that they align with the
+#' x and y axes, with the origin (i.e., x = 0, y = 0) set to the object's edge
+#' sampling point.
+#' * Axis values are given in mesh units.
+#' * Each sub-plot is labelled with the index of the respective angle
+#' measurement in the `ea_output` list.
+#' * With each output figure all sub-plots are drawn to the same scale and with
+#' a 1:1 ratio, but the scale may vary across figures.
+#' * The number of sub-plots per figure is determined from the `ncol` and `nrow`
+#' parameters. If individual figures for each sub-plot are needed, simply set
+#' both `ncol` and `nrow` to 1.
 #'
 #' @param ea_output A list corresponding to the unmodified output of
 #' [edgeAngles()].
@@ -135,8 +154,7 @@ edge_angles_vis3d <- function(ea_output, show_mesh = NULL, show_pois = NULL) {
 #' @param nrow A number indicating the number of sub-plots to fit vertically
 #' in each output figure.
 #'
-#' @return A list of figures containing subplots for each angle measurement;
-#' each is labelled according to the index of the measurement along the edge.
+#' @return A list of figures containing sub-plots for each angle measurement
 #'
 #' @author Cornel M. Pop
 #'
@@ -157,6 +175,8 @@ edge_angles_vis3d <- function(ea_output, show_mesh = NULL, show_pois = NULL) {
 #' # See the first figure:
 #' angle_plots[[1]]
 #'}
+#' @seealso
+#' [edge_angles_vis3d] - visualize the edge angle measurements in 3D.
 #' @export
 edge_angles_vis2d <- function(ea_output, mesh, ncol = 2, nrow = 2) {
 
