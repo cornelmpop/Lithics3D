@@ -244,13 +244,14 @@ edge_angles_vis2d <- function(ea_output, mesh, ncol = 2, nrow = 2) {
   for (i in seq_along(plot_groups)) {
     res_sub <- rbindlist(plot_groups[[i]])
 
-    out_plots[[i]] <- ggplot(res_sub, aes(x, y)) +
+    # Note: The get() notation is to void triggering warnings on build check.
+    out_plots[[i]] <- ggplot(res_sub, aes(x = get("x"), y = get("y"))) +
       coord_fixed() + theme_bw() + labs(x = "", y = "") +
-      geom_point(data = res_sub[geom == "pts"],
+      geom_point(data = res_sub[res_sub$geom == "pts", ],
                  shape = 20, size = 1) +
-      geom_path(data = res_sub[geom == "lines"],
+      geom_path(data = res_sub[res_sub$geom == "lines", ],
                 color = "red", alpha = 0.6, lwd = 2) +
-      geom_point(data = res_sub[geom == "lines"],
+      geom_point(data = res_sub[res_sub$geom == "lines", ],
                  color = "red", size = 2) +
       facet_wrap(~idx, ncol = ncol)
   }
