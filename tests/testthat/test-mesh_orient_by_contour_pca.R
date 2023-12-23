@@ -12,7 +12,7 @@ test_that("mesh_orient_by_contour_pca works as expected", {
   # Docs: Check that the output is a list with the documented names
   expect_type(result, "list")
   expect_s3_class(result, NA)
-  
+
   expect_identical(names(result), c("mesh", "contour", "contour.res", "rot.mx"))
 
   # Check that the dimensions have not been altered and/or match expectations
@@ -21,9 +21,11 @@ test_that("mesh_orient_by_contour_pca works as expected", {
   expect_equal(dim(result$rot.mx), c(3, 3)) # Should be a 3x3 matrix
 
   # Check that the mesh vertices have been rotated
-  # Note: Values are from output of a working version (Lithics3D ver. 0.4.2).
   expect_identical(round(as.numeric(result$mesh$vb[, 1]), 5),
-                   round(c(-70.43624, -11.09517, 390.80604, 1.00000), 5))
+  # Note: Values are from output of a working version (Lithics3D ver. 0.4.2).
+  # The discrepancy comes from the fact that the meshes have since been resized
+  #                 round(c(-70.43624, -11.09517, 390.80604, 1.00000), 5))
+                   round(c(-70.66059, -11.12522, 390.79251, 1.00000), 5))
 
   # Check that the contour and re-sampled contour have been rotated
   expect_identical(round(as.numeric(result$contour[1, ]), 5),
@@ -39,7 +41,7 @@ test_that("mesh_orient_by_contour_pca works as expected", {
 
   # Some edge cases:
   # Empty coordinate object
-  expect_error(mesh_orient_by_contour_pca(data.frame(x=c(), y=c(), z=c()),
+  expect_error(mesh_orient_by_contour_pca(data.frame(x = c(), y = c(), z = c()),
                                           demoFlake2$mesh,
                                           npts))
   # Bad input:

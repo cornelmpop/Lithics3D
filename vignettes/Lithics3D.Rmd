@@ -103,23 +103,30 @@ and all that's left to do is to actually measure them using the high-level
 `edgeAngles` function, at a distance of 3mm:
 
 ```{r}
+close3d()
 res = edgeAngles(demoFlake1$mesh, edge.curve, 3)
 
 ```
 
-Done! But how? Let's see by plotting:
+Done! But how? Let's see using the edge_angles_vis3d and edge_angles_vis2d
+functions. The first of these functions shows where the measurements were taken
+in 3D, while the second produces 2D plots of the mesh slices (technically, the
+endpoints of the mesh triangle edges intersected by the plane on which a
+given angle was measured) and the angle measuring points.
 
 ```{r}
-rgl.close()
-points3d(edge.curve, color="purple", size=10)
-for(i in 1:length(res)){
-  lines3d(res[[i]]$inters.pts, lwd=3)
-   ang.l = rbind(res[[i]]$inters.pts[1,],
-               edge.curve[i+1,],
-               res[[i]]$inters.pts[2,])
-  lines3d(ang.l, color="blue", lwd=1)
-}
+# Visualize the measurements in 3D:
+window_id <- edge_angles_vis3d(res, demoFlake1$mesh, edge.curve)
 
+# Generate figures with 2D plots of the angle measurements, with 6 plots per
+# figure, arranged in 2 columns and 3 rows:
+angle_plots <- edge_angles_vis2d(res, demoFlake1$mesh, ncol = 2, nrow = 3)
+
+# Show the first figure:
+angle_plots[[1]]
+
+# Close the 3D window once done visualizing:
+close3d(window_id)
 ```
 
 As you notice, angles were not measured at the first and last point along the

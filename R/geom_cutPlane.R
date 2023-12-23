@@ -32,7 +32,7 @@ split_pts <- function (coords, p) {
   csep_norm <- planeCoefs(p)[1:3]
   zeroval <- csep_norm[1] * p[2, 1] + csep_norm[2] * p[2, 2] +
     csep_norm[3] * p[2, 3]
-  ppos <- as.matrix(coords[, 1:3]) %*% csep_norm
+  ppos <- coords[, 1:3, drop = FALSE] %*% csep_norm
 
   return(list(upr = as.vector(ppos > zeroval),
               lwr = as.vector(ppos < zeroval)))

@@ -44,23 +44,12 @@
 #' path.res <- pathResample(as.matrix(meshVertices[e.curve,1:3]), 30,
 #'                          method="npts")
 #' res = edgeAngles(demoFlake2$mesh, path.res, m.d=3)
-#' \dontrun{
-#' library(rgl)
-#' shade3d(demoFlake2$mesh, color="green", alpha=0.4)
-#' points3d(path.res, color="red", size=4)
-#' for(i in 1:length(res)){
-#'  lines3d(res[[i]]$inters.pts, lwd=3)
-#'  ang.l = rbind(res[[i]]$inters.pts[1,],
-#'                path.res[i+1,],
-#'                res[[i]]$inters.pts[2,])
-#'  lines3d(ang.l, color="blue", lwd=1)
-#'  texts3d(path.res[i+1,], texts=i+1, adj=1)
-#' }
-#' texts3d(path.res[c(1,nrow(path.res)),], texts=c(1,nrow(path.res)), adj=1,
-#'         color="blue")
-#' }
+#'
 #' @section TODO: CONSIDER projecting along the normal of the midpoint to a
 #' distance of actually xx mesh units?
+#' @seealso
+#' [edge_angles_vis3d] and [edge_angles_vis2d] to visualize the measurement
+#' process in 3D and 2D respectively.
 #' @export
 edgeAngles <- function(mesh, c.lms, m.d){
   mvb <- t(mesh$vb)
