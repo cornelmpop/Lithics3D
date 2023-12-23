@@ -1,3 +1,20 @@
+Lithics3D v0.5.1 (Release date: 2023-12-22)
+==============
+
+New features:
+* Two new functions added: edge_angles_vis2d and edge_angles_vis3d. These help visualize and plot the output of the edgeAngles function.
+
+Other changes:
+* Reduced the included demoFlake1, demoFlake2, and demoFlake3 meshes to bring the package size under 5MB in preparation for upcoming CRAN submission.
+* Changed the output of e2sIntersect in case of no intersections to an empty dataframe (from NA), so that output type is always consistent.
+* Renamed ptOnSeg to coords_onseg and changed parameter names to something less cryptic. ptOnSeg can still be used but it will generate a deprecation warning.
+* Fixed bug with coords_onseg/ptOnSeg (see Issue #10) and substantially improved the performance of the function, which should translate to a faster edgeAngles function.
+* Fixed a bug with e2sIntersect (see Issue #15).
+* Fixed a bug with split_pts.
+* Improved test coverage from ca. 55% to ca. 70% (added unit tests for e2sIntersect, edgesOnPlane, edge_angles_vis3d, edge_angles_vis2d, coords_onseg)
+* Fully updated documentation for edgesOnPlane.
+* Updated documentation for e2sIntersect.
+
 Lithics3D v0.5.0 (Release date: 2023-12-01)
 ==============
 

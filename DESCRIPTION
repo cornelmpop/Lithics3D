@@ -1,7 +1,7 @@
 Package: Lithics3D
 Title: A toolbox for 3D analysis of archaeological lithics
 Version: 0.5.1
-Date: 2023-12-01
+Date: 2023-12-22
 Authors@R: person(given = "Cornel",
                   family = "Pop",
                   email = "cornel.pop@gmail.com",
