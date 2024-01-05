@@ -1,22 +1,86 @@
-#' Examples:
-#' # Demo data:
-#' library(Lithics3D)
-#' library(Rvcg)
+#' Compute edge angles using Yezzi-Woodley et al.'s method
+#' 
+#' @description
+#' 
+#' `r lifecycle::badge("experimental")`
+#'
+#' This is a partial implementation of the Virtual Goniometer algorithm
+#' proposed by Yezzi-Woodley et al. (2021) for measuring edge angles on meshes.
+#' It works by selecting a patch of mesh vertices (i.e., surface points) around
+#' a user-specified point of interest (POI) and approximating two intersecting
+#' planes within the patch.
+#' 
+#' @details
+#' 
+#' This function and its helpers are a modified partial translation of
+#' the C++ code developed by the [AMAAZE consortium](http://amaaze.umn.edu) as
+#' a Meshlab plugin [Meshlab extra plugins](https://github.com/cnr-isti-vclab/meshlab-extra-plugins).
+#' The full details of how this function works can be found in [Yezzi-Woodley et
+#' al. (2021)](https://link.springer.com/article/10.1007%2Fs12520-021-01335-y).
+#' The main differences between this implementation and the original are:
+#' 
+#' - This implementation only provides one way of specifying the measurement
+#' point: the "xyz method" described in Yezzi-Woodley et al. (2021).
+#' - This implementation selects mesh surface points for the angle computations
+#' using Euclidean rather than geodesic distances. Note that the results are
+#' very similar whether geodesic or Euclidean distances are used (see Yezzi-Woodley et
+#' al., 2021).
+#' 
+#' @author Cornel M. Pop
+#' 
+#' @param mesh A `mesh3d` object on which edge angles will be measured
+#' @param poi A point of interest (i.e., POI) from which the edge angle will be
+#' measured, represented as a 1X3 matrix-like object containing x, y, and z
+#' coordinates.
+#' @param radius A positive numeric value indicating the search radius from the
+#' `poi` for including mesh vertices in the angle measurements (see details)
+#' @param lambda A positive numeric value used as a tuning parameter for the
+#' underlying clustering algorithm (see details)
+#' 
+#' @returns A list containing: 1) the cluster assignments (`C`) for vertices
+#' included in the patch; 2) the IDs of those vertices in the input mesh object
+#' (`patch_vertex_ids`), 3) the angles (`theta`) computed using surface normals
+#' determined by a) PCA and b) simple averaging respectively; 4) the
+#' aforementioned normals (`m1`, `m2`, `n1`, and `n2` respectively); and 5) a
+#' goodness of fit value (`fit`).
+#' 
+#' @seealso [mesh_mark_pois()], [drop_poi()]
+#' 
+#' @examples
+#' # Load demo data
 #' library(rgl)
 #' mesh <- demoFlake2$mesh
-#' mesh <- vcgUpdateNormals(mesh)
+#' mesh <- Rvcg::vcgUpdateNormals(mesh) # ensure normals are up to date
+#' 
+#' # Set a point where the angles will be measured. You can use the
+#' # interactive mesh_mark_pois() to select this point, you can import
+#' # its coordinates from another program (e.g., Meshlab), or you can specify
+#' # its coordinates manually as done here:
 #' poi <- data.frame(x = c(-20.1301), y = c(39.29581), z = c(413.7))
 #' 
-#' res <- ea_yw(mesh, poi, 3, 2)
+#' # Compute the edge angle at the set point using default parameters options
+#' res <- ea_yw(mesh, poi)
+#' 
+#' # Visualize the angle measurement:
+#' \dontrun{
+#' shade3d(mesh, col = "green") # Show the mesh
+#' points3d(poi, col = "yellow", size = 10) # show the POI
+#' 
+#' # Determine which mesh vertices where included in the patch
 #' patch_coords <- t(mesh$vb)[res$patch_vertex_ids, ]
 #' 
-#' shade3d(mesh, col = "green")
-#' points3d(patch_coords[which(res$C == 1), 1:3], col = "red")
-#' points3d(patch_coords[which(res$C == 2), 1:3], col = "blue")
-#' points3d(poi, col = "yellow", size = 10)
+#' # Show the mesh vertices color-coded by the surface to which they were
+#' # assigned by the clustering algorithm
+#' points3d(patch_coords[which(res$C == 1), 1:3], col = "red") # Surface 1
+#' points3d(patch_coords[which(res$C == 2), 1:3], col = "blue") # Surface 2
+#' 
+#' # Show the measurement plane for the first angle:
 #' res_planes <- planeCoefs(rbind(poi, poi + res$m1, poi + res$m2))
-#' planes3d(res_planes[1], res_planes[2], res_planes[3], res_planes[4], col="green")
-ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
+#' planes3d(res_planes[1], res_planes[2], res_planes[3], res_planes[4],
+#'          col="cyan")
+#' }
+#' @export
+ea_yw <- function(mesh, poi, radius = 3, lambda = 2) {
 
   # Determine the ID of vertices which fall within the given radius from the
   # POI:
@@ -28,15 +92,18 @@ ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
   coords <- t(mesh$vb)[vid, 1:3]
   normals <- t(mesh$normals)[vid, 1:3]
   
-  # FROM HERE, translated code from virtual goniometer:
-  C <- .cluster_patch(coords, normals, radius, alpha_param)
+  # What follows from here on is translated code from the virtual goniometer
+  # (Meshlab plugin).
   
-  # Compute normals for each cluster (i.e., intersecting surface) by averaging
-  # normal vectors:
+  # Assign vertex IDs (i.e., coords row ids) to one of the two intersecting
+  # surfaces (i.e., clusters)
+  C <- .cluster_patch(coords, normals, radius, lambda)
+  
+  # Compute average normals for each intersecting surface:
   n1 <- colMeans(normals[C == 1, ])
   n2 <- colMeans(normals[C == 2, ])
   
-  #### TODO: Explain
+  # Normalize these normals to have a unit length (i.e., 1)
   n1 <- n1 / sqrt(sum(n1^2))
   n2 <- n2 / sqrt(sum(n2^2))
   
@@ -44,7 +111,6 @@ ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
   pca1 <- .PCA_smallest_eig(coords, C, 1, TRUE)
   pca2 <- .PCA_smallest_eig(coords, C, 2, TRUE)
 
-  #
   m1 <- pca1$smallest_eigenvector
   m2 <- pca2$smallest_eigenvector
   fit <- pca1$smallest_eigenvalue + pca2$smallest_eigenvalue
@@ -58,14 +124,14 @@ ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
   theta[2] <- 180 - acos(sum(n1 * n2)) * (180 / pi)
   
   return(list(C = C, theta = theta, fit = fit,
-              m1 = m1, m2 = m2,
+              m1 = m1, m2 = m2, n1 = n1, n2 = n2,
               patch_vertex_ids = vid))
 }
 
 
 #' Compute smallest eigenvalue and its corresponding eigenvector
 #' 
-#'
+#' @keywords internal
 .PCA_smallest_eig <- function(xyz_data, C, c, center = FALSE) {
 
   # Filter data based on 'C' and 'c'
@@ -87,8 +153,10 @@ ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
              smallest_eigenvector = eigens$vectors[, which.min(eigens$values)]))
 }
 
-
-.cluster_patch <- function(coords, normals, rad, alpha_param) {
+#' Classify patch coordinates into one of two surfaces
+#' 
+#' @keywords internal
+.cluster_patch <- function(coords, normals, rad, lambda) {
 
   surf_means <- colMeans(coords)
   
@@ -102,16 +170,16 @@ ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
   # Cross product:
   v <- pracma::cross(N1, N2)
   
-  #### TODO - WHAT DOES THIS DO?
+  # Normalize to unit length
   normv <- sqrt(sum(v^2))
   v <- v / normv
   
   x <- rep(0, n)
   for (k in 1:n) {
     x[k] <- normals[k, 1] * v[1] + normals[k, 2] * v[2] + normals[k, 3] * v[3]
-    x[k] <- x[k] + alpha_param * ((coords[k, 1] - surf_means[1]) * v[1] +
-                                  (coords[k, 2] - surf_means[2]) * v[2] +
-                                  (coords[k, 3] - surf_means[3]) * v[3]) / rad
+    x[k] <- x[k] + lambda * ((coords[k, 1] - surf_means[1]) * v[1] +
+                             (coords[k, 2] - surf_means[2]) * v[2] +
+                             (coords[k, 3] - surf_means[3]) * v[3]) / rad
   }
   
   res <- .withness(x)
@@ -122,6 +190,9 @@ ea_yw <- function(mesh, poi, radius = 3, alpha_param = 2) {
   return(C)
 }
 
+#' Identify data split that minimizes variance
+#' 
+#' @keywords internal
 .withness <- function(x) {
   n <- length(x)
   x_sorted <- sort(x)
