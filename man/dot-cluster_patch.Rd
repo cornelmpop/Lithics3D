@@ -34,11 +34,13 @@ This is a translation of c++ code from the Meshlab Virtual Goniometer plugin
 developed by the \href{http://amaaze.umn.edu}{AMAAZE consortium}
 }
 \examples{
+\dontrun{
 coords <- matrix(rnorm(300), ncol = 3)
 normals <- matrix(rnorm(300), ncol = 3)
 rad <- 1
 lambda <- 0.5
-classification <- .cluster_patch(coords, normals, rad, lambda)
+classification <- Lithics3D:::.cluster_patch(coords, normals, rad, lambda)
 print(classification)
+}
 }
 \keyword{internal}

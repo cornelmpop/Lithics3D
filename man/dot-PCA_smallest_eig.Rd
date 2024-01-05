@@ -33,9 +33,11 @@ This is a translation of c++ code from the Meshlab Virtual Goniometer plugin
 developed by the \href{http://amaaze.umn.edu}{AMAAZE consortium}
 }
 \examples{
+\dontrun{
 xyz_data <- matrix(rnorm(300), ncol = 3)
 C <- sample(1:2, 100, replace = TRUE)
-result <- .PCA_smallest_eig(xyz_data, C, 1)
+result <- Lithics3D:::.PCA_smallest_eig(xyz_data, C, 1)
 print(result)
+}
 }
 \keyword{internal}

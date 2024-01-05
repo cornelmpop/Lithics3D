@@ -30,8 +30,10 @@ This is a translation of c++ code from the Meshlab Virtual Goniometer plugin
 developed by the \href{http://amaaze.umn.edu}{AMAAZE consortium}
 }
 \examples{
+\dontrun{
 data <- rnorm(100)
-result <- .withness(data)
+result <- Lithics3D:::.withness(data)
 print(result)
+}
 }
 \keyword{internal}

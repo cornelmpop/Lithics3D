@@ -82,6 +82,9 @@
 #' @export
 edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
 
+  stopifnot(radius > 0)
+  stopifnot(lambda >= 0)
+
   # Determine the ID of vertices which fall within the given radius from the
   # POI:
   vid <- (mesh$vb[1, ] - poi[1, 1]) ^ 2 + (mesh$vb[2, ] - poi[1, 2]) ^ 2 +
@@ -154,10 +157,12 @@ edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
 #' corresponding eigenvector.
 #'
 #' @examples
+#' \dontrun{
 #' xyz_data <- matrix(rnorm(300), ncol = 3)
 #' C <- sample(1:2, 100, replace = TRUE)
-#' result <- .PCA_smallest_eig(xyz_data, C, 1)
+#' result <- Lithics3D:::.PCA_smallest_eig(xyz_data, C, 1)
 #' print(result)
+#' }
 #' @keywords internal
 .PCA_smallest_eig <- function(xyz_data, C, c, center = FALSE) {
 
@@ -208,12 +213,14 @@ edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
 #' @keywords internal
 #' @importFrom pracma cross
 #' @examples
+#' \dontrun{
 #' coords <- matrix(rnorm(300), ncol = 3)
 #' normals <- matrix(rnorm(300), ncol = 3)
 #' rad <- 1
 #' lambda <- 0.5
-#' classification <- .cluster_patch(coords, normals, rad, lambda)
+#' classification <- Lithics3D:::.cluster_patch(coords, normals, rad, lambda)
 #' print(classification)
+#' }
 #' @keywords internal
 .cluster_patch <- function(coords, normals, rad, lambda) {
 
@@ -274,9 +281,11 @@ edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
 #'   }
 #' @keywords internal
 #' @examples
+#' \dontrun{
 #' data <- rnorm(100)
-#' result <- .withness(data)
+#' result <- Lithics3D:::.withness(data)
 #' print(result)
+#' }
 #' @keywords internal
 .withness <- function(x) {
   n <- length(x)
