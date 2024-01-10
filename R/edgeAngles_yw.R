@@ -14,7 +14,7 @@
 #'
 #' This function and its helpers are a modified partial translation of
 #' the C++ code developed by the [AMAAZE consortium](http://amaaze.umn.edu) as
-#' a Meshlab plugin [Meshlab extra plugins](https://github.com/cnr-isti-vclab/meshlab-extra-plugins).
+#' a Meshlab plugin ([Meshlab extra plugins](https://github.com/cnr-isti-vclab/meshlab-extra-plugins)).
 #' The full details of how this function works can be found in [Yezzi-Woodley et
 #' al. (2021)](https://link.springer.com/article/10.1007%2Fs12520-021-01335-y).
 #' The main differences between this implementation and the original are:
@@ -37,15 +37,26 @@
 #' @param lambda A positive numeric value used as a tuning parameter for the
 #' underlying clustering algorithm (see details)
 #'
-#' @returns A list containing: 1) the cluster assignments (`C`) for vertices
-#' included in the patch; 2) the IDs of those vertices in the input mesh object
-#' (`patch_vertex_ids`), 3) the angles (`theta`) computed using surface normals
-#' determined by a) PCA and b) simple averaging respectively; 4) the
-#' aforementioned normals (`m1`, `m2`, `n1`, and `n2` respectively); and 5) a
-#' goodness of fit value (`fit`).
+#' @returns A list containing:
+#'  1. `angle`: a numeric value corresponding to the measured angle, in degrees.
+#'  2. `seg_1`: a 2x3 data.frame object with the x, y, and z coordinates (one
+#'  per row) of the end points of the first intersecting line segment
+#' (perpendicular to the edge, and along the first intersecting surface).
+#'  3. `seg_2`: a 2x3 data.frame object with the x, y, and z coordinates (one
+#' per row) of the end points of the second intersecting line segment
+#' (perpendicular to the edge, and along the second intersecting surface).
+#'  4. `ip`: a 1x3 data.frame object with the x, y, and z coordinates of the
+#' seg_1 and seg_2 intersection point. Corresponds to the input parameter `poi`.
+#'  5. `diag`: a list with other diagnostic data including:
+#'      a. `method`: a string with the name of the method used to measure the
+#'    angle (i.e., YW2021).
+#'      b. `timestamp`: a string with the time when the angle was measured.
 #'
 #' @seealso [mesh_mark_pois()], [drop_poi()]
 #'
+#' @note Some of the information in the return value is redundant because is is
+#' in a standardized format used with multiple functions.
+#' 
 #' @examples
 #' # Load demo data
 #' library(rgl)
@@ -58,26 +69,31 @@
 #' # its coordinates manually as done here:
 #' poi <- data.frame(x = c(-20.1301), y = c(39.29581), z = c(413.7))
 #'
-#' # Compute the edge angle at the set point using default parameters options
+#' # Compute the edge angle at the set point using default options
 #' res <- edge_angles_yw(mesh, poi)
 #'
 #' # Visualize the angle measurement:
 #' \dontrun{
-#' shade3d(mesh, col = "green") # Show the mesh
+#' shade3d(mesh, col = "green", alpha = 0.5) # Show the mesh
 #' points3d(poi, col = "yellow", size = 10) # show the POI
 #'
 #' # Determine which mesh vertices where included in the patch
-#' patch_coords <- t(mesh$vb)[res$patch_vertex_ids, ]
+#' patch_coords <- t(mesh$vb)[res$diag$patch_vertex_ids, ]
 #'
 #' # Show the mesh vertices color-coded by the surface to which they were
 #' # assigned by the clustering algorithm
-#' points3d(patch_coords[which(res$C == 1), 1:3], col = "red") # Surface 1
-#' points3d(patch_coords[which(res$C == 2), 1:3], col = "blue") # Surface 2
+#' points3d(patch_coords[which(res$diag$C == 1), 1:3], col = "red") # Surface 1
+#' points3d(patch_coords[which(res$diag$C == 2), 1:3], col = "blue") # Surface 2
 #'
-#' # Show the measurement plane for the first angle:
-#' res_planes <- planeCoefs(rbind(poi, poi + res$m1, poi + res$m2))
+#' # Show the measurement plane for the angle:
+#' res_planes <- planeCoefs(rbind(poi, poi + res$diag$m1, poi + res$diag$m2))
 #' planes3d(res_planes[1], res_planes[2], res_planes[3], res_planes[4],
 #'          col="cyan")
+#'
+#' # Show the line segments where the angle was measured, and their endpoints:
+#' lines3d(res$seg_1, col = "black", lwd = 10)
+#' lines3d(res$seg_2, col = "black", lwd = 10)
+#' points3d(rbind(res$seg_1[2, ], res$seg_2[2, ]), col = "black", size = 10)
 #' }
 #' @export
 edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
@@ -126,9 +142,43 @@ edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
   theta[1] <- 180 - acos(sum(m1 * m2)) * (180 / pi)
   theta[2] <- 180 - acos(sum(n1 * n2)) * (180 / pi)
 
-  return(list(C = C, theta = theta, fit = fit,
-              m1 = m1, m2 = m2, n1 = n1, n2 = n2,
-              patch_vertex_ids = vid))
+  # Prepare output:
+  # Scalar plane equation for coefs for intersecting planes (surface 1,
+  # surface 2, and plane perpendicular to the edge):
+  poi_c <- as.numeric(poi)
+  surf1_plane <- c(m1[1], m1[2], m1[3],
+                   -(m1[1] * poi_c[1] + m1[2] * poi_c[2] + m1[3] * poi_c[3]))
+  surf2_plane <- c(m2[1], m2[2], m2[3],
+                   -(m2[1] * poi_c[1] + m2[2] * poi_c[2] + m2[3] * poi_c[3]))
+  perp_plane <- planeCoefs(rbind(poi, poi + m1, poi + m2))
+
+  # Intersection lines for the above planes
+  # Note first three columns not needed - will use POI instead
+  l1 <- p2p.line(perp_plane, surf1_plane)[1, 4:6]
+  l2 <- p2p.line(perp_plane, surf2_plane)[1, 4:6]
+
+  # Ensure desired direction for visualization:
+  if (sum(n1 * l1) >= 0) l1 <- -l1
+  if (sum(n2 * l2) >= 0) l2 <- -l2
+
+  # Intersecting line segments (for visualization)
+  # TODO: Check if this is necessary
+  len_l1 <- stats::dist(rbind(poi_c, poi_c + l1), method = "euclidean")[1]
+  len_l2 <- stats::dist(rbind(poi_c, poi_c + l2), method = "euclidean")[1]
+
+  seg_1 <- rbind(poi, poi + l1 * (radius / len_l1))
+  seg_2 <- rbind(poi, poi + l2 * (radius / len_l2))
+
+  return(list(angle = theta[1],
+              seg_1 = seg_1,
+              seg_2 = seg_2,
+              ip = poi,
+              diag = list(method = "YW2021", timestamp = Sys.time(),
+                          C = C, theta = theta, fit = fit,
+                          m1 = m1, m2 = m2, n1 = n1, n2 = n2,
+                          patch_vertex_ids = vid,
+                          surf1_plane = surf1_plane,
+                          surf2_plane = surf2_plane)))
 }
 
 

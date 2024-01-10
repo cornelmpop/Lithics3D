@@ -20,12 +20,22 @@ coordinates.}
 underlying clustering algorithm (see details)}
 }
 \value{
-A list containing: 1) the cluster assignments (\code{C}) for vertices
-included in the patch; 2) the IDs of those vertices in the input mesh object
-(\code{patch_vertex_ids}), 3) the angles (\code{theta}) computed using surface normals
-determined by a) PCA and b) simple averaging respectively; 4) the
-aforementioned normals (\code{m1}, \code{m2}, \code{n1}, and \code{n2} respectively); and 5) a
-goodness of fit value (\code{fit}).
+A list containing:
+\enumerate{
+\item \code{angle}: a numeric value corresponding to the measured angle, in degrees.
+\item \code{seg_1}: a 2x3 data.frame object with the x, y, and z coordinates (one
+per row) of the end points of the first intersecting line segment
+(perpendicular to the edge, and along the first intersecting surface).
+\item \code{seg_2}: a 2x3 data.frame object with the x, y, and z coordinates (one
+per row) of the end points of the second intersecting line segment
+(perpendicular to the edge, and along the second intersecting surface).
+\item \code{ip}: a 1x3 data.frame object with the x, y, and z coordinates of the
+seg_1 and seg_2 intersection point. Corresponds to the input parameter \code{poi}.
+\item \code{diag}: a list with other diagnostic data including:
+a. \code{method}: a string with the name of the method used to measure the
+angle (i.e., YW2021).
+b. \code{timestamp}: a string with the time when the angle was measured.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -39,7 +49,7 @@ planes within the patch.
 \details{
 This function and its helpers are a modified partial translation of
 the C++ code developed by the \href{http://amaaze.umn.edu}{AMAAZE consortium} as
-a Meshlab plugin \href{https://github.com/cnr-isti-vclab/meshlab-extra-plugins}{Meshlab extra plugins}.
+a Meshlab plugin (\href{https://github.com/cnr-isti-vclab/meshlab-extra-plugins}{Meshlab extra plugins}).
 The full details of how this function works can be found in \href{https://link.springer.com/article/10.1007\%2Fs12520-021-01335-y}{Yezzi-Woodley et al. (2021)}.
 The main differences between this implementation and the original are:
 \itemize{
@@ -50,6 +60,10 @@ using Euclidean rather than geodesic distances. Note that the results are
 very similar whether geodesic or Euclidean distances are used (see
 Yezzi-Woodley et al., 2021).
 }
+}
+\note{
+Some of the information in the return value is redundant because is is
+in a standardized format used with multiple functions.
 }
 \examples{
 # Load demo data
@@ -63,26 +77,31 @@ mesh <- Rvcg::vcgUpdateNormals(mesh) # ensure normals are up to date
 # its coordinates manually as done here:
 poi <- data.frame(x = c(-20.1301), y = c(39.29581), z = c(413.7))
 
-# Compute the edge angle at the set point using default parameters options
+# Compute the edge angle at the set point using default options
 res <- edge_angles_yw(mesh, poi)
 
 # Visualize the angle measurement:
 \dontrun{
-shade3d(mesh, col = "green") # Show the mesh
+shade3d(mesh, col = "green", alpha = 0.5) # Show the mesh
 points3d(poi, col = "yellow", size = 10) # show the POI
 
 # Determine which mesh vertices where included in the patch
-patch_coords <- t(mesh$vb)[res$patch_vertex_ids, ]
+patch_coords <- t(mesh$vb)[res$diag$patch_vertex_ids, ]
 
 # Show the mesh vertices color-coded by the surface to which they were
 # assigned by the clustering algorithm
-points3d(patch_coords[which(res$C == 1), 1:3], col = "red") # Surface 1
-points3d(patch_coords[which(res$C == 2), 1:3], col = "blue") # Surface 2
+points3d(patch_coords[which(res$diag$C == 1), 1:3], col = "red") # Surface 1
+points3d(patch_coords[which(res$diag$C == 2), 1:3], col = "blue") # Surface 2
 
-# Show the measurement plane for the first angle:
-res_planes <- planeCoefs(rbind(poi, poi + res$m1, poi + res$m2))
+# Show the measurement plane for the angle:
+res_planes <- planeCoefs(rbind(poi, poi + res$diag$m1, poi + res$diag$m2))
 planes3d(res_planes[1], res_planes[2], res_planes[3], res_planes[4],
          col="cyan")
+
+# Show the line segments where the angle was measured, and their endpoints:
+lines3d(res$seg_1, col = "black", lwd = 10)
+lines3d(res$seg_2, col = "black", lwd = 10)
+points3d(rbind(res$seg_1[2, ], res$seg_2[2, ]), col = "black", size = 10)
 }
 }
 \seealso{
