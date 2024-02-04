@@ -5,7 +5,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' This is a partial implementation of the Virtual Goniometer algorithm
-#' proposed by Yezzi-Woodley et al. (2021) for measuring edge angles on meshes.
+#' proposed by Yezzi-Woodley et al. (2021) for measuring edge angles.
 #' It works by selecting a patch of mesh vertices (i.e., surface points) around
 #' a user-specified point of interest (POI) and approximating two intersecting
 #' planes within the patch.
@@ -15,7 +15,7 @@
 #' This function and its helpers are a modified partial translation of
 #' the C++ code developed by the [AMAAZE consortium](http://amaaze.umn.edu) as
 #' a Meshlab plugin ([Meshlab extra plugins](https://github.com/cnr-isti-vclab/meshlab-extra-plugins)).
-#' The full details of how this function works can be found in [Yezzi-Woodley et
+#' The full details of how the algorithm works can be found in [Yezzi-Woodley et
 #' al. (2021)](https://link.springer.com/article/10.1007%2Fs12520-021-01335-y).
 #' The main differences between this implementation and the original are:
 #'
@@ -26,14 +26,16 @@
 #' very similar whether geodesic or Euclidean distances are used (see
 #' Yezzi-Woodley et al., 2021).
 #'
-#' @author Cornel M. Pop
+#' @author Cornel M. Pop, and
+#' [AMAAZE](https://amaaze.umn.edu/software) (original Meshlab implementation)
 #'
-#' @param mesh A `mesh3d` object on which edge angles will be measured
-#' @param poi A point of interest (i.e., POI) from which the edge angle will be
-#' measured, represented as a 1X3 matrix-like object containing x, y, and z
+#' @param mesh A triangular mesh (`mesh3d`) object on which edge angles will be
+#' measured.
+#' @param poi A point of interest (i.e., POI) where the edge angle will be
+#' measured; represented as a 1X3 matrix-like object containing x, y, and z
 #' coordinates.
 #' @param radius A positive numeric value indicating the search radius from the
-#' `poi` for including mesh vertices in the angle measurements (see details)
+#' `poi` for including `mesh` vertices in the angle measurements (see details)
 #' @param lambda A positive numeric value used as a tuning parameter for the
 #' underlying clustering algorithm (see details)
 #'
@@ -46,7 +48,7 @@
 #' per row) of the end points of the second intersecting line segment
 #' (perpendicular to the edge, and along the second intersecting surface).
 #'  4. `ip`: a 1x3 data.frame object with the x, y, and z coordinates of the
-#' seg_1 and seg_2 intersection point. Corresponds to the input parameter `poi`.
+#' `seg_1` and `seg_2` intersection point.
 #'  5. `diag`: a list with other diagnostic data including:
 #'      a. `method`: a string with the name of the method used to measure the
 #'    angle (i.e., YW2021).
@@ -54,8 +56,9 @@
 #'
 #' @seealso [mesh_mark_pois()], [drop_poi()]
 #'
-#' @note Some of the information in the return value is redundant because is is
-#' in a standardized format used with multiple functions.
+#' @note Some of the information in the return value is redundant because it is
+#' in a standardized format to be used with multiple edge angle measurement
+#' functions.
 #' 
 #' @examples
 #' # Load demo data

@@ -7,14 +7,15 @@
 edge_angles_yw(mesh, poi, radius = 3, lambda = 2)
 }
 \arguments{
-\item{mesh}{A \code{mesh3d} object on which edge angles will be measured}
+\item{mesh}{A triangular mesh (\code{mesh3d}) object on which edge angles will be
+measured.}
 
-\item{poi}{A point of interest (i.e., POI) from which the edge angle will be
-measured, represented as a 1X3 matrix-like object containing x, y, and z
+\item{poi}{A point of interest (i.e., POI) where the edge angle will be
+measured; represented as a 1X3 matrix-like object containing x, y, and z
 coordinates.}
 
 \item{radius}{A positive numeric value indicating the search radius from the
-\code{poi} for including mesh vertices in the angle measurements (see details)}
+\code{poi} for including \code{mesh} vertices in the angle measurements (see details)}
 
 \item{lambda}{A positive numeric value used as a tuning parameter for the
 underlying clustering algorithm (see details)}
@@ -30,7 +31,7 @@ per row) of the end points of the first intersecting line segment
 per row) of the end points of the second intersecting line segment
 (perpendicular to the edge, and along the second intersecting surface).
 \item \code{ip}: a 1x3 data.frame object with the x, y, and z coordinates of the
-seg_1 and seg_2 intersection point. Corresponds to the input parameter \code{poi}.
+\code{seg_1} and \code{seg_2} intersection point.
 \item \code{diag}: a list with other diagnostic data including:
 a. \code{method}: a string with the name of the method used to measure the
 angle (i.e., YW2021).
@@ -41,7 +42,7 @@ b. \code{timestamp}: a string with the time when the angle was measured.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 This is a partial implementation of the Virtual Goniometer algorithm
-proposed by Yezzi-Woodley et al. (2021) for measuring edge angles on meshes.
+proposed by Yezzi-Woodley et al. (2021) for measuring edge angles.
 It works by selecting a patch of mesh vertices (i.e., surface points) around
 a user-specified point of interest (POI) and approximating two intersecting
 planes within the patch.
@@ -50,7 +51,7 @@ planes within the patch.
 This function and its helpers are a modified partial translation of
 the C++ code developed by the \href{http://amaaze.umn.edu}{AMAAZE consortium} as
 a Meshlab plugin (\href{https://github.com/cnr-isti-vclab/meshlab-extra-plugins}{Meshlab extra plugins}).
-The full details of how this function works can be found in \href{https://link.springer.com/article/10.1007\%2Fs12520-021-01335-y}{Yezzi-Woodley et al. (2021)}.
+The full details of how the algorithm works can be found in \href{https://link.springer.com/article/10.1007\%2Fs12520-021-01335-y}{Yezzi-Woodley et al. (2021)}.
 The main differences between this implementation and the original are:
 \itemize{
 \item This implementation only provides one way of specifying the measurement
@@ -62,8 +63,9 @@ Yezzi-Woodley et al., 2021).
 }
 }
 \note{
-Some of the information in the return value is redundant because is is
-in a standardized format used with multiple functions.
+Some of the information in the return value is redundant because it is
+in a standardized format to be used with multiple edge angle measurement
+functions.
 }
 \examples{
 # Load demo data
@@ -108,5 +110,6 @@ points3d(rbind(res$seg_1[2, ], res$seg_2[2, ]), col = "black", size = 10)
 \code{\link[=mesh_mark_pois]{mesh_mark_pois()}}, \code{\link[=drop_poi]{drop_poi()}}
 }
 \author{
-Cornel M. Pop
+Cornel M. Pop, and
+\href{https://amaaze.umn.edu/software}{AMAAZE} (original Meshlab implementation)
 }
