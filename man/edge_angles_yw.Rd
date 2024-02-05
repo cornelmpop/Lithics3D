@@ -26,12 +26,15 @@ A list containing:
 \item \code{angle}: a numeric value corresponding to the measured angle, in degrees.
 \item \code{seg_1}: a 2x3 data.frame object with the x, y, and z coordinates (one
 per row) of the end points of the first intersecting line segment
-(perpendicular to the edge, and along the first intersecting surface).
+(perpendicular to the edge, and along the first intersecting surface). The
+length of the segment corresponds to the input \code{radius} value.
 \item \code{seg_2}: a 2x3 data.frame object with the x, y, and z coordinates (one
 per row) of the end points of the second intersecting line segment
-(perpendicular to the edge, and along the second intersecting surface).
+(perpendicular to the edge, and along the second intersecting surface). The
+length of the segment corresponds to the input \code{radius} value.
 \item \code{ip}: a 1x3 data.frame object with the x, y, and z coordinates of the
-\code{seg_1} and \code{seg_2} intersection point.
+\code{seg_1} and \code{seg_2} intersection point. Corresponds to the input POI (see
+Notes).
 \item \code{diag}: a list with other diagnostic data including:
 a. \code{method}: a string with the name of the method used to measure the
 angle (i.e., YW2021).
@@ -63,9 +66,13 @@ Yezzi-Woodley et al., 2021).
 }
 }
 \note{
-Some of the information in the return value is redundant because it is
+\enumerate{
+\item Some of the information in the return value is redundant because it is
 in a standardized format to be used with multiple edge angle measurement
 functions.
+\item The intersecting planes have been shifted so that their intersection point
+corresponds to the input POI.
+}
 }
 \examples{
 # Load demo data

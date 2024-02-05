@@ -43,12 +43,15 @@
 #'  1. `angle`: a numeric value corresponding to the measured angle, in degrees.
 #'  2. `seg_1`: a 2x3 data.frame object with the x, y, and z coordinates (one
 #'  per row) of the end points of the first intersecting line segment
-#' (perpendicular to the edge, and along the first intersecting surface).
+#' (perpendicular to the edge, and along the first intersecting surface). The
+#' length of the segment corresponds to the input `radius` value.
 #'  3. `seg_2`: a 2x3 data.frame object with the x, y, and z coordinates (one
 #' per row) of the end points of the second intersecting line segment
-#' (perpendicular to the edge, and along the second intersecting surface).
+#' (perpendicular to the edge, and along the second intersecting surface). The
+#' length of the segment corresponds to the input `radius` value.
 #'  4. `ip`: a 1x3 data.frame object with the x, y, and z coordinates of the
-#' `seg_1` and `seg_2` intersection point.
+#' `seg_1` and `seg_2` intersection point. Corresponds to the input POI (see
+#' Notes).
 #'  5. `diag`: a list with other diagnostic data including:
 #'      a. `method`: a string with the name of the method used to measure the
 #'    angle (i.e., YW2021).
@@ -56,10 +59,13 @@
 #'
 #' @seealso [mesh_mark_pois()], [drop_poi()]
 #'
-#' @note Some of the information in the return value is redundant because it is
+#' @note
+#' 1. Some of the information in the return value is redundant because it is
 #' in a standardized format to be used with multiple edge angle measurement
 #' functions.
-#' 
+#' 2. The intersecting planes have been shifted so that their intersection point
+#' corresponds to the input POI.
+#'
 #' @examples
 #' # Load demo data
 #' library(rgl)
