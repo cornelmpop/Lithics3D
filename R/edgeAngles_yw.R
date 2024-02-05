@@ -22,9 +22,11 @@
 #' - This implementation only provides one way of specifying the measurement
 #' point: the "xyz method" described in Yezzi-Woodley et al. (2021).
 #' - This implementation selects mesh surface points for the angle computations
-#' using Euclidean rather than geodesic distances. Note that the results are
+#' using Euclidean rather than geodesic distances. The results are
 #' very similar whether geodesic or Euclidean distances are used (see
-#' Yezzi-Woodley et al., 2021).
+#' Yezzi-Woodley et al., 2021), although there may be rare instances where
+#' substantial differences may be observed (see
+#' [Issue #20](https://github.com/cornelmpop/Lithics3D/issues/20)).
 #'
 #' @author Cornel M. Pop, and
 #' [AMAAZE](https://amaaze.umn.edu/software) (original Meshlab implementation)
