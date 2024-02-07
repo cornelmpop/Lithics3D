@@ -1,6 +1,6 @@
 #' @import memoise
 #' @import Rvcg
-#' @importFrom igraph graph.data.frame get.shortest.paths V
+#' @importFrom igraph graph_from_data_frame shortest_paths V
 #' @import nabor
 
 #' @title Transform mesh into an undirected igraph object
@@ -25,7 +25,7 @@
 #' @export
 mesh_to_graph <- memoise::memoise(function(mesh) {
   all_edges <- Rvcg::vcgGetEdge(mesh, unique = T)[, 1:2]
-  mesh_graph <- igraph::graph.data.frame(all_edges, directed = FALSE)
+  mesh_graph <- igraph::graph_from_data_frame(all_edges, directed = FALSE)
   g_vert <- igraph::V(mesh_graph)$name
 
   ew <- Rvcg::vcgCurve(mesh)
@@ -108,14 +108,14 @@ sPathQuery <- function(sv_id, ev_id, mesh, path.choice="any"){
   w.n <- 1 / (w.n + 1)
 
   if (path.choice == "ridges") {
-    s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
+    s_path <- igraph::shortest_paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id), weights = w_p2)$vpath[[1]]
 
   } else if (path.choice == "valleys") {
-    s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
+    s_path <- igraph::shortest_paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id), weights = w.n)$vpath[[1]]
   } else if (path.choice == "any") {
-    s_path <- igraph::get.shortest.paths(g_res$graph, from = paste(sv_id),
+    s_path <- igraph::shortest_paths(g_res$graph, from = paste(sv_id),
                                 to = paste(ev_id))$vpath[[1]]
   } else {
     stop("Unknown path.choice option. Use 'ridges', 'valleys', or 'any'")
