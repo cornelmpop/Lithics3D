@@ -1,3 +1,13 @@
+Lithics3D v0.5.2 (Release date: 2024-02-07)
+==============
+
+New features:
+* edge_angles_yw: A function to calculate edge angles based on the method proposed by Yezzi-Woodley et al. (2021)
+
+Other changes:
+* added private helper functions and unit tests for the edge_angles_yw function.
+* Fixed warning triggered by calls to deprecated functions from the igraph (v2) package.
+
 Lithics3D v0.5.1 (Release date: 2023-12-22)
 ==============
 
