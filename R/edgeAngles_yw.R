@@ -27,15 +27,22 @@
 #' Yezzi-Woodley et al., 2021), although there may be rare instances where
 #' substantial differences may be observed (see
 #' [Issue #20](https://github.com/cornelmpop/Lithics3D/issues/20)).
+#' - Unlike the Meshlab plugin, this implementation uses the input POI as-is; in
+#' other words, no attempt is made to project it onto the mesh surface. If
+#' such projection is needed, process the POI with [mapOnMesh()] or a
+#' similar function first. To guarantee that the POI is on the mesh surface,
+#' it is recommended that the POI be selected with the [mesh_mark_pois()]
+#' function. Note that a warning will be generated if the POI is at a distance
+#' greater than 1/10th of the requested radius from the nearest mesh vertex.
 #'
 #' @author Cornel M. Pop, and
 #' [AMAAZE](https://amaaze.umn.edu/software) (original Meshlab implementation)
 #'
 #' @param mesh A triangular mesh (`mesh3d`) object on which edge angles will be
-#' measured.
+#' measured. Please ensure normals have been updated (see Examples).
 #' @param poi A point of interest (i.e., POI) where the edge angle will be
 #' measured; represented as a 1X3 matrix-like object containing x, y, and z
-#' coordinates.
+#' coordinates. Please ensure the POI is on the mesh surface (see Details).
 #' @param radius A positive numeric value indicating the search radius from the
 #' `poi` for including `mesh` vertices in the angle measurements (see details)
 #' @param lambda A positive numeric value used as a tuning parameter for the
@@ -65,8 +72,8 @@
 #' 1. Some of the information in the return value is redundant because it is
 #' in a standardized format to be used with multiple edge angle measurement
 #' functions.
-#' 2. The intersecting planes have been shifted so that their intersection point
-#' corresponds to the input POI.
+#' 2. The intersecting planes, and therefore `seg_1` and `seg_2`, are shifted so
+#' that their intersection point corresponds to the input POI.
 #'
 #' @examples
 #' # Load demo data
@@ -116,6 +123,15 @@ edge_angles_yw <- function(mesh, poi, radius = 3, lambda = 2) {
   # POI:
   vid <- (mesh$vb[1, ] - poi[1, 1]) ^ 2 + (mesh$vb[2, ] - poi[1, 2]) ^ 2 +
     (mesh$vb[3, ] - poi[1, 3]) ^ 2
+
+  # Issue warning if the nearest vertex is unreasonably far (here, 10% of the
+  # requested `radius`)
+  if (min(vid) > (radius/10)^2) {
+    warning(paste("POI may be too far from the nearest mesh vertex ",
+                  "(distance = ", sqrt(min(vid)), " mesh units). ",
+                  "See documentation.", sep = ""))
+  }
+
   vid <- which(vid <= radius^2)
 
   # Coordinates and normals of vertices in patch:

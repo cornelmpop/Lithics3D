@@ -12,7 +12,7 @@ measured.}
 
 \item{poi}{A point of interest (i.e., POI) where the edge angle will be
 measured; represented as a 1X3 matrix-like object containing x, y, and z
-coordinates.}
+coordinates. Please ensure it is on the mesh surface (see Details).}
 
 \item{radius}{A positive numeric value indicating the search radius from the
 \code{poi} for including \code{mesh} vertices in the angle measurements (see details)}
@@ -65,6 +65,13 @@ very similar whether geodesic or Euclidean distances are used (see
 Yezzi-Woodley et al., 2021), although there may be rare instances where
 substantial differences may be observed (see
 \href{https://github.com/cornelmpop/Lithics3D/issues/20}{Issue #20}).
+\item Unlike the Meshlab plugin, this implementation uses the input POI as-is; in
+other words, no attempt is made to project it onto the mesh surface. If
+such projection is needed, process the POI with \code{\link[=mapOnMesh]{mapOnMesh()}} or a
+similar function first. To guarantee that the POI is on the mesh surface,
+it is recommended that the POI be selected with the \code{\link[=mesh_mark_pois]{mesh_mark_pois()}}
+function. Note that a warning will be generated if the POI is at a distance
+greater than 1/10th of the requested radius from the nearest mesh vertex.
 }
 }
 \note{
@@ -72,8 +79,8 @@ substantial differences may be observed (see
 \item Some of the information in the return value is redundant because it is
 in a standardized format to be used with multiple edge angle measurement
 functions.
-\item The intersecting planes have been shifted so that their intersection point
-corresponds to the input POI.
+\item The intersecting planes, and therefore \code{seg_1} and \code{seg_2}, are shifted so
+that their intersection point corresponds to the input POI.
 }
 }
 \examples{
