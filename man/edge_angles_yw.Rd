@@ -8,11 +8,11 @@ edge_angles_yw(mesh, poi, radius = 3, lambda = 2)
 }
 \arguments{
 \item{mesh}{A triangular mesh (\code{mesh3d}) object on which edge angles will be
-measured.}
+measured. Please ensure normals have been updated (see Examples).}
 
 \item{poi}{A point of interest (i.e., POI) where the edge angle will be
 measured; represented as a 1X3 matrix-like object containing x, y, and z
-coordinates. Please ensure it is on the mesh surface (see Details).}
+coordinates. Please ensure the POI is on the mesh surface (see Details).}
 
 \item{radius}{A positive numeric value indicating the search radius from the
 \code{poi} for including \code{mesh} vertices in the angle measurements (see details)}
