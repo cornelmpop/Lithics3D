@@ -1,6 +1,7 @@
 Lithics3D v0.5.3 (Release date: 2024-02-__)
 
 New features:
+* edge_angles_valletta: A function to calculate edge angles based on the method proposed by Valletta et al. (2020)
 
 Other changes:
 * Removed demoFlake3 to reduce the size of the package below the 5MB CRAN limit. Note that this demo mesh was not used by any code within this package, and it is still available in previous releases.
