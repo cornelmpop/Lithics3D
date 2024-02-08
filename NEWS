@@ -1,3 +1,12 @@
+Lithics3D v0.5.3 (Release date: 2024-02-__)
+
+New features:
+
+Other changes:
+* Removed demoFlake3 to reduce the size of the package below the 5MB CRAN limit. Note that this demo mesh was not used by any code within this package, and it is still available in previous releases.
+* Minor updates to the documentation of the edge_angles_yw() function.
+
+
 Lithics3D v0.5.2 (Release date: 2024-02-07)
 ==============
 
