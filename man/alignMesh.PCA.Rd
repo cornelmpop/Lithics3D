@@ -41,3 +41,4 @@ shade3d(alignedMesh, color=3)
 \author{
 Shannon McPherron, Cornel M. Pop
 }
+\keyword{internal}

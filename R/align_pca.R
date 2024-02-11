@@ -28,6 +28,7 @@
 #' shade3d(alignedMesh, color=3)
 #' }
 #' @export
+#' @keywords internal
 alignMesh.PCA <- function(mesh){
   warning("This function is deprecated and will be removed in version 1 of this
   package. Use Morpho::pcAlign instead")

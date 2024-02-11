@@ -125,6 +125,7 @@ coords_onseg <- function(coords, seg, tol = 0) {
 #' useful to deal with floating point precision errors. Default is 0.
 #' @return A boolean vector indicating, for each input coordinate, whether they
 #' lie on the given line segment
+#' @keywords internal
 ptOnSeg <- function(coords, l, d.t = 0) {
   .Deprecated("coords_onseg")
   

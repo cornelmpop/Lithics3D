@@ -28,3 +28,4 @@ This function has been renamed to \link{coords_onseg}.
 \author{
 Cornel M. Pop
 }
+\keyword{internal}
