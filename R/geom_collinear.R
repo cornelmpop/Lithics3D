@@ -61,6 +61,7 @@
 #' @return Boolean indicating whether the points are collinear (True) or not
 #' False).
 #' @section TODO: Document better and write unit test?
+#' @keywords internal
 .collin.check <- function(c, lms, thresh=NA){
   if (is.na(thresh)){
     lm.col <- .p3.collin(c[lms, ])

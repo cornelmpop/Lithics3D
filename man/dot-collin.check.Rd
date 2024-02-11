@@ -31,3 +31,4 @@ A silly collinearity check auxiliary function.
 \author{
 Cornel M. Pop
 }
+\keyword{internal}

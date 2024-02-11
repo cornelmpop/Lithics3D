@@ -7,6 +7,7 @@ Other changes:
 * Removed demoFlake3 to reduce the size of the package below the 5MB CRAN limit. Note that this demo mesh was not used by any code within this package, and it is still available in previous releases.
 * Minor updates to the documentation of the edge_angles_yw() function.
 * Removed links to help pages of deprecated functions (ptOnSeg and alignMesh.PCA) from the package help index.
+* Removed link to help page of internal function (.collin.check) from the package index.
 
 Lithics3D v0.5.2 (Release date: 2024-02-07)
 ==============
