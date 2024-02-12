@@ -1,0 +1,9 @@
+bibentry(
+  bibtype  = "Manual",
+  title    = "Lithics3D: A toolbox for 3D analysis of archaeological lithics",
+  author   = "Cornel M. Pop",
+  year     = "2024",
+  note     = "R package version 0.5.3",
+  url      = "https://github.com/cornelmpop/Lithics3D",
+  doi      = "10.5281/zenodo.2648096"
+)
