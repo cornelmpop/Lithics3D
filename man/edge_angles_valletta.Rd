@@ -6,6 +6,19 @@
 \usage{
 edge_angles_valletta(mesh, pois, radius = 3)
 }
+\arguments{
+\item{mesh}{A triangular mesh (\code{mesh3d}) object on which edge angles will be
+measured. Please ensure normals have been updated (see Examples).}
+
+\item{pois}{Two points of interest (i.e., POIs) along the edge between which
+the edge angle will be measured; represented as a 2X3 matrix-like object
+containing x, y, and z coordinates. Please ensure the POIs are on the mesh
+surface (see Details).}
+
+\item{radius}{A positive numeric value indicating the search radius from the
+line defined by the \code{pois} for including \code{mesh} vertices in the angle
+measurements (see Details).}
+}
 \value{
 A list containing:
 \enumerate{
@@ -25,9 +38,15 @@ b. \code{timestamp}: a string with the time when the angle was measured.
 }
 }
 \description{
-Compute edge angles using Valletta et al.'s method
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Implements the algorithm proposed by Valletta et al. (2020) for measuring
+edge angles.
 }
 \note{
+TODO: Add Details and specify why POI should be on the mesh surface, amongst
+other things.
+
 TODO:
 \itemize{
 \item test output to make sure it is correct (test against original method)
@@ -42,4 +61,7 @@ z = c(414.3339, 408.5220), Tag = c(1, 2))
 mesh <- demoFlake2$mesh
 mesh <- Rvcg::vcgUpdateNormals(mesh)
 res <- edge_angles_valletta(mesh, pois, radius = 3)
+}
+\author{
+Cornel M. Pop
 }

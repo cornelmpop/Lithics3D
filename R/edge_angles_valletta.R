@@ -1,5 +1,28 @@
 #' Compute edge angles using Valletta et al.'s method
 #'
+#' @description
+#' 
+#' `r lifecycle::badge("experimental")`
+#'
+#' Implements the algorithm proposed by Valletta et al. (2020) for measuring
+#' edge angles.
+#' 
+#' @author Cornel M. Pop
+#' 
+#' @param mesh A triangular mesh (`mesh3d`) object on which edge angles will be
+#' measured. Please ensure normals have been updated (see Examples).
+#' @param pois Two points of interest (i.e., POIs) along the edge between which
+#' the edge angle will be measured; represented as a 2X3 matrix-like object
+#' containing x, y, and z coordinates. Please ensure the POIs are on the mesh
+#' surface (see Details).
+#' @param radius A positive numeric value indicating the search radius from the
+#' line defined by the `pois` for including `mesh` vertices in the angle
+#' measurements (see Details).
+#' 
+#' @note
+#' TODO: Add Details and specify why POI should be on the mesh surface, amongst
+#' other things.
+#' 
 #' @returns A list containing:
 #'  1. `angle`: a numeric value corresponding to the measured angle, in degrees.
 #'  2. `seg_1`: a 2x3 data.frame object with the x, y, and z coordinates (one
