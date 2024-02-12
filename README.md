@@ -1,6 +1,13 @@
-[![DOI](https://zenodo.org/badge/147242315.svg)](https://zenodo.org/badge/latestdoi/147242315)
+---
+title: "Lithics3D"
+---
 
-# Lithics3D
+[![DOI](https://zenodo.org/badge/147242315.svg)](https://zenodo.org/badge/latestdoi/147242315)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![R-CMD-check](https://github.com/cornelmpop/Lithics3D/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cornelmpop/Lithics3D/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/cornelmpop/Lithics3D/graph/badge.svg?token=POG00CAXKO)](https://codecov.io/gh/cornelmpop/Lithics3D)
+
+# Overview
 
 Lithics3D provides a toolbox for working with 3D scans of archaeological lithics
 (and other objects) within the R environment. The functions included herein
