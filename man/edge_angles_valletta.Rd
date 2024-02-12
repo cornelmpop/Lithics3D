@@ -40,6 +40,6 @@ pois <- data.frame(x = c(-21.57720, -16.07506),
 y = c(44.94063, 18.35520),
 z = c(414.3339, 408.5220), Tag = c(1, 2))
 mesh <- demoFlake2$mesh
-mesh <- vcgUpdateNormals(mesh)
+mesh <- Rvcg::vcgUpdateNormals(mesh)
 res <- edge_angles_valletta(mesh, pois, radius = 3)
 }
