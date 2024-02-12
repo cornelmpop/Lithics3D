@@ -19,7 +19,7 @@
 #' y = c(44.94063, 18.35520),
 #' z = c(414.3339, 408.5220), Tag = c(1, 2))
 #' mesh <- demoFlake2$mesh
-#' mesh <- Rvcg::vcgUpdateNormals(mesh)
+#' mesh <- vcgUpdateNormals(mesh)
 #' res <- edge_angles_valletta(mesh, pois, radius = 3)
 #' @export
 #' @note
