@@ -4,6 +4,8 @@ New features:
 * edge_angles_valletta: A function to calculate edge angles based on the method proposed by Valletta et al. (2020)
 
 Other changes:
+* Fixed a bug with mesh_segment_by_path: the function dropped a (normally very small) number of faces silently; the downside of the fix is that the function runs about 15% or so slower than before. Minor changes were also made to the function's documentation.
+* Added basic tests for the mesh_segment_by_path function.
 * Removed demoFlake3 to reduce the size of the package below the 5MB CRAN limit. Note that this demo mesh was not used by any code within this package, and it is still available in previous releases.
 * Minor updates to the documentation of the edge_angles_yw() function.
 * Removed links to help pages of deprecated functions (ptOnSeg and alignMesh.PCA) from the package help index.
