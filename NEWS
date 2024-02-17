@@ -11,6 +11,7 @@ Other changes:
 * Removed links to help pages of deprecated functions (ptOnSeg and alignMesh.PCA) from the package help index.
 * Removed link to help page of internal function (.collin.check) from the package index.
 * Minor enhancements to the README: added additional badges and a title, and the renamed first header.
+* Switched to using README.rmd.
 * Added a CITATION file to the package, so that citation("Lithics3D") produces correct output.
 
 Lithics3D v0.5.2 (Release date: 2024-02-07)
