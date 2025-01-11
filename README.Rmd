@@ -70,13 +70,29 @@ If you haven't done so already, install devtools in R:
 install.packages("devtools")
 ```
 
-Once devtools is available you can install Lithics3D from github with the
-following R commands:
+Once devtools is available you can install Lithics3D from GitHub with either
+of the following procedures:
+
+1. directly from GitHub with the following R commands:
 
 ``` r
 require(devtools)
 install_github("cornelmpop/Lithics3D", dependencies=T, build_vignettes=T)
 ```
+
+2. from a downloaded .zip file, which can be obtained by clicking
+on the green "Code" button on the
+[Lithics3D GitHub repository](https://github.com/cornelmpop/Lithics3D) and
+selecting "Download Zip." Assuming you have downloaded or copied the .zip to
+your working directory (in R, `getwd()` will show you what your working
+directory is set to), and that you have downloaded the master branch code,
+you can install the package with the following R commands:
+
+``` r
+require(devtools)
+install_local("Lithics3D-master.zip")
+```
+
 
 ### Using Lithics3D
 

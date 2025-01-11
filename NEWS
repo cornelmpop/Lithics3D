@@ -1,4 +1,4 @@
-Lithics3D v0.5.3 (Release date: 2024-02-__)
+Lithics3D v0.5.3 (Release date: 2025-01-__)
 
 New features:
 * edge_angles_valletta: A function to calculate edge angles based on the method proposed by Valletta et al. (2020)
@@ -10,7 +10,7 @@ Other changes:
 * Minor updates to the documentation of the edge_angles_yw() function.
 * Removed links to help pages of deprecated functions (ptOnSeg and alignMesh.PCA) from the package help index.
 * Removed link to help page of internal function (.collin.check) from the package index.
-* Minor enhancements to the README: added additional badges and a title, and the renamed first header.
+* Minor enhancements to the README: added additional badges and a title, and the renamed first header; also modified installation instructions to include procedure for installing locally from a .zip file (done in response to direct installations from GitHub being blocked by some institutions)
 * Switched to using README.rmd.
 * Added a CITATION file to the package, so that citation("Lithics3D") produces correct output.
 
