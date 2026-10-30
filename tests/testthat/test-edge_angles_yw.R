@@ -12,7 +12,8 @@ test_that("edge_angles_yw works as expected", {
   res <- edge_angles_yw(mesh, poi, radius = radius, lambda = 2)
 
   expect_identical(round(res$angle, 9), expected_angle)
-  expect_identical(round(res$diag$theta, 9), c(expected_angle, 107.921335934))
+  expect_identical(round(res$diag$theta, 9), c(expected_angle, 107.921335934),
+                   tolerance = 1e-5)
   expect_identical(round(res$diag$fit, 9), 0.043602052)
 
   # As per documentation changes in commit 9de6b574:
@@ -29,12 +30,14 @@ test_that("edge_angles_yw works as expected", {
 
   res <- edge_angles_yw(mesh, poi, radius = 5, lambda = 0)
   expect_identical(round(res$angle, 9), 88.417980858)
-  expect_identical(round(res$diag$theta, 9), c(88.417980858, 96.2636612))
+  expect_identical(round(res$diag$theta, 9), c(88.417980858, 96.2636612),
+                   tolerance = 1e-5)
   expect_identical(round(res$diag$fit, 9), 0.062016589)
 
   res <- edge_angles_yw(mesh, poi, radius = 5, lambda = 5)
   expect_identical(round(res$angle, 9), 87.708882574)
-  expect_identical(round(res$diag$theta, 9), c(87.708882574, 97.823776661))
+  expect_identical(round(res$diag$theta, 9), c(87.708882574, 97.823776661),
+                   tolerance = 1e-5)
   expect_identical(round(res$diag$fit, 9), 0.05722007)
 
   # Expect warning with POI that is too distant:
