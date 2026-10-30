@@ -1,0 +1,7 @@
+# Normalize detected text files to LF in both the repository and working tree.
+* text=auto eol=lf
+
+# R serialized data is binary and must never undergo text conversion.
+*.rda binary
+*.RData binary
+*.rds binary
