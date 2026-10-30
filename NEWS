@@ -2,6 +2,7 @@ Lithics3D v0.5.3 (Release date: 2026-10-30)
 
 New features:
 * mesh_rasterize: A function to rasterize an oriented triangular mesh
+* trace_outline: A function to trace the outline of a raster-like object, producing a closed curve with ordered coordinates
 
 Other changes:
 * Added optional parameter to mesh_mark_pois to enable specifying window size.
