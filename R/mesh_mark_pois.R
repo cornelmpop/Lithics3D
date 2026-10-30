@@ -50,9 +50,9 @@ proj_poi <- function(ray, mesh) {
 #'
 #' @note
 #' - The input is not modified in place
-#' - The function does not check whether the scene has been changed
-#' since the [mesh_mark_pois()] function was called to generate the `pois`
-#' object.
+#' - The function only performs minimal checks of whether the scene has been
+#' changed since the [mesh_mark_pois()] function was called to generate the
+#' `pois` object.
 #'
 #' @param pois A data frame output by the [mesh_mark_pois()]
 #' function, containing information about points of interest (POIs).
@@ -87,17 +87,42 @@ drop_poi <- function(pois, tt_override = FALSE) {
     stop("Invalid input: Could not find a tag for the last POI.")
   }
 
-  if (cur3d() == 0 || !(length(tagged3d(tags = poi_tag)) == 1)) {
-    if (tt_override == FALSE) {
+  #if (cur3d() == 0 || !(length(tagged3d(tags = poi_tag)) == 1)) {
+  #  if (tt_override == FALSE) {
+  if (tt_override == FALSE) {
+    if (cur3d() == 0) {
       stop("Error: 3D scene closed, modified, or out of sync with POI list.")
     }
+
+    # Find point objects with the expected tag:
+    scene_ids <- ids3d(type = "shapes")
+    point_ids <- scene_ids$id[scene_ids$type == "points"]
+    point_ids <- intersect(tagged3d(tags = poi_tag), point_ids)
+    
+    # Distinguish points with duplicate tags using their coordinates.
+    poi_xyz <- as.numeric(pois[nrow(pois), c("x", "y", "z")])
+    coord_matches <- logical(length(point_ids))
+    for (i in seq_along(point_ids)) {
+      point_xyz <- rgl.attrib(point_ids[i], "vertices")[1, 1:3]
+      coord_matches[i] <- all(abs(point_xyz - poi_xyz) <= 1e-7)
+    }
+    point_ids <- point_ids[coord_matches]
+    
+    if (length(point_ids) != 1) {
+      stop("Error: 3D scene closed, modified, or out of sync with POI list.")
+    }
+    point_id <- point_ids[[1]]
   }
 
   pois <- pois[-nrow(pois), ] # Drop last POI.
 
-  # If not in a test environment, and we got this far, drop the tag
+  # If not in a test environment, and we got this far, drop the tag and any
+  # associated label and connector objs.
   if (tt_override == FALSE) {
-    pop3d(id = tagged3d(tags = poi_tag)) # Remove POI from current 3D scene
+    scene_tag <- paste0("Lithics3D-poi-", point_id)
+    auxiliary_ids <- tagged3d(tags = scene_tag)
+    pop3d(id = c(point_id, auxiliary_ids))
+    #pop3d(id = tagged3d(tags = poi_tag)) # Remove POI from current 3D scene
   }
 
   return(pois) # Return modified input

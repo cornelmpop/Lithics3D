@@ -26,9 +26,9 @@ accordingly, and returns the modified dataset.
 \note{
 \itemize{
 \item The input is not modified in place
-\item The function does not check whether the scene has been changed
-since the \code{\link[=mesh_mark_pois]{mesh_mark_pois()}} function was called to generate the \code{pois}
-object.
+\item The function only performs minimal checks of whether the scene has been
+changed since the \code{\link[=mesh_mark_pois]{mesh_mark_pois()}} function was called to generate the
+\code{pois} object.
 }
 }
 \examples{
