@@ -1,7 +1,6 @@
-Lithics3D v0.5.3 (Release date: 2025-01-__)
+Lithics3D v0.5.3 (Release date: 2026-10-30)
 
 New features:
-* edge_angles_valletta: A function to calculate edge angles based on the method proposed by Valletta et al. (2020)
 
 Other changes:
 * Added .gitattributes to fix cross-platform line-ending compatibility.
