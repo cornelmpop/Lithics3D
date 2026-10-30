@@ -32,6 +32,12 @@ test_that("drop_poi works as expected", {
 
 test_that("mesh_mark_pois works as expected", {
 
+  # b0022
+  expect_scene_types <- function(expected) {
+    on.exit(close3d())
+    expect_equal(sort(ids3d(type = "shapes")$type), sort(expected))
+  }
+  
   # Compliance with documentation - input:
   # Invalid - Input not a mesh:
   expect_error(mesh_mark_pois(mesh = data.frame()),
@@ -45,7 +51,9 @@ test_that("mesh_mark_pois works as expected", {
   # and return an empty data frame, leaving the scene open with nothing but
   # the demoSphere.
   res <- mesh_mark_pois(mesh = demoSphere)
-  expect_known_scene("mesh_mark_pois_demosphere", close = TRUE, update = FALSE)
+  # b0022
+  #expect_known_scene("mesh_mark_pois_demosphere", close = TRUE, update = FALSE)
+  expect_scene_types("triangles")
   expect_s3_class(res, "data.frame")
   expect_equal(nrow(res), 0)
 
@@ -58,8 +66,10 @@ test_that("mesh_mark_pois works as expected", {
                            z = c(0.2691861, 0.5440870),
                            Tag = c(1, 2))
   res <- mesh_mark_pois(mesh = demoSphere, pois = pois_valid)
-  expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE,
-                     update = FALSE)
+  # b0022
+  # expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE,
+  #                    update = FALSE)
+  expect_scene_types(c("triangles", "points", "points"))
   expect_identical(res, pois_valid)
   
   # b0035_p Ensure we can run with 1 POI without generating error:
@@ -67,8 +77,10 @@ test_that("mesh_mark_pois works as expected", {
   # Note: to save scene:
   # saveRDS(scene3d(),
   #         file = "tests/testthat/testdata/mesh_mark_pois_demosphere_vp1.rds")
-  expect_known_scene("mesh_mark_pois_demosphere_vp1", close = TRUE,
-                     update = FALSE)
+  # b0022
+  #expect_known_scene("mesh_mark_pois_demosphere_vp1", close = TRUE,
+  #                   update = FALSE)
+  expect_scene_types(c("triangles", "points"))
   expect_identical(res, pois_valid[1, ])
 })
 

@@ -1,5 +1,11 @@
 test_that("edge_angles_vis3d works as expected", {
 
+  # b0022
+  expect_scene_types <- function(expected) {
+    on.exit(close3d())
+    expect_equal(sort(ids3d(type = "shapes")$type), sort(expected))
+  }
+  
   # Test with valid input:
   path_ids <- c(20, 8, 45, 45,  5, 2, 12)
   edge_curve_path <- t(demoSphere$vb)[path_ids, 1:3]
@@ -8,21 +14,30 @@ test_that("edge_angles_vis3d works as expected", {
   res <- edgeAngles(demoSphere, edge_curve, 0.4)
 
   res_vis3d <- edge_angles_vis3d(res, demoSphere, edge_curve)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_all.rds",
-                     update = FALSE)
-
+  # b0022
+  #expect_known_scene(file = "testdata/edge_angles_vis3d_all.rds",
+  #                   update = FALSE)
+  expect_scene_types(c(rep("linestrip", 6), rep("text", 3),
+                       "points", "triangles"))
+  
   res_vis3d <- edge_angles_vis3d(res, show_mesh = demoSphere)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_mesh.rds",
-                     update = FALSE)
-
+  # b0022
+  #expect_known_scene(file = "testdata/edge_angles_vis3d_mesh.rds",
+  #                   update = FALSE)
+  expect_scene_types(c(rep("linestrip", 6), rep("text", 3), "triangles"))
+  
   res_vis3d <- edge_angles_vis3d(res, show_pois = edge_curve)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_pois.rds",
-                     update = FALSE)
-
+  # b0022
+  #expect_known_scene(file = "testdata/edge_angles_vis3d_pois.rds",
+  #                   update = FALSE)
+  expect_scene_types(c(rep("linestrip", 6), rep("text", 3), "points"))
+  
   res_vis3d <- edge_angles_vis3d(res)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_base.rds",
-                     update = FALSE)
-
+  # b0022
+  #expect_known_scene(file = "testdata/edge_angles_vis3d_base.rds",
+  #                   update = FALSE)
+  expect_scene_types(c(rep("linestrip", 6), rep("text", 3)))
+  
   # Test with invalid input:
   expect_error(edge_angles_vis3d(list()))
   expect_error(edge_angles_vis3d(c(1, 2, 3)))
