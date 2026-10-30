@@ -16,7 +16,7 @@ mesh_tmap_plot(
 \item{tmap}{A thickness map as output by the \link{mesh_tmap} function}
 
 \item{font_size}{A numeric value specifying the font size argument to be
-passed on to \link{ggplot}}
+passed on to \link[ggplot2:ggplot]{ggplot}}
 
 \item{y.label}{A text to be used to label the y axis}
 
@@ -29,7 +29,7 @@ A ggplot object, ready to be plotted.
 }
 \description{
 Plots a given thickness map with some sensible defaults using
-\link{ggplot}
+\link[ggplot2:ggplot]{ggplot2::ggplot}
 }
 \author{
 Cornel M. Pop

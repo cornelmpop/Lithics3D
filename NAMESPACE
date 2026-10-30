@@ -55,8 +55,10 @@ import(nabor)
 import(parallel)
 import(pracma)
 import(rgl)
-importFrom(igraph,V)
-importFrom(igraph,graph_from_data_frame)
-importFrom(igraph,shortest_paths)
+importFrom(igraph,
+  V,
+  graph_from_data_frame,
+  shortest_paths
+)
 importFrom(lifecycle,deprecated)
 importFrom(pracma,cross)

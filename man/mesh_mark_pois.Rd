@@ -20,11 +20,11 @@ mesh_mark_pois(
 should be the output of a previous run of this or the \code{\link[=drop_poi]{drop_poi()}} function.}
 
 \item{button}{The mouse button used for marking POIs. Defaults to "right".
-See \code{\link[=rgl.select]{rgl.select()}} for details.}
+See \code{\link[rgl:rgl.select]{rgl::rgl.select()}} for details.}
 
 \item{prev_color}{The color used to display previously marked POIs.
 Defaults to NA, which results in automatically generated colors along a
-reversed "Blue-Red 2" palette (see \code{\link[grDevices:palettes]{grDevices::hcl.colors()}} for details), so
+reversed "Blue-Red 2" palette (see \code{\link[grDevices:hcl.colors]{grDevices::hcl.colors()}} for details), so
 that the order in which the POIs were marked can be visualized.}
 
 \item{color}{The color for newly marked POIs. Defaults to "red".}
@@ -77,7 +77,7 @@ rgl::close3d()
 
 }
 \seealso{
-\code{\link[=drop_poi]{drop_poi()}} for removing bad POIs; \code{\link[=material3d]{material3d()}} for details
+\code{\link[=drop_poi]{drop_poi()}} for removing bad POIs; \code{\link[rgl:material3d]{rgl::material3d()}} for details
 on the prev_color, color, and size parameters.
 }
 \keyword{'3D}
