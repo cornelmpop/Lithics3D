@@ -81,26 +81,66 @@ mesh_tmap <- function(mesh.o, base.res, ld.cutoff){
 #' @description Plots a given thickness map with some sensible defaults using
 #' [ggplot2::ggplot]
 #' @author Cornel M. Pop
-#' @param tmap A thickness map as output by the [mesh_tmap] function
+#' @param tmap A thickness map as output by the [mesh_tmap()] function, or the
+#' output of [mesh_rasterize()] called with `thickness = TRUE`.
 #' @param font_size A numeric value specifying the font size argument to be
 #' passed on to [ggplot]
 #' @param x.label A text to be used to label the x axis
 #' @param y.label A text to be used to label the y axis
 #' @param annot An annotation to be added to the resulting graph
 #' @return A ggplot object, ready to be plotted.
+#' @examples
+#' # Plot the data frame produced by mesh_tmap()
+#' tmap <- mesh_tmap(demoSphere, base.res = 1, ld.cutoff = 0.2)
+#' mesh_tmap_plot(tmap$tmap, font_size = 12, x.label = "x-axis",
+#'                y.label = "y-axis", annot = paste("res:", tmap$res))
+#'
+#' # Plot the complete output from mesh_rasterize()
+#' raster <- mesh_rasterize(demoSphere, width = 20, height = 20,
+#'                          padding = 1, thickness = TRUE)
+#' mesh_tmap_plot(raster, font_size = 12, x.label = "x-axis",
+#'                y.label = "y-axis",
+#'                annot = paste("res:", round(raster$res, 2)))
 #' @export
 mesh_tmap_plot <- function(tmap, font_size,
                            y.label="PC2 (mm)",
                            x.label="",
                            annot="A") {
+  
+  # Check if the input is in fact the output of mesh_rasterize instead of
+  # regular mesh_tmap output
+  raster_input <- is.list(tmap) &&
+    all(c("mask", "centers_x", "centers_y") %in% names(tmap))
+  
+  if (raster_input) {
+    if (!"thickness" %in% names(tmap)) {
+      stop("Rasterized mesh does not contain thickness values.")
+    }
+    
+    occupied <- which(!is.na(tmap$thickness), arr.ind = TRUE)
+    tmap <- data.frame(xpos = tmap$centers_x[occupied[, "col"]],
+                       ypos = tmap$centers_y[occupied[, "row"]],
+                       thickness = tmap$thickness[occupied])
+  }
+  
+  
   jet.colors <- grDevices::colorRampPalette(c("#00007F", "blue", "#007FFF",
                                    "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                    "red", "#7F0000"))
 
-  return(ggplot(data.frame(tmap), aes_string(x="xpos", y="ypos",
-                                             color = "thickness")) +
-           geom_point() + scale_color_gradientn(colours = jet.colors(7),
-                                              name = "Thickness\n") +
+  plot <- ggplot(data.frame(tmap), aes(x = .data$xpos,
+                                       y = .data$ypos))
+  
+  
+  if (raster_input) {
+    plot <- plot + geom_raster(aes(fill = .data$thickness)) +
+            scale_fill_gradientn(colours = jet.colors(7), name = "Thickness\n")
+  } else {
+    plot <- plot + geom_point(aes(color = .data$thickness)) +
+            scale_color_gradientn(colours = jet.colors(7), name = "Thickness\n")
+  }
+
+  return(plot +
            theme(panel.background = element_rect(fill = "white",
                                                  colour = "black"),
                  panel.grid.minor = element_blank(),

@@ -13,7 +13,8 @@ mesh_tmap_plot(
 )
 }
 \arguments{
-\item{tmap}{A thickness map as output by the \link{mesh_tmap} function}
+\item{tmap}{A thickness map as output by the \code{\link[=mesh_tmap]{mesh_tmap()}} function, or the
+output of \code{\link[=mesh_rasterize]{mesh_rasterize()}} called with \code{thickness = TRUE}.}
 
 \item{font_size}{A numeric value specifying the font size argument to be
 passed on to \link[ggplot2:ggplot]{ggplot}}
@@ -30,6 +31,19 @@ A ggplot object, ready to be plotted.
 \description{
 Plots a given thickness map with some sensible defaults using
 \link[ggplot2:ggplot]{ggplot2::ggplot}
+}
+\examples{
+# Plot the data frame produced by mesh_tmap()
+tmap <- mesh_tmap(demoSphere, base.res = 1, ld.cutoff = 0.2)
+mesh_tmap_plot(tmap$tmap, font_size = 12, x.label = "x-axis",
+               y.label = "y-axis", annot = paste("res:", tmap$res))
+
+# Plot the complete output from mesh_rasterize()
+raster <- mesh_rasterize(demoSphere, width = 20, height = 20,
+                         padding = 1, thickness = TRUE)
+mesh_tmap_plot(raster, font_size = 12, x.label = "x-axis",
+               y.label = "y-axis",
+               annot = paste("res:", round(raster$res, 2)))
 }
 \author{
 Cornel M. Pop
