@@ -154,7 +154,7 @@ Now, let's split the flake connecting the available landmarks by following
 surface ridges:
 ```{r}
 library(Morpho)
-rgl.close()
+close3d()
 m.seg = mesh_segment_by_path(demoFlake2$mesh, demoFlake2$lms)
 shade3d(m.seg[[1]], color="green")
 shade3d(m.seg[[2]], color="blue")
@@ -181,7 +181,7 @@ flake (i.e. without the landmark located by the point of percussion).
 Let's take a look at the data:
 
 ```{r}
-rgl.close()
+close3d()
 new.path = sPathConnect(demoFlake2$lms[-nrow(demoFlake2$lms),],
                         demoFlake2$mesh, path.choice="ridges")
 shade3d(m.seg[[2]], color="blue")
