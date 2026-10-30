@@ -3,6 +3,7 @@ Lithics3D v0.5.3 (Release date: 2026-10-30)
 New features:
 
 Other changes:
+* Fixed vignette.
 * Added .gitattributes to fix cross-platform line-ending compatibility.
 * Fixed a bug with mesh_segment_by_path: the function dropped a (normally very small) number of faces silently; the downside of the fix is that the function runs about 15% or so slower than before. Minor changes were also made to the function's documentation.
 * Added basic tests for the mesh_segment_by_path function.
