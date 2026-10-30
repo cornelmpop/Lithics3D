@@ -3,6 +3,7 @@ Lithics3D v0.5.3 (Release date: 2026-10-30)
 New features:
 
 Other changes:
+* Added optional parameter to mesh_mark_pois to enable specifying window size.
 * Updated function documentations (pathResample)
 * Fixed MacOS build.
 * Fixed vignette.

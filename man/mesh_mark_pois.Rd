@@ -10,7 +10,8 @@ mesh_mark_pois(
   button = "right",
   prev_color = NA,
   color = "red",
-  size = 12
+  size = 12,
+  window_size = NULL
 )
 }
 \arguments{
@@ -31,6 +32,10 @@ that the order in which the POIs were marked can be visualized.}
 
 \item{size}{The size of the POI markers. Defaults to 12. Adjust as needed
 for visibility.}
+
+\item{window_size}{The parameters of the window to open, specified as an integer
+vector of length 4 specifying the interactive window location in
+pixels: \code{c(left, top, right, bottom)}.}
 }
 \value{
 A data frame containing the marked POIs with columns "x", "y", "z",

@@ -130,6 +130,10 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #'
 #' @param size The size of the POI markers. Defaults to 12. Adjust as needed
 #' for visibility.
+#' 
+#' @param window_size The parameters of the window to open, specified as an integer
+#' vector of length 4 specifying the interactive window location in
+#' pixels: `c(left, top, right, bottom)`.
 #'
 #' @return A data frame containing the marked POIs with columns "x", "y", "z",
 #' and "Tag".
@@ -170,7 +174,8 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' on the prev_color, color, and size parameters.
 #' @export
 mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
-                           prev_color = NA, color = "red", size = 12) {
+                           prev_color = NA, color = "red", size = 12,
+                           window_size = NULL) {
 
   poi_vnames <- c("x", "y", "z", "Tag")
 
@@ -192,6 +197,9 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
 
   # If there is no open RGL window, plot the mesh and previous POIs:
   if (cur3d() == 0) {
+    if (!is.null(window_size)) {
+      open3d(windowRect = window_size)
+    }
     shade3d(mesh, color = "green")
     if (nrow(pois) > 0) {
       if (is.na(prev_color)) {
