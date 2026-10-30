@@ -10,7 +10,7 @@
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/cornelmpop/Lithics3D/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cornelmpop/Lithics3D/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/cornelmpop/Lithics3D/graph/badge.svg?token=POG00CAXKO)](https://codecov.io/gh/cornelmpop/Lithics3D)
+<!-- [![codecov](https://codecov.io/gh/cornelmpop/Lithics3D/graph/badge.svg?token=POG00CAXKO)](https://codecov.io/gh/cornelmpop/Lithics3D) -->
 <!-- badges: end -->
 
 # Overview
