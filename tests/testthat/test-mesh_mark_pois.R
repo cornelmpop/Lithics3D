@@ -45,7 +45,7 @@ test_that("mesh_mark_pois works as expected", {
   # and return an empty data frame, leaving the scene open with nothing but
   # the demoSphere.
   res <- mesh_mark_pois(mesh = demoSphere)
-  expect_known_scene("mesh_mark_pois_demosphere", close = TRUE)
+  expect_known_scene("mesh_mark_pois_demosphere", close = TRUE, update = FALSE)
   expect_s3_class(res, "data.frame")
   expect_equal(nrow(res), 0)
 
@@ -58,7 +58,8 @@ test_that("mesh_mark_pois works as expected", {
                            z = c(0.2691861, 0.5440870),
                            Tag = c(1, 2))
   res <- mesh_mark_pois(mesh = demoSphere, pois = pois_valid)
-  expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE)
+  expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE,
+                     update = FALSE)
   expect_identical(res, pois_valid)
   
   # b0035_p Ensure we can run with 1 POI without generating error:
@@ -66,7 +67,8 @@ test_that("mesh_mark_pois works as expected", {
   # Note: to save scene:
   # saveRDS(scene3d(),
   #         file = "tests/testthat/testdata/mesh_mark_pois_demosphere_vp1.rds")
-  expect_known_scene("mesh_mark_pois_demosphere_vp1", close = TRUE)
+  expect_known_scene("mesh_mark_pois_demosphere_vp1", close = TRUE,
+                     update = FALSE)
   expect_identical(res, pois_valid[1, ])
 })
 

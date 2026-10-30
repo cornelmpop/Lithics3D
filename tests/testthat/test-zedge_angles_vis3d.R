@@ -8,16 +8,20 @@ test_that("edge_angles_vis3d works as expected", {
   res <- edgeAngles(demoSphere, edge_curve, 0.4)
 
   res_vis3d <- edge_angles_vis3d(res, demoSphere, edge_curve)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_all.rds")
+  expect_known_scene(file = "testdata/edge_angles_vis3d_all.rds",
+                     update = FALSE)
 
   res_vis3d <- edge_angles_vis3d(res, show_mesh = demoSphere)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_mesh.rds")
+  expect_known_scene(file = "testdata/edge_angles_vis3d_mesh.rds",
+                     update = FALSE)
 
   res_vis3d <- edge_angles_vis3d(res, show_pois = edge_curve)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_pois.rds")
+  expect_known_scene(file = "testdata/edge_angles_vis3d_pois.rds",
+                     update = FALSE)
 
   res_vis3d <- edge_angles_vis3d(res)
-  expect_known_scene(file = "testdata/edge_angles_vis3d_base.rds")
+  expect_known_scene(file = "testdata/edge_angles_vis3d_base.rds",
+                     update = FALSE)
 
   # Test with invalid input:
   expect_error(edge_angles_vis3d(list()))
