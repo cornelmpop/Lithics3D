@@ -10,7 +10,8 @@ show_poi_tags(
   distance = 10,
   text_size = 1,
   line_col = "red",
-  text_col = "black"
+  text_col = "black",
+  scene_tag = NULL
 )
 }
 \arguments{
@@ -36,6 +37,10 @@ the \code{cex} argument of \code{\link[rgl:text3d]{rgl::text3d()}}. The default 
 vertices closest to the POIs to the labels. Default is \code{"red"}.}
 
 \item{text_col}{Colour of the text labels. Default is \code{"black"}.}
+
+\item{scene_tag}{An optional string used to associate the labels and
+connector lines with a POI in the active \code{rgl} scene. Intended primarily
+for internal use by \code{\link[=mesh_mark_pois]{mesh_mark_pois()}}.}
 }
 \value{
 An integer vector containing the \code{rgl} object IDs of the line

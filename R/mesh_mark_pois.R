@@ -10,7 +10,7 @@
 #' that define the ray.
 #'
 #' @param mesh A triangular mesh object (`mesh3d`).
-#'
+#' 
 #' @return A vector with the x, y, and z coordinates of the POI.
 #'
 #' @details The function uses ray tracing to project the given ray onto the
@@ -160,6 +160,9 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' vector of length 4 specifying the interactive window location in
 #' pixels: `c(left, top, right, bottom)`.
 #'
+#' @param show_tags Logical. If `TRUE`, display each POI's `Tag` using
+#' [show_poi_tags()]. Defaults to `FALSE`.
+#'
 #' @return A data frame containing the marked POIs with columns "x", "y", "z",
 #' and "Tag".
 #'
@@ -195,12 +198,13 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #'
 #'
 #' @keywords 'digitization' '3D scanning' 'points of interest' 'interactive' 'rgl' 'mesh marking' 'POI tagging' 'mesh digitization' 'landmark capture' 'interactive 3D' 'mesh annotation' 'surface digitization'
-#' @seealso [drop_poi()] for removing bad POIs; [rgl::material3d()] for details
-#' on the prev_color, color, and size parameters.
+#' @seealso [drop_poi()] for removing bad POIs; [show_poi_tags()] for displaying
+#' POI labels; [rgl::material3d()] for details on the prev_color, color, and
+#' size parameters.
 #' @export
 mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
                            prev_color = NA, color = "red", size = 12,
-                           window_size = NULL) {
+                           window_size = NULL, show_tags = FALSE) {
 
   poi_vnames <- c("x", "y", "z", "Tag")
 
@@ -242,8 +246,14 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
       }
 
       for (i in seq_len(nrow(pois))) {
-        points3d(pois[i, 1:3], tag = pois[i, "Tag"],
-                 color = poi_col[i], size = ppoi_size)
+        point_id <- points3d(pois[i, 1:3], tag = pois[i, "Tag"],
+                             color = poi_col[i], size = ppoi_size)
+        
+        # Add support for show_tags
+        if (show_tags) {
+          scene_tag <- paste0("Lithics3D-poi-", point_id)
+          show_poi_tags(pois[i, ], mesh, scene_tag = scene_tag)
+        }
       }
     }
   }
@@ -277,9 +287,17 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     if (length(poi_coord) > 0) {
       tag <- nrow(pois) + 1
       #points3d(rbind(poi_coord, poi_coord), tag = tag,
-      points3d(matrix(poi_coord, nrow = 1), tag = tag,
-               col = color, size = size)
+      point_id <- points3d(matrix(poi_coord, nrow = 1), tag = tag,
+                           col = color, size = size)
       pois <- rbind(pois, c(poi_coord, tag))
+      names(pois) <- poi_vnames
+      
+      # Enable support for show_tags
+      if (show_tags) {
+        scene_tag <- paste0("Lithics3D-poi-", point_id)
+        show_poi_tags(pois[nrow(pois), ], mesh, scene_tag = scene_tag)
+      }
+      
     } else {
       message("Selected point not on the mesh surface. Try again.")
     }

@@ -5,6 +5,7 @@ New features:
 * trace_outline: A function to trace the outline of a raster-like object, producing a closed curve with ordered coordinates
 * show_poi_tags: A function to show POI identifiers/tags on a mesh
 * mesh_tmap_plot: The function can now take the output of mesh_rasterize for higher-resolution thickness maps.
+* mesh_mark_pois: The function now takes an optional 'show_tags' argument to display POI tags
 
 Other changes:
 * Added optional parameter to mesh_mark_pois to enable specifying window size.

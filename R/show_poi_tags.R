@@ -22,7 +22,9 @@
 #' @param line_col Colour of the line segments connecting the mesh
 #'   vertices closest to the POIs to the labels. Default is `"red"`.
 #' @param text_col Colour of the text labels. Default is `"black"`.
-#'
+#' @param scene_tag An optional string used to associate the labels and
+#'   connector lines with a POI in the active `rgl` scene. Intended primarily
+#'   for internal use by [mesh_mark_pois()].
 #' @details
 #' Each POI is mapped to its nearest mesh vertex using
 #' [Lithics3D::mapOnMesh()]. The corresponding vertex normal is
@@ -76,7 +78,8 @@
 #' rgl::close3d()
 #' @export
 show_poi_tags <- function(pois, mesh, distance = 10,
-                          text_size = 1, line_col = "red", text_col = "black") {
+                          text_size = 1, line_col = "red", text_col = "black",
+                          scene_tag = NULL) {
   
   # Get the mesh vertex ids corresponding to the POIs:
   mesh_vbs <- Lithics3D::mapOnMesh(pois[, 1:3], mesh)
@@ -109,9 +112,16 @@ show_poi_tags <- function(pois, mesh, distance = 10,
   
   # Keep track of what we add so that we can remove the objects from the
   # scene.
+  if (is.null(scene_tag)) {
   seg_ids <- rgl::segments3d(endpoints, col = line_col, lwd = 2)
   label_ids <- rgl::text3d(end_pts, texts = pois$Tag,
                            cex = text_size, col = text_col)
-  
+  } else {
+    seg_ids <- rgl::segments3d(endpoints, col = line_col, lwd = 2,
+                               tag = scene_tag)
+    label_ids <- rgl::text3d(end_pts, texts = pois$Tag, cex = text_size,
+                             col = text_col, tag = scene_tag)
+  }
+
   invisible(c(seg_ids, label_ids))
 }

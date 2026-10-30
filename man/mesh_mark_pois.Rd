@@ -11,7 +11,8 @@ mesh_mark_pois(
   prev_color = NA,
   color = "red",
   size = 12,
-  window_size = NULL
+  window_size = NULL,
+  show_tags = FALSE
 )
 }
 \arguments{
@@ -36,6 +37,9 @@ for visibility.}
 \item{window_size}{The parameters of the window to open, specified as an integer
 vector of length 4 specifying the interactive window location in
 pixels: \code{c(left, top, right, bottom)}.}
+
+\item{show_tags}{Logical. If \code{TRUE}, display each POI's \code{Tag} using
+\code{\link[=show_poi_tags]{show_poi_tags()}}. Defaults to \code{FALSE}.}
 }
 \value{
 A data frame containing the marked POIs with columns "x", "y", "z",
@@ -82,8 +86,9 @@ rgl::close3d()
 
 }
 \seealso{
-\code{\link[=drop_poi]{drop_poi()}} for removing bad POIs; \code{\link[rgl:material3d]{rgl::material3d()}} for details
-on the prev_color, color, and size parameters.
+\code{\link[=drop_poi]{drop_poi()}} for removing bad POIs; \code{\link[=show_poi_tags]{show_poi_tags()}} for displaying
+POI labels; \code{\link[rgl:material3d]{rgl::material3d()}} for details on the prev_color, color, and
+size parameters.
 }
 \keyword{'3D}
 \keyword{'POI}
