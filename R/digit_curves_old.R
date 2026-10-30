@@ -1,12 +1,12 @@
 #' Calculate semilandmarks along a curve
 #'
-#' A function to calculate equidistant two-dimensional and three-dimensional semilandmarks along a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis [gpagen()]. This type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature, as specified by [define.sliders()]. 
+#' A function to calculate equidistant two-dimensional and three-dimensional semilandmarks along a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis [geomorph::gpagen()]. This type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature, as specified by [geomorph::define.sliders()]. 
 #' 
 #' The function is based upon tpsDig2 'resample curve by length' for 2D data by James Rohlf.
 #' The start of the curve is a fixed landmark on the curve that is equivalent (homologous) in each specimen in the sample (and will be treated as a fixed point during Procrustes Superimpoistion using [gpagen()]). Then nPoints are calculated along the curve at equidistant points from the start to the end. 
 #' 
 #' 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coorinates along a curve (including sampling by hand using 
-#' [digit.fixed()] or [digitize2d()] - but note that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
+#' [geomorph::digit.fixed()] or [geomorph::digitize2d()] - but note that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 #'
 #' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve. 
 #'

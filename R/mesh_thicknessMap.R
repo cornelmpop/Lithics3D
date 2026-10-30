@@ -79,7 +79,7 @@ mesh_tmap <- function(mesh.o, base.res, ld.cutoff){
 
 #' @title Plot thickness map
 #' @description Plots a given thickness map with some sensible defaults using
-#' [ggplot]
+#' [ggplot2::ggplot]
 #' @author Cornel M. Pop
 #' @param tmap A thickness map as output by the [mesh_tmap] function
 #' @param font_size A numeric value specifying the font size argument to be

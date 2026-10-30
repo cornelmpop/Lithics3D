@@ -119,7 +119,7 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' should be the output of a previous run of this or the [drop_poi()] function.
 #'
 #' @param button The mouse button used for marking POIs. Defaults to "right".
-#' See [rgl.select()] for details.
+#' See [rgl::rgl.select()] for details.
 #'
 #' @param prev_color The color used to display previously marked POIs.
 #' Defaults to NA, which results in automatically generated colors along a
@@ -165,10 +165,8 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' }
 #'
 #'
-#' @keywords 'digitization' '3D scanning' 'points of interest' 'interactive'
-#' 'rgl' 'mesh marking' 'POI tagging' 'mesh digitization' 'landmark capture'
-#' 'interactive 3D' 'mesh annotation' 'surface digitization'
-#' @seealso [drop_poi()] for removing bad POIs; [material3d()] for details
+#' @keywords 'digitization' '3D scanning' 'points of interest' 'interactive' 'rgl' 'mesh marking' 'POI tagging' 'mesh digitization' 'landmark capture' 'interactive 3D' 'mesh annotation' 'surface digitization'
+#' @seealso [drop_poi()] for removing bad POIs; [rgl::material3d()] for details
 #' on the prev_color, color, and size parameters.
 #' @export
 mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
