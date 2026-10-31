@@ -163,6 +163,9 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #'
 #' @param show_tags Logical. If `TRUE`, display each POI's `Tag` using
 #' [show_poi_tags()]. Defaults to `FALSE`.
+#' 
+#' @param max_new_pois Maximum number of new POIs to record before returning.
+#' Defaults to `Inf`.
 #'
 #' @return A data frame containing the marked POIs with columns "x", "y", "z",
 #' and "Tag".
@@ -205,10 +208,17 @@ drop_poi <- function(pois, tt_override = FALSE) {
 #' @export
 mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
                            prev_color = NA, color = "red", size = 12,
-                           window_size = NULL, show_tags = FALSE) {
+                           window_size = NULL, show_tags = FALSE,
+                           max_new_pois = Inf) {
 
   poi_vnames <- c("x", "y", "z", "Tag")
 
+  # Validate max_new_pois:
+  if (max_new_pois <= 0 ||
+      (is.finite(max_new_pois) && max_new_pois %% 1 != 0)) {
+    stop("'max_new_pois' must be a positive whole number or Inf.")
+  }
+  
   # Check input pois:
   if (nrow(pois) > 0 && !identical(names(pois), poi_vnames)) {
     stop("Input POIs should be a previous output of this function")
@@ -216,6 +226,25 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
   # Check that the mesh is... a mesh.
   if (!inherits(mesh, "mesh3d")) {
     stop("Invalid input. 'mesh' must be a mesh3d object.")
+  }
+  
+  # Check the rgl device associated with the poi data:
+  rgl_device <- attr(pois, "rgl_device")
+  rebuild_scene <- FALSE
+  if (!is.null(rgl_device)) {
+    if (rgl_device %in% rgl.dev.list()) {
+        set3d(rgl_device)
+      } else {
+        rebuild_scene <- TRUE
+    }
+  }
+  
+  # Keep track of previous POIs, if supplied, and identify all scene objects
+  # belonging to this POI set:
+  initial_n <- nrow(pois)
+  scene_id <- attr(pois, "scene_id")
+  if (is.null(scene_id)) {
+    scene_id <- basename(tempfile("Lithics3D-pois-"))
   }
 
   # Set display size for previous POIs at 80% of POIs to be marked.
@@ -225,9 +254,12 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     ppoi_size <- size
   }
 
-  # If there is no open RGL window, plot the mesh and previous POIs:
-  if (cur3d() == 0) {
-    if (!is.null(window_size)) {
+  # If there is no open RGL window, open a new window and
+  # plot the mesh and previous POIs:
+  if (rebuild_scene || cur3d() == 0) {
+    if (is.null(window_size)) {
+        open3d()
+      } else {
       open3d(windowRect = window_size)
     }
     shade3d(mesh, color = "green")
@@ -247,18 +279,21 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
       }
 
       for (i in seq_len(nrow(pois))) {
-        point_id <- points3d(pois[i, 1:3], tag = pois[i, "Tag"],
-                             color = poi_col[i], size = ppoi_size)
+        #point_id <- points3d(pois[i, 1:3], tag = pois[i, "Tag"],
+        #                     color = poi_col[i], size = ppoi_size)
+        points3d(pois[i, 1:3], tag = scene_id,
+                 color = poi_col[i], size = ppoi_size)
         
         # Add support for show_tags
         if (show_tags) {
-          scene_tag <- paste0("Lithics3D-poi-", point_id)
-          show_poi_tags(pois[i, ], mesh, scene_tag = scene_tag)
+          #scene_tag <- paste0("Lithics3D-poi-", point_id)
+          show_poi_tags(pois[i, ], mesh, scene_tag = scene_id)
         }
       }
     }
   }
-
+  rgl_device <- cur3d()
+  
   message("Ready to mark POIs. Press ESC when done...")
   while (TRUE) {
 
@@ -268,11 +303,14 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     }
 
     # Grab mouse location in user coordinates.
-    poi_coord <- rgl.select(button = button)
+    poi_coord <- rgl.select(button = button, dev = rgl_device)
     if (!exists("poi_coord") || is.null(poi_coord)) {
       break
     }
-
+    # Ensure we're still in the same window:
+    set3d(rgl_device)
+    
+    
     # Translate coordinates to a ray defined by two points (note: we are
     # discarding here the second set of coordinates, which corresponds to the
     # other corner of the selection rectangle), in scene coordinates (from
@@ -288,15 +326,19 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     if (length(poi_coord) > 0) {
       tag <- nrow(pois) + 1
       #points3d(rbind(poi_coord, poi_coord), tag = tag,
-      point_id <- points3d(matrix(poi_coord, nrow = 1), tag = tag,
-                           col = color, size = size)
+      points3d(matrix(poi_coord, nrow = 1), tag = scene_id,
+               col = color, size = size)
       pois <- rbind(pois, c(poi_coord, tag))
       names(pois) <- poi_vnames
       
       # Enable support for show_tags
       if (show_tags) {
-        scene_tag <- paste0("Lithics3D-poi-", point_id)
-        show_poi_tags(pois[nrow(pois), ], mesh, scene_tag = scene_tag)
+        #scene_tag <- paste0("Lithics3D-poi-", point_id)
+        show_poi_tags(pois[nrow(pois), ], mesh, scene_tag = scene_id)
+      }
+      
+      if (nrow(pois) - initial_n >= max_new_pois) {
+        break
       }
       
     } else {
@@ -310,5 +352,9 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
     names(pois) <- poi_vnames
   }
 
+  # Attach scene-specific attributes:
+  attr(pois, "scene_id") <- scene_id
+  attr(pois, "rgl_device") <- rgl_device
+  
   return(pois)
 }

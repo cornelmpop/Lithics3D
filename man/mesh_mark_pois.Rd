@@ -12,7 +12,8 @@ mesh_mark_pois(
   color = "red",
   size = 12,
   window_size = NULL,
-  show_tags = FALSE
+  show_tags = FALSE,
+  max_new_pois = Inf
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ pixels: \code{c(left, top, right, bottom)}.}
 
 \item{show_tags}{Logical. If \code{TRUE}, display each POI's \code{Tag} using
 \code{\link[=show_poi_tags]{show_poi_tags()}}. Defaults to \code{FALSE}.}
+
+\item{max_new_pois}{Maximum number of new POIs to record before returning.
+Defaults to \code{Inf}.}
 }
 \value{
 A data frame containing the marked POIs with columns "x", "y", "z",

@@ -70,7 +70,9 @@ test_that("mesh_mark_pois works as expected", {
   # expect_known_scene("mesh_mark_pois_demosphere_vp", close = TRUE,
   #                    update = FALSE)
   expect_scene_types(c("triangles", "points", "points"))
-  expect_identical(res, pois_valid)
+  # Remove the attributes for testing, since they are temporary
+  expect_identical(structure(res, scene_id = NULL, rgl_device = NULL),
+                   pois_valid)
   
   # b0035_p Ensure we can run with 1 POI without generating error:
   res <- mesh_mark_pois(mesh = demoSphere, pois = pois_valid[1, ])
@@ -81,7 +83,9 @@ test_that("mesh_mark_pois works as expected", {
   #expect_known_scene("mesh_mark_pois_demosphere_vp1", close = TRUE,
   #                   update = FALSE)
   expect_scene_types(c("triangles", "points"))
-  expect_identical(res, pois_valid[1, ])
+  # Remove the attributes for testing, since they are temporary
+  expect_identical(structure(res, scene_id = NULL, rgl_device = NULL),
+                   pois_valid[1, ])
 })
 
 test_that("proj_poi works as expected", {
