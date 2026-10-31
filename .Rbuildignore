@@ -3,3 +3,5 @@
 ^\.github$
 ^README\.Rmd$
 ^codemeta\.json$
+^doc$
+^Meta$
