@@ -104,7 +104,8 @@ drop_poi <- function(pois, tt_override = FALSE) {
     coord_matches <- logical(length(point_ids))
     for (i in seq_along(point_ids)) {
       point_xyz <- rgl.attrib(point_ids[i], "vertices")[1, 1:3]
-      coord_matches[i] <- all(abs(point_xyz - poi_xyz) <= 1e-7)
+      coord_matches[i] <- isTRUE(all.equal(point_xyz, poi_xyz,
+                                           tolerance = 1e-7))
     }
     point_ids <- point_ids[coord_matches]
     
