@@ -355,6 +355,8 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
   # Attach scene-specific attributes:
   attr(pois, "scene_id") <- scene_id
   attr(pois, "rgl_device") <- rgl_device
+  attr(pois, "scene_style") <- list(prev_color = prev_color,
+                                    size = size)
   
   return(pois)
 }
