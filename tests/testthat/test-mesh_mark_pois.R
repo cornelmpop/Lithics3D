@@ -71,7 +71,8 @@ test_that("mesh_mark_pois works as expected", {
   #                    update = FALSE)
   expect_scene_types(c("triangles", "points", "points"))
   # Remove the attributes for testing, since they are temporary
-  expect_identical(structure(res, scene_id = NULL, rgl_device = NULL),
+  expect_identical(structure(res, scene_id = NULL,
+                             rgl_device = NULL, scene_style = NULL),
                    pois_valid)
   
   # b0035_p Ensure we can run with 1 POI without generating error:
@@ -84,7 +85,8 @@ test_that("mesh_mark_pois works as expected", {
   #                   update = FALSE)
   expect_scene_types(c("triangles", "points"))
   # Remove the attributes for testing, since they are temporary
-  expect_identical(structure(res, scene_id = NULL, rgl_device = NULL),
+  expect_identical(structure(res, scene_id = NULL,
+                             rgl_device = NULL, scene_style = NULL),
                    pois_valid[1, ])
 })
 

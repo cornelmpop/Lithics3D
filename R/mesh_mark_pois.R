@@ -356,7 +356,8 @@ mesh_mark_pois <- function(mesh, pois = data.frame(), button = "right",
   attr(pois, "scene_id") <- scene_id
   attr(pois, "rgl_device") <- rgl_device
   attr(pois, "scene_style") <- list(prev_color = prev_color,
-                                    size = size)
+                                    size = size,
+                                    show_tags = show_tags)
   
   return(pois)
 }
